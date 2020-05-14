@@ -16,7 +16,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   if (state.AppStateController) {
     state.AppStateController.connectedStatusPopoverHasBeenShown = false
   } else {

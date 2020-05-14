@@ -3,7 +3,6 @@ import log from 'loglevel'
 import { normalize as normalizeAddress } from 'eth-sig-util'
 import ethUtil from 'ethereumjs-util'
 
-
 // By default, poll every 3 minutes
 const DEFAULT_INTERVAL = 180 * 1000
 
@@ -17,7 +16,7 @@ export default class TokenRatesController {
    *
    * @param {Object} [config] - Options to configure controller
    */
-  constructor ({ interval = DEFAULT_INTERVAL, currency, preferences } = {}) {
+  constructor({ interval = DEFAULT_INTERVAL, currency, preferences } = {}) {
     this.store = new ObservableStore()
     this.currency = currency
     this.preferences = preferences
@@ -27,24 +26,35 @@ export default class TokenRatesController {
   /**
    * Updates exchange rates for all tokens
    */
-  async updateExchangeRates () {
+  async updateExchangeRates() {
     if (!this.isActive) {
       return
     }
     const contractExchangeRates = {}
-    const nativeCurrency = this.currency ? this.currency.state.nativeCurrency.toLowerCase() : 'eth'
+    const nativeCurrency = this.currency
+      ? this.currency.state.nativeCurrency.toLowerCase()
+      : 'eth'
     const pairs = this._tokens.map((token) => token.address).join(',')
     const query = `contract_addresses=${pairs}&vs_currencies=${nativeCurrency}`
     if (this._tokens.length > 0) {
       try {
-        const response = await window.fetch(`https://api.coingecko.com/api/v3/simple/token_price/ethereum?${query}`)
+        const response = await window.fetch(
+          `https://api.coingecko.com/api/v3/simple/token_price/ethereum?${query}`
+        )
         const prices = await response.json()
         this._tokens.forEach((token) => {
-          const price = prices[token.address.toLowerCase()] || prices[ethUtil.toChecksumAddress(token.address)]
-          contractExchangeRates[normalizeAddress(token.address)] = price ? price[nativeCurrency] : 0
+          const price =
+            prices[token.address.toLowerCase()] ||
+            prices[ethUtil.toChecksumAddress(token.address)]
+          contractExchangeRates[normalizeAddress(token.address)] = price
+            ? price[nativeCurrency]
+            : 0
         })
       } catch (error) {
-        log.warn(`MetaMask - TokenRatesController exchange rate fetch failed.`, error)
+        log.warn(
+          `MetaMask - TokenRatesController exchange rate fetch failed.`,
+          error
+        )
       }
     }
     this.store.putState({ contractExchangeRates })
@@ -53,7 +63,7 @@ export default class TokenRatesController {
   /**
    * @type {Number}
    */
-  set interval (interval) {
+  set interval(interval) {
     this._handle && clearInterval(this._handle)
     if (!interval) {
       return
@@ -66,7 +76,7 @@ export default class TokenRatesController {
   /**
    * @type {Object}
    */
-  set preferences (preferences) {
+  set preferences(preferences) {
     this._preferences && this._preferences.unsubscribe()
     if (!preferences) {
       return
@@ -81,7 +91,7 @@ export default class TokenRatesController {
   /**
    * @type {Array}
    */
-  set tokens (tokens) {
+  set tokens(tokens) {
     this._tokens = tokens
     this.updateExchangeRates()
   }

@@ -25,7 +25,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = merge({}, state, {
     CurrencyController: {
       currentCurrency: state.currentFiat || state.fiatCurrency || 'USD',

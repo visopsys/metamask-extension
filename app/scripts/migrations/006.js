@@ -25,7 +25,7 @@ export default {
   },
 }
 
-function migrateState (state) {
+function migrateState(state) {
   const keyringSubstate = state.KeyringController
 
   // add new state

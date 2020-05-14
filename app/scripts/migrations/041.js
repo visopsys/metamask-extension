@@ -15,9 +15,10 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   if (state.PreferencesController && state.PreferencesController.preferences) {
-    state.PreferencesController.preferences.autoLockTimeLimit = state.PreferencesController.preferences.autoLogoutTimeLimit
+    state.PreferencesController.preferences.autoLockTimeLimit =
+      state.PreferencesController.preferences.autoLogoutTimeLimit
     delete state.PreferencesController.preferences.autoLogoutTimeLimit
   }
   return state

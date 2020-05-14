@@ -15,8 +15,11 @@ export default {
   },
 }
 
-function transformState (state) {
-  if (typeof state?.AppStateController?.mkrMigrationReminderTimestamp !== 'undefined') {
+function transformState(state) {
+  if (
+    typeof state?.AppStateController?.mkrMigrationReminderTimestamp !==
+    'undefined'
+  ) {
     delete state.AppStateController.mkrMigrationReminderTimestamp
   }
   return state

@@ -22,7 +22,7 @@ export default class OnboardingController {
    *
    * @param {OnboardingOptions} [opts] Controller configuration parameters
    */
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     const initialTransientState = {
       onboardingTabs: {},
     }
@@ -31,7 +31,7 @@ export default class OnboardingController {
         seedPhraseBackedUp: true,
       },
       opts.initState,
-      initialTransientState,
+      initialTransientState
     )
     this.store = new ObservableStore(initState)
     this.preferencesController = opts.preferencesController
@@ -47,7 +47,7 @@ export default class OnboardingController {
     })
   }
 
-  setSeedPhraseBackedUp (newSeedPhraseBackUpState) {
+  setSeedPhraseBackedUp(newSeedPhraseBackUpState) {
     this.store.updateState({
       seedPhraseBackedUp: newSeedPhraseBackUpState,
     })
@@ -64,9 +64,14 @@ export default class OnboardingController {
       log.debug('Ignoring registerOnboarding; user already onboarded')
       return
     }
-    const onboardingTabs = Object.assign({}, this.store.getState().onboardingTabs)
+    const onboardingTabs = Object.assign(
+      {},
+      this.store.getState().onboardingTabs
+    )
     if (!onboardingTabs[location] || onboardingTabs[location] !== tabId) {
-      log.debug(`Registering onboarding tab at location '${location}' with tabId '${tabId}'`)
+      log.debug(
+        `Registering onboarding tab at location '${location}' with tabId '${tabId}'`
+      )
       onboardingTabs[location] = tabId
       this.store.updateState({ onboardingTabs })
     }

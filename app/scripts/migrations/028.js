@@ -21,16 +21,21 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = state
 
   if (newState.PreferencesController) {
-    if (newState.PreferencesController.tokens && newState.PreferencesController.identities) {
+    if (
+      newState.PreferencesController.tokens &&
+      newState.PreferencesController.identities
+    ) {
       const identities = newState.PreferencesController.identities
       const tokens = newState.PreferencesController.tokens
       newState.PreferencesController.accountTokens = {}
       for (const identity in identities) {
-        newState.PreferencesController.accountTokens[identity] = { 'mainnet': tokens }
+        newState.PreferencesController.accountTokens[identity] = {
+          mainnet: tokens,
+        }
       }
       newState.PreferencesController.tokens = []
     }

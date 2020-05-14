@@ -17,14 +17,13 @@ export const ALERT_TYPES = {
 }
 
 const defaultState = {
-  alertEnabledness: Object.keys(ALERT_TYPES)
-    .reduce(
-      (alertEnabledness, alertType) => {
-        alertEnabledness[alertType] = true
-        return alertEnabledness
-      },
-      {}
-    ),
+  alertEnabledness: Object.keys(ALERT_TYPES).reduce(
+    (alertEnabledness, alertType) => {
+      alertEnabledness[alertType] = true
+      return alertEnabledness
+    },
+    {}
+  ),
   switchToConnectedAlertShown: {},
 }
 
@@ -37,16 +36,11 @@ export default class AlertController {
    * @constructor
    * @param {AlertControllerOptions} [opts] - Controller configuration parameters
    */
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     const { initState, preferencesStore } = opts
-    const state = Object.assign(
-      {},
-      defaultState,
-      initState,
-      {
-        switchToConnectedAlertShown: {},
-      }
-    )
+    const state = Object.assign({}, defaultState, initState, {
+      switchToConnectedAlertShown: {},
+    })
     this.store = new ObservableStore(state)
 
     const { selectedAddress } = preferencesStore.getState()
@@ -54,14 +48,17 @@ export default class AlertController {
 
     preferencesStore.subscribe(({ selectedAddress }) => {
       const currentState = this.store.getState()
-      if (currentState.switchToConnectedAlertShown && this.selectedAddress !== selectedAddress) {
+      if (
+        currentState.switchToConnectedAlertShown &&
+        this.selectedAddress !== selectedAddress
+      ) {
         this.selectedAddress = selectedAddress
         this.store.updateState({ switchToConnectedAlertShown: {} })
       }
     })
   }
 
-  setAlertEnabledness (alertId, enabledness) {
+  setAlertEnabledness(alertId, enabledness) {
     let { alertEnabledness } = this.store.getState()
     alertEnabledness = { ...alertEnabledness }
     alertEnabledness[alertId] = enabledness
@@ -72,7 +69,7 @@ export default class AlertController {
    * Sets the "switch to connected" alert as shown for the given origin
    * @param {string} origin - The origin the alert has been shown for
    */
-  setSwitchToConnectedAlertShown (origin) {
+  setSwitchToConnectedAlertShown(origin) {
     let { switchToConnectedAlertShown } = this.store.getState()
     switchToConnectedAlertShown = { ...switchToConnectedAlertShown }
     switchToConnectedAlertShown[origin] = true

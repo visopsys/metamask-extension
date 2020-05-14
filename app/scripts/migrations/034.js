@@ -16,13 +16,16 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const { PreferencesController } = state
 
   if (PreferencesController) {
     const featureFlags = PreferencesController.featureFlags || {}
 
-    if (!featureFlags.privacyMode && typeof PreferencesController.migratedPrivacyMode === 'undefined') {
+    if (
+      !featureFlags.privacyMode &&
+      typeof PreferencesController.migratedPrivacyMode === 'undefined'
+    ) {
       // Mark the state has being migrated and enable Privacy Mode
       PreferencesController.migratedPrivacyMode = true
       featureFlags.privacyMode = true

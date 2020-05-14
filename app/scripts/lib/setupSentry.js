@@ -5,20 +5,26 @@ import extractEthjsErrorMessage from './extractEthjsErrorMessage'
 
 const METAMASK_DEBUG = process.env.METAMASK_DEBUG
 const METAMASK_ENVIRONMENT = process.env.METAMASK_ENVIRONMENT
-const SENTRY_DSN_PROD = 'https://3567c198f8a8412082d32655da2961d0@sentry.io/273505'
-const SENTRY_DSN_DEV = 'https://f59f3dd640d2429d9d0e2445a87ea8e1@sentry.io/273496'
+const SENTRY_DSN_PROD =
+  'https://3567c198f8a8412082d32655da2961d0@sentry.io/273505'
+const SENTRY_DSN_DEV =
+  'https://f59f3dd640d2429d9d0e2445a87ea8e1@sentry.io/273496'
 
-export default function setupSentry (opts) {
+export default function setupSentry(opts) {
   const { release, getState } = opts
   let sentryTarget
   // detect brave
   const isBrave = Boolean(window.chrome.ipcRenderer)
 
   if (METAMASK_DEBUG || process.env.IN_TEST) {
-    console.log(`Setting up Sentry Remote Error Reporting for '${METAMASK_ENVIRONMENT}': SENTRY_DSN_DEV`)
+    console.log(
+      `Setting up Sentry Remote Error Reporting for '${METAMASK_ENVIRONMENT}': SENTRY_DSN_DEV`
+    )
     sentryTarget = SENTRY_DSN_DEV
   } else {
-    console.log(`Setting up Sentry Remote Error Reporting for '${METAMASK_ENVIRONMENT}': SENTRY_DSN_PROD`)
+    console.log(
+      `Setting up Sentry Remote Error Reporting for '${METAMASK_ENVIRONMENT}': SENTRY_DSN_PROD`
+    )
     sentryTarget = SENTRY_DSN_PROD
   }
 
@@ -26,10 +32,7 @@ export default function setupSentry (opts) {
     dsn: sentryTarget,
     debug: METAMASK_DEBUG,
     environment: METAMASK_ENVIRONMENT,
-    integrations: [
-      new Dedupe(),
-      new ExtraErrorData(),
-    ],
+    integrations: [new Dedupe(), new ExtraErrorData()],
     release,
     beforeSend: (report) => rewriteReport(report),
   })
@@ -38,7 +41,7 @@ export default function setupSentry (opts) {
     scope.setExtra('isBrave', isBrave)
   })
 
-  function rewriteReport (report) {
+  function rewriteReport(report) {
     try {
       // simplify certain complex error messages (e.g. Ethjs)
       simplifyErrorMessages(report)
@@ -58,7 +61,7 @@ export default function setupSentry (opts) {
   return Sentry
 }
 
-function simplifyErrorMessages (report) {
+function simplifyErrorMessages(report) {
   rewriteErrorMessages(report, (errorMessage) => {
     // simplify ethjs error messages
     errorMessage = extractEthjsErrorMessage(errorMessage)
@@ -71,7 +74,7 @@ function simplifyErrorMessages (report) {
   })
 }
 
-function rewriteErrorMessages (report, rewriteFn) {
+function rewriteErrorMessages(report, rewriteFn) {
   // rewrite top level message
   if (typeof report.message === 'string') {
     report.message = rewriteFn(report.message)
@@ -86,7 +89,7 @@ function rewriteErrorMessages (report, rewriteFn) {
   }
 }
 
-function rewriteReportUrls (report) {
+function rewriteReportUrls(report) {
   // update request url
   report.request.url = toMetamaskUrl(report.request.url)
   // update exception stack trace
@@ -101,7 +104,7 @@ function rewriteReportUrls (report) {
   }
 }
 
-function toMetamaskUrl (origUrl) {
+function toMetamaskUrl(origUrl) {
   const filePath = origUrl.split(window.location.origin)[1]
   if (!filePath) {
     return origUrl

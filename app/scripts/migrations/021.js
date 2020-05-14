@@ -25,10 +25,9 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = state
   delete newState.BlacklistController
   delete newState.RecentBlocks
   return newState
 }
-

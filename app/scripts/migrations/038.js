@@ -17,7 +17,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const { ABTestController: ABTestControllerState = {} } = state
   const { abTests = {} } = ABTestControllerState
 
@@ -28,7 +28,9 @@ function transformState (state) {
         ...ABTestControllerState,
         abTests: {
           ...abTests,
-          fullScreenVsPopup: getRandomArrayItem(ABTestController.abTestGroupNames.fullScreenVsPopup),
+          fullScreenVsPopup: getRandomArrayItem(
+            ABTestController.abTestGroupNames.fullScreenVsPopup
+          ),
         },
       },
     }

@@ -3,9 +3,9 @@ const version = 31
 import { cloneDeep } from 'lodash'
 
 /*
-  * The purpose of this migration is to properly set the completedOnboarding flag based on the state
-  * of the KeyringController.
-  */
+ * The purpose of this migration is to properly set the completedOnboarding flag based on the state
+ * of the KeyringController.
+ */
 export default {
   version,
 
@@ -19,7 +19,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const { KeyringController, PreferencesController } = state
 
   if (KeyringController && PreferencesController) {

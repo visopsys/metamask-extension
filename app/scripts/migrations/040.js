@@ -17,7 +17,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   delete state.ProviderApprovalController
   return state
 }

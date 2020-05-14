@@ -1,7 +1,6 @@
-
 // TODO:deprecate:2020
 
-export default function setupDappAutoReload (web3, observable) {
+export default function setupDappAutoReload(web3, observable) {
   // export web3 as a global, checking for usage
   let reloadInProgress = false
   let lastTimeUsed
@@ -14,7 +13,9 @@ export default function setupDappAutoReload (web3, observable) {
       lastTimeUsed = Date.now()
       // show warning once on web3 access
       if (!hasBeenWarned && key !== 'currentProvider') {
-        console.warn(`MetaMask: We will soon stop injecting web3. For more information, see: https://medium.com/metamask/no-longer-injecting-web3-js-4a899ad6e59e`)
+        console.warn(
+          `MetaMask: We will soon stop injecting web3. For more information, see: https://medium.com/metamask/no-longer-injecting-web3-js-4a899ad6e59e`
+        )
         hasBeenWarned = true
       }
       // return value normally
@@ -69,6 +70,6 @@ export default function setupDappAutoReload (web3, observable) {
 }
 
 // reload the page
-function triggerReset () {
+function triggerReset() {
   global.location.reload()
 }

@@ -18,8 +18,7 @@ export default {
   },
 }
 
-function transformState (state) {
-
+function transformState(state) {
   if (state.AddressBookController) {
     const ab = state.AddressBookController.addressBook
 
@@ -33,11 +32,10 @@ function transformState (state) {
 
     // fill the chainId object with the entries with the matching chainId
     for (const id of chainIds.values()) {
-    // make an empty object entry for each chainId
+      // make an empty object entry for each chainId
       newAddressBook[id] = {}
       for (const address in ab) {
         if (ab[address].chainId === id) {
-
           ab[address].isEns = false
           if (util.normalizeEnsName(ab[address].name)) {
             ab[address].isEns = true

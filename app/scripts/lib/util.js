@@ -72,10 +72,18 @@ const getPlatform = (_) => {
  * @returns {boolean} - Whether the balance is greater than or equal to the value plus the value of gas times gasPrice
  *
  */
-function sufficientBalance (txParams, hexBalance) {
+function sufficientBalance(txParams, hexBalance) {
   // validate hexBalance is a hex string
-  assert.equal(typeof hexBalance, 'string', 'sufficientBalance - hexBalance is not a hex string')
-  assert.equal(hexBalance.slice(0, 2), '0x', 'sufficientBalance - hexBalance is not a hex string')
+  assert.equal(
+    typeof hexBalance,
+    'string',
+    'sufficientBalance - hexBalance is not a hex string'
+  )
+  assert.equal(
+    hexBalance.slice(0, 2),
+    '0x',
+    'sufficientBalance - hexBalance is not a hex string'
+  )
 
   const balance = hexToBn(hexBalance)
   const value = hexToBn(txParams.value)
@@ -93,7 +101,7 @@ function sufficientBalance (txParams, hexBalance) {
  * @returns {string} - A '0x' prefixed hex string
  *
  */
-function bnToHex (inputBn) {
+function bnToHex(inputBn) {
   return ethUtil.addHexPrefix(inputBn.toString(16))
 }
 
@@ -104,7 +112,7 @@ function bnToHex (inputBn) {
  * @returns {Object} - A BN object
  *
  */
-function hexToBn (inputHex) {
+function hexToBn(inputHex) {
   return new BN(ethUtil.stripHexPrefix(inputHex), 16)
 }
 
@@ -117,23 +125,23 @@ function hexToBn (inputHex) {
  * @returns {BN} - The product of the multiplication
  *
  */
-function BnMultiplyByFraction (targetBN, numerator, denominator) {
+function BnMultiplyByFraction(targetBN, numerator, denominator) {
   const numBN = new BN(numerator)
   const denomBN = new BN(denominator)
   return targetBN.mul(numBN).div(denomBN)
 }
 
-function removeListeners (listeners, emitter) {
+function removeListeners(listeners, emitter) {
   Object.keys(listeners).forEach((key) => {
     emitter.removeListener(key, listeners[key])
   })
 }
 
-function getRandomArrayItem (array) {
-  return array[Math.floor((Math.random() * array.length))]
+function getRandomArrayItem(array) {
+  return array[Math.floor(Math.random() * array.length)]
 }
 
-function mapObjectValues (object, cb) {
+function mapObjectValues(object, cb) {
   const mappedObject = {}
   Object.keys(object).forEach((key) => {
     mappedObject[key] = cb(key, object[key])
@@ -146,7 +154,7 @@ function mapObjectValues (object, cb) {
  * this is a workaround for the non-standard error object thats used
  * @returns {Error}
  */
-function checkForError () {
+function checkForError() {
   const lastError = extension.runtime.lastError
   if (!lastError) {
     return

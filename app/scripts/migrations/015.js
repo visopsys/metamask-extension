@@ -26,7 +26,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = state
   const { TransactionController } = newState
   if (TransactionController && TransactionController.transactions) {

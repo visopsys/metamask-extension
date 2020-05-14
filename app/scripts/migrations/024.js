@@ -1,4 +1,3 @@
-
 const version = 24
 
 /*
@@ -23,21 +22,23 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = state
   if (!newState.TransactionController) {
     return newState
   }
   const transactions = newState.TransactionController.transactions
-  newState.TransactionController.transactions = transactions.map((txMeta, _) => {
-    if (
-      txMeta.status === 'unapproved' &&
-      txMeta.txParams &&
-      txMeta.txParams.from
-    ) {
-      txMeta.txParams.from = txMeta.txParams.from.toLowerCase()
+  newState.TransactionController.transactions = transactions.map(
+    (txMeta, _) => {
+      if (
+        txMeta.status === 'unapproved' &&
+        txMeta.txParams &&
+        txMeta.txParams.from
+      ) {
+        txMeta.txParams.from = txMeta.txParams.from.toLowerCase()
+      }
+      return txMeta
     }
-    return txMeta
-  })
+  )
   return newState
 }

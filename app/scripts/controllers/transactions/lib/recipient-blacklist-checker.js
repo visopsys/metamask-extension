@@ -6,7 +6,7 @@ import blacklist from './recipient-blacklist'
  * @param {string} account
  * @throws {Error} if the account is blacklisted on mainnet
  */
-export function throwIfAccountIsBlacklisted (networkId, account) {
+export function throwIfAccountIsBlacklisted(networkId, account) {
   const mainnetId = 1
   if (networkId !== mainnetId) {
     return

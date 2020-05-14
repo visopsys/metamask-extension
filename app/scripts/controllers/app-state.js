@@ -6,7 +6,7 @@ export default class AppStateController extends EventEmitter {
    * @constructor
    * @param opts
    */
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     const {
       addUnlockListener,
       isUnlocked,
@@ -20,10 +20,15 @@ export default class AppStateController extends EventEmitter {
     super()
 
     this.onInactiveTimeout = onInactiveTimeout || (() => {})
-    this.store = new ObservableStore(Object.assign({
-      timeoutMinutes: 0,
-      connectedStatusPopoverHasBeenShown: true,
-    }, initState))
+    this.store = new ObservableStore(
+      Object.assign(
+        {
+          timeoutMinutes: 0,
+          connectedStatusPopoverHasBeenShown: true,
+        },
+        initState
+      )
+    )
     this.timer = null
 
     this.isUnlocked = isUnlocked
@@ -51,7 +56,7 @@ export default class AppStateController extends EventEmitter {
    * @returns {Promise<void>} A promise that resolves when the extension is
    * unlocked, or immediately if the extension is already unlocked.
    */
-  getUnlockPromise (shouldShowUnlockRequest) {
+  getUnlockPromise(shouldShowUnlockRequest) {
     return new Promise((resolve) => {
       if (this.isUnlocked()) {
         resolve()
@@ -70,7 +75,7 @@ export default class AppStateController extends EventEmitter {
    * @param {boolean} shouldShowUnlockRequest - Whether the extension notification
    * popup should be opened.
    */
-  waitForUnlock (resolve, shouldShowUnlockRequest) {
+  waitForUnlock(resolve, shouldShowUnlockRequest) {
     this.waitingForUnlock.push({ resolve })
     this.emit('updateBadge')
     if (shouldShowUnlockRequest) {
@@ -81,7 +86,7 @@ export default class AppStateController extends EventEmitter {
   /**
    * Drains the waitingForUnlock queue, resolving all the related Promises.
    */
-  handleUnlock () {
+  handleUnlock() {
     if (this.waitingForUnlock.length > 0) {
       while (this.waitingForUnlock.length > 0) {
         this.waitingForUnlock.shift().resolve()
@@ -93,7 +98,7 @@ export default class AppStateController extends EventEmitter {
   /**
    * Record that the user has seen the connected status info popover
    */
-  setConnectedStatusPopoverHasBeenShown () {
+  setConnectedStatusPopoverHasBeenShown() {
     this.store.updateState({
       connectedStatusPopoverHasBeenShown: true,
     })
@@ -103,7 +108,7 @@ export default class AppStateController extends EventEmitter {
    * Sets the last active time to the current time
    * @returns {void}
    */
-  setLastActiveTime () {
+  setLastActiveTime() {
     this._resetTimer()
   }
 
@@ -113,7 +118,7 @@ export default class AppStateController extends EventEmitter {
    * @returns {void}
    * @private
    */
-  _setInactiveTimeout (timeoutMinutes) {
+  _setInactiveTimeout(timeoutMinutes) {
     this.store.updateState({
       timeoutMinutes,
     })
@@ -130,7 +135,7 @@ export default class AppStateController extends EventEmitter {
    * @returns {void}
    * @private
    */
-  _resetTimer () {
+  _resetTimer() {
     const { timeoutMinutes } = this.store.getState()
 
     if (this.timer) {
@@ -141,6 +146,9 @@ export default class AppStateController extends EventEmitter {
       return
     }
 
-    this.timer = setTimeout(() => this.onInactiveTimeout(), timeoutMinutes * 60 * 1000)
+    this.timer = setTimeout(
+      () => this.onInactiveTimeout(),
+      timeoutMinutes * 60 * 1000
+    )
   }
 }

@@ -4,7 +4,7 @@ import { ethErrors } from 'eth-json-rpc-errors'
 /**
  * Create middleware for handling certain methods and preprocessing permissions requests.
  */
-export default function createMethodMiddleware ({
+export default function createMethodMiddleware({
   getAccounts,
   getUnlockPromise,
   hasPermission,
@@ -12,23 +12,18 @@ export default function createMethodMiddleware ({
   store,
   storeKey,
 }) {
-
   let isProcessingRequestAccounts = false
 
   return createAsyncMiddleware(async (req, res, next) => {
-
     switch (req.method) {
-
       // Intercepting eth_accounts requests for backwards compatibility:
       // The getAccounts call below wraps the rpc-cap middleware, and returns
       // an empty array in case of errors (such as 4100:unauthorized)
       case 'eth_accounts':
-
         res.result = await getAccounts()
         return
 
       case 'eth_requestAccounts':
-
         if (isProcessingRequestAccounts) {
           res.error = ethErrors.rpc.resourceUnavailable(
             'Already processing eth_requestAccounts. Please wait.'
@@ -75,17 +70,12 @@ export default function createMethodMiddleware ({
       // custom method for getting metadata from the requesting domain,
       // sent automatically by the inpage provider
       case 'wallet_sendDomainMetadata':
-
         const storeState = store.getState()[storeKey]
         const extensionId = storeState[req.origin]
           ? storeState[req.origin].extensionId
           : undefined
 
-        if (
-          req.domainMetadata &&
-          typeof req.domainMetadata.name === 'string'
-        ) {
-
+        if (req.domainMetadata && typeof req.domainMetadata.name === 'string') {
           store.updateState({
             [storeKey]: {
               ...storeState,

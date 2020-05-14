@@ -23,26 +23,28 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = state
 
   if (newState.TransactionController) {
     if (newState.TransactionController.transactions) {
       const transactions = newState.TransactionController.transactions
-      newState.TransactionController.transactions = transactions.map((txMeta) => {
-        if (txMeta.status !== 'unapproved') {
+      newState.TransactionController.transactions = transactions.map(
+        (txMeta) => {
+          if (txMeta.status !== 'unapproved') {
+            return txMeta
+          }
+          txMeta.txParams = normalizeTxParams(txMeta.txParams)
           return txMeta
         }
-        txMeta.txParams = normalizeTxParams(txMeta.txParams)
-        return txMeta
-      })
+      )
     }
   }
 
   return newState
 }
 
-function normalizeTxParams (txParams) {
+function normalizeTxParams(txParams) {
   // functions that handle normalizing of that key in txParams
   const whiteList = {
     from: (from) => ethUtil.addHexPrefix(from).toLowerCase(),

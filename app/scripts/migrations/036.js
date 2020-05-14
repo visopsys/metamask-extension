@@ -15,7 +15,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const { PreferencesController } = state
 
   if (PreferencesController) {

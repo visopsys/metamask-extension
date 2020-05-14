@@ -22,7 +22,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = state
   // transform state here
   if (state.NoticeController) {

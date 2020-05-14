@@ -8,7 +8,6 @@ This migration moves state from the flat state trie into KeyringController subst
 
 import { cloneDeep } from 'lodash'
 
-
 export default {
   version,
 
@@ -26,7 +25,7 @@ export default {
   },
 }
 
-function selectSubstateForKeyringController (state) {
+function selectSubstateForKeyringController(state) {
   const config = state.config
   const newState = {
     ...state,

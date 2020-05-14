@@ -25,7 +25,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = state
   const { config } = newState
   if (config && config.provider) {

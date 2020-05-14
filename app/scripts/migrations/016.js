@@ -26,7 +26,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = state
   const { TransactionController } = newState
   if (TransactionController && TransactionController.transactions) {
@@ -36,7 +36,9 @@ function transformState (state) {
       if (!txMeta.err) {
         return txMeta
       }
-      if (txMeta.err === 'transaction with the same hash was already imported.') {
+      if (
+        txMeta.err === 'transaction with the same hash was already imported.'
+      ) {
         txMeta.status = 'submitted'
         delete txMeta.err
       }

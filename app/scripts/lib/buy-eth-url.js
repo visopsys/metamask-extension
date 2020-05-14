@@ -8,7 +8,7 @@
  * network does not match any of the specified cases, or if no network is given, returns undefined.
  *
  */
-export default function getBuyEthUrl ({ network, address, service }) {
+export default function getBuyEthUrl({ network, address, service }) {
   // default service by network if not specified
   if (!service) {
     service = getDefaultServiceForNetwork(network)
@@ -32,7 +32,7 @@ export default function getBuyEthUrl ({ network, address, service }) {
   }
 }
 
-function getDefaultServiceForNetwork (network) {
+function getDefaultServiceForNetwork(network) {
   switch (network) {
     case '1':
       return 'wyre'
@@ -45,6 +45,8 @@ function getDefaultServiceForNetwork (network) {
     case '5':
       return 'goerli-faucet'
     default:
-      throw new Error(`No default cryptocurrency exchange or faucet for networkId: "${network}"`)
+      throw new Error(
+        `No default cryptocurrency exchange or faucet for networkId: "${network}"`
+      )
   }
 }

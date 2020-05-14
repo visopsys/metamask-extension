@@ -1,4 +1,3 @@
-
 const version = 22
 
 /*
@@ -26,7 +25,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   const newState = state
   const { TransactionController } = newState
   if (TransactionController && TransactionController.transactions) {
@@ -36,7 +35,7 @@ function transformState (state) {
       if (txMeta.status !== 'submitted' || txMeta.submittedTime) {
         return txMeta
       }
-      txMeta.submittedTime = (new Date()).getTime()
+      txMeta.submittedTime = new Date().getTime()
       return txMeta
     })
   }

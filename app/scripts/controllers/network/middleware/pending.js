@@ -1,7 +1,7 @@
 import { formatTxMetaForRpcResult } from '../util'
 import createAsyncMiddleware from 'json-rpc-engine/src/createAsyncMiddleware'
 
-export function createPendingNonceMiddleware ({ getPendingNonce }) {
+export function createPendingNonceMiddleware({ getPendingNonce }) {
   return createAsyncMiddleware(async (req, res, next) => {
     const { method, params } = req
     if (method !== 'eth_getTransactionCount') {
@@ -15,7 +15,7 @@ export function createPendingNonceMiddleware ({ getPendingNonce }) {
   })
 }
 
-export function createPendingTxMiddleware ({ getPendingTransactionByHash }) {
+export function createPendingTxMiddleware({ getPendingTransactionByHash }) {
   return createAsyncMiddleware(async (req, res, next) => {
     const { method, params } = req
     if (method !== 'eth_getTransactionByHash') {

@@ -15,7 +15,7 @@ export default {
   },
 }
 
-function transformState (state) {
+function transformState(state) {
   if (state?.PreferencesController?.currentAccountTab) {
     delete state.PreferencesController.currentAccountTab
   }

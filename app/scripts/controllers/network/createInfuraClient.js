@@ -9,8 +9,12 @@ import providerFromMiddleware from 'eth-json-rpc-middleware/providerFromMiddlewa
 import createInfuraMiddleware from 'eth-json-rpc-infura'
 import BlockTracker from 'eth-block-tracker'
 
-export default function createInfuraClient ({ network }) {
-  const infuraMiddleware = createInfuraMiddleware({ network, maxAttempts: 5, source: 'metamask' })
+export default function createInfuraClient({ network }) {
+  const infuraMiddleware = createInfuraMiddleware({
+    network,
+    maxAttempts: 5,
+    source: 'metamask',
+  })
   const infuraProvider = providerFromMiddleware(infuraMiddleware)
   const blockTracker = new BlockTracker({ provider: infuraProvider })
 
@@ -26,7 +30,7 @@ export default function createInfuraClient ({ network }) {
   return { networkMiddleware, blockTracker }
 }
 
-function createNetworkAndChainIdMiddleware ({ network }) {
+function createNetworkAndChainIdMiddleware({ network }) {
   let chainId
   let netId
 

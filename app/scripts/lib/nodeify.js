@@ -14,7 +14,7 @@ const callbackNoop = function (err) {
  * @param {Object} context - The context in which the fn is to be called, most often a this reference
  *
  */
-export default function nodeify (fn, context) {
+export default function nodeify(fn, context) {
   return function () {
     // parse arguments
     const args = [].slice.call(arguments)
