@@ -10,7 +10,7 @@ export default class Balance extends PureComponent {
     showFiat: PropTypes.bool,
   }
 
-  renderBalance () {
+  renderBalance() {
     const { account, showFiat } = this.props
     const balanceValue = account && account.balance
 
@@ -22,26 +22,22 @@ export default class Balance extends PureComponent {
           type={PRIMARY}
           ethNumberOfDecimals={4}
         />
-        {
-          showFiat && (
-            <UserPreferencedCurrencyDisplay
-              value={balanceValue}
-              type={SECONDARY}
-              ethNumberOfDecimals={4}
-            />
-          )
-        }
+        {showFiat && (
+          <UserPreferencedCurrencyDisplay
+            value={balanceValue}
+            type={SECONDARY}
+            ethNumberOfDecimals={4}
+          />
+        )}
       </div>
     )
   }
 
-  render () {
+  render() {
     return (
       <div className="balance-container">
-        <Identicon
-          diameter={50}
-        />
-        { this.renderBalance() }
+        <Identicon diameter={50} />
+        {this.renderBalance()}
       </div>
     )
   }

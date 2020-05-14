@@ -1,6 +1,10 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
-import CheckBox, { CHECKED, INDETERMINATE, UNCHECKED } from './check-box.component'
+import CheckBox, {
+  CHECKED,
+  INDETERMINATE,
+  UNCHECKED,
+} from './check-box.component'
 import { boolean, select, text } from '@storybook/addon-knobs/react'
 
 export default {

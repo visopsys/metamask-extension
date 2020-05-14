@@ -8,7 +8,9 @@ import {
 } from '../../../selectors'
 
 const mapStateToProps = (state) => {
-  const { metamask: { nativeCurrency, currentCurrency, conversionRate } } = state
+  const {
+    metamask: { nativeCurrency, currentCurrency, conversionRate },
+  } = state
   const { showFiatInTestnets } = preferencesSelector(state)
   const isMainnet = getIsMainnet(state)
   const maxModeOn = getSendMaxModeState(state)
@@ -17,7 +19,7 @@ const mapStateToProps = (state) => {
     nativeCurrency,
     currentCurrency,
     conversionRate,
-    hideFiat: (!isMainnet && !showFiatInTestnets),
+    hideFiat: !isMainnet && !showFiatInTestnets,
     maxModeOn,
   }
 }

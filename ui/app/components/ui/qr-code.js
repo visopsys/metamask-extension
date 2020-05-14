@@ -8,7 +8,7 @@ import { checksumAddress } from '../../helpers/utils/util'
 
 export default connect(mapStateToProps)(QrCodeView)
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // Qr code is not fetched from state. 'message' and 'data' props are passed instead.
     buyView: state.appState.buyView,
@@ -16,41 +16,33 @@ function mapStateToProps (state) {
   }
 }
 
-function QrCodeView (props) {
+function QrCodeView(props) {
   const { message, data } = props.Qr
-  const address = `${isHexPrefixed(data) ? 'ethereum:' : ''}${checksumAddress(data)}`
+  const address = `${isHexPrefixed(data) ? 'ethereum:' : ''}${checksumAddress(
+    data
+  )}`
   const qrImage = qrCode(4, 'M')
   qrImage.addData(address)
   qrImage.make()
 
   return (
     <div className="div flex-column flex-center">
-      {
-        Array.isArray(message)
-          ? (
-            <div className="message-container">
-              {props.Qr.message.map((message, index) => (
-                <div className="qr-message" key={index}>
-                  {message}
-                </div>
-              ))}
-            </div>
-          )
-          : message && (
-            <div className="qr-header">
+      {Array.isArray(message) ? (
+        <div className="message-container">
+          {props.Qr.message.map((message, index) => (
+            <div className="qr-message" key={index}>
               {message}
             </div>
+          ))}
+        </div>
+      ) : (
+        message && <div className="qr-header">{message}</div>
+      )}
+      {props.warning
+        ? props.warning && (
+            <span className="error flex-center">{props.warning}</span>
           )
-      }
-      {
-        props.warning
-          ? (props.warning && (
-            <span className="error flex-center">
-              {props.warning}
-            </span>
-          ))
-          : null
-      }
+        : null}
       <div
         className="div qr-wrapper"
         dangerouslySetInnerHTML={{

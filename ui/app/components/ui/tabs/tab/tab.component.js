@@ -14,18 +14,14 @@ const Tab = (props) => {
 
   return (
     <li
-      className={classnames(
-        'tab',
-        className,
-        { 'tab--active': isActive },
-      )}
+      className={classnames('tab', className, { 'tab--active': isActive })}
       data-testid={dataTestId}
       onClick={(event) => {
         event.preventDefault()
         onClick(tabIndex)
       }}
     >
-      { name }
+      {name}
     </li>
   )
 }

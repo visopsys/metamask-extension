@@ -7,35 +7,19 @@ import Send from '../icon/send-icon.component'
 import classnames from 'classnames'
 
 const SendIcon = () => (
-  <Send
-    className="list-item__icon"
-    size={28}
-    color="#2F80ED"
-  />
+  <Send className="list-item__icon" size={28} color="#2F80ED" />
 )
 
 const InteractionIcon = () => (
-  <Interaction
-    className="list-item__icon"
-    size={28}
-    color="#2F80ED"
-  />
+  <Interaction className="list-item__icon" size={28} color="#2F80ED" />
 )
 
 const ApproveIcon = () => (
-  <Approve
-    className="list-item__icon"
-    size={28}
-    color="#2F80ED"
-  />
+  <Approve className="list-item__icon" size={28} color="#2F80ED" />
 )
 
 const FailIcon = () => (
-  <Interaction
-    className="list-item__icon"
-    size={28}
-    color="#D73A49"
-  />
+  <Interaction className="list-item__icon" size={28} color="#D73A49" />
 )
 
 export default class ListItem extends Component {
@@ -57,7 +41,7 @@ export default class ListItem extends Component {
     status: 'pending',
   }
 
-  render () {
+  render() {
     const {
       className,
       status,
@@ -86,31 +70,34 @@ export default class ListItem extends Component {
     let subtitleStatus = null
     if (isUnapproved) {
       subtitleStatus = (
-        <span><span className="list-item__status--unapproved">{t('unapproved')}</span> · </span>
+        <span>
+          <span className="list-item__status--unapproved">
+            {t('unapproved')}
+          </span>{' '}
+          ·{' '}
+        </span>
       )
     } else if (isFailed) {
       subtitleStatus = (
-        <span><span className="list-item__status--failed">{t('failed')}</span> · </span>
+        <span>
+          <span className="list-item__status--failed">{t('failed')}</span> ·{' '}
+        </span>
       )
     }
 
     return (
       <div className={className}>
-        <div className="list-item__col">
-          { icon }
-        </div>
+        <div className="list-item__col">{icon}</div>
         <div
           className={classnames('list-item__col', {
             'list-item__approved': isApproved,
           })}
         >
           <h2 className="list-item__heading">
-            { title } {isPending && (
+            {title}{' '}
+            {isPending && (
               <span className="list-item__heading-wrap">
-                <Preloader
-                  size={16}
-                  color="#D73A49"
-                />
+                <Preloader size={16} color="#D73A49" />
               </span>
             )}
           </h2>
@@ -118,11 +105,7 @@ export default class ListItem extends Component {
             {subtitleStatus}
             {subtitle}
           </h3>
-          {children && (
-            <div className="list-item__more">
-              { children }
-            </div>
-          )}
+          {children && <div className="list-item__more">{children}</div>}
         </div>
         <div
           className={classnames('list-item__col list-item__amount', {

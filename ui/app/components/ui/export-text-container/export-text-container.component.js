@@ -4,16 +4,14 @@ import copyToClipboard from 'copy-to-clipboard'
 import { exportAsFile } from '../../../helpers/utils/util'
 
 class ExportTextContainer extends Component {
-  render () {
+  render() {
     const { text = '' } = this.props
     const { t } = this.context
 
     return (
       <div className="export-text-container">
         <div className="export-text-container__text-container">
-          <div className="export-text-container__text notranslate">
-            {text}
-          </div>
+          <div className="export-text-container__text notranslate">{text}</div>
         </div>
         <div className="export-text-container__buttons-container">
           <div

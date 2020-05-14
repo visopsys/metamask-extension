@@ -12,9 +12,7 @@ export const { CHECKED, INDETERMINATE, UNCHECKED } = CHECKBOX_STATE
 
 const CheckBox = ({ className, disabled, id, onClick, checked }) => {
   if (typeof checked === 'boolean') {
-    checked = checked
-      ? CHECKBOX_STATE.CHECKED
-      : CHECKBOX_STATE.UNCHECKED
+    checked = checked ? CHECKBOX_STATE.CHECKED : CHECKBOX_STATE.UNCHECKED
   }
   const ref = useRef(null)
   useLayoutEffect(() => {
@@ -26,17 +24,19 @@ const CheckBox = ({ className, disabled, id, onClick, checked }) => {
       checked={checked === CHECKBOX_STATE.CHECKED}
       className={classnames('check-box', className, {
         'far fa-square': checked === CHECKBOX_STATE.UNCHECKED,
-        'fa fa-check-square check-box__checked': checked === CHECKBOX_STATE.CHECKED,
-        'fa fa-minus-square check-box__indeterminate': checked === CHECKBOX_STATE.INDETERMINATE,
+        'fa fa-check-square check-box__checked':
+          checked === CHECKBOX_STATE.CHECKED,
+        'fa fa-minus-square check-box__indeterminate':
+          checked === CHECKBOX_STATE.INDETERMINATE,
       })}
       disabled={disabled}
       id={id}
       onClick={
         onClick
           ? (event) => {
-            event.preventDefault()
-            onClick()
-          }
+              event.preventDefault()
+              onClick()
+            }
           : null
       }
       readOnly
@@ -51,7 +51,8 @@ CheckBox.propTypes = {
   disabled: PropTypes.bool,
   id: PropTypes.string,
   onClick: PropTypes.func,
-  checked: PropTypes.oneOf([...Object.keys(CHECKBOX_STATE), true, false]).isRequired,
+  checked: PropTypes.oneOf([...Object.keys(CHECKBOX_STATE), true, false])
+    .isRequired,
 }
 
 CheckBox.defaultProps = {

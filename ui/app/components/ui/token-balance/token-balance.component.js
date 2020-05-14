@@ -9,7 +9,7 @@ export default class TokenBalance extends PureComponent {
     className: PropTypes.string,
   }
 
-  render () {
+  render() {
     const { className, string, symbol } = this.props
 
     return (

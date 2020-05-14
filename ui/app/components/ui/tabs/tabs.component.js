@@ -15,7 +15,7 @@ export default class Tabs extends Component {
     activeTabIndex: this.props.defaultActiveTabIndex,
   }
 
-  handleTabClick (tabIndex) {
+  handleTabClick(tabIndex) {
     const { activeTabIndex } = this.state
 
     if (tabIndex !== activeTabIndex) {
@@ -25,20 +25,23 @@ export default class Tabs extends Component {
     }
   }
 
-  renderTabs () {
+  renderTabs() {
     const numberOfTabs = React.Children.count(this.props.children)
 
     return React.Children.map(this.props.children, (child, index) => {
-      return child && React.cloneElement(child, {
-        onClick: (index) => this.handleTabClick(index),
-        tabIndex: index,
-        isActive: numberOfTabs > 1 && index === this.state.activeTabIndex,
-        key: index,
-      })
+      return (
+        child &&
+        React.cloneElement(child, {
+          onClick: (index) => this.handleTabClick(index),
+          tabIndex: index,
+          isActive: numberOfTabs > 1 && index === this.state.activeTabIndex,
+          key: index,
+        })
+      )
     })
   }
 
-  renderActiveTabContent () {
+  renderActiveTabContent() {
     const { children } = this.props
     const { activeTabIndex } = this.state
 
@@ -54,15 +57,11 @@ export default class Tabs extends Component {
       : children.props.children
   }
 
-  render () {
+  render() {
     return (
       <div className="tabs">
-        <ul className="tabs__list">
-          { this.renderTabs() }
-        </ul>
-        <div className="tabs__content">
-          { this.renderActiveTabContent() }
-        </div>
+        <ul className="tabs__list">{this.renderTabs()}</ul>
+        <div className="tabs__content">{this.renderActiveTabContent()}</div>
       </div>
     )
   }

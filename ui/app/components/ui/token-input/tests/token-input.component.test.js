@@ -14,10 +14,7 @@ describe('TokenInput Component', function () {
 
   describe('rendering', function () {
     it('should render properly without a token', function () {
-      const wrapper = shallow(
-        <TokenInput />,
-        { context: { t } }
-      )
+      const wrapper = shallow(<TokenInput />, { context: { t } })
 
       assert.ok(wrapper)
       assert.equal(wrapper.find(UnitInput).length, 1)
@@ -43,18 +40,25 @@ describe('TokenInput Component', function () {
             suffix="ABC"
           />
         </Provider>,
-        { context: { t },
+        {
+          context: { t },
           childContextTypes: {
             t: PropTypes.func,
           },
-        },
+        }
       )
 
       assert.ok(wrapper)
       assert.equal(wrapper.find('.unit-input__suffix').length, 1)
       assert.equal(wrapper.find('.unit-input__suffix').text(), 'ABC')
-      assert.equal(wrapper.find('.currency-input__conversion-component').length, 1)
-      assert.equal(wrapper.find('.currency-input__conversion-component').text(), 'translate noConversionRateAvailable')
+      assert.equal(
+        wrapper.find('.currency-input__conversion-component').length,
+        1
+      )
+      assert.equal(
+        wrapper.find('.currency-input__conversion-component').text(),
+        'translate noConversionRateAvailable'
+      )
     })
 
     it('should render properly with a token and selectedTokenExchangeRate', function () {
@@ -78,11 +82,12 @@ describe('TokenInput Component', function () {
             selectedTokenExchangeRate={2}
           />
         </Provider>,
-        { context: { t },
+        {
+          context: { t },
           childContextTypes: {
             t: PropTypes.func,
           },
-        },
+        }
       )
 
       assert.ok(wrapper)
@@ -157,7 +162,10 @@ describe('TokenInput Component', function () {
       assert.equal(wrapper.find('.unit-input__suffix').length, 1)
       assert.equal(wrapper.find('.unit-input__suffix').text(), 'ABC')
       assert.equal(wrapper.find('.unit-input__input').props().value, '1')
-      assert.equal(wrapper.find('.currency-display-component').text(), '$462.12USD')
+      assert.equal(
+        wrapper.find('.currency-display-component').text(),
+        '$462.12USD'
+      )
     })
 
     it('should render properly with a token value for fiat, but hideConversion is true', function () {
@@ -189,7 +197,7 @@ describe('TokenInput Component', function () {
           childContextTypes: {
             t: PropTypes.func,
           },
-        },
+        }
       )
 
       assert.ok(wrapper)
@@ -199,7 +207,10 @@ describe('TokenInput Component', function () {
       assert.equal(wrapper.find('.unit-input__suffix').length, 1)
       assert.equal(wrapper.find('.unit-input__suffix').text(), 'ABC')
       assert.equal(wrapper.find('.unit-input__input').props().value, '1')
-      assert.equal(wrapper.find('.currency-input__conversion-component').text(), 'translate noConversionRateAvailable')
+      assert.equal(
+        wrapper.find('.currency-input__conversion-component').text(),
+        'translate noConversionRateAvailable'
+      )
     })
   })
 
@@ -285,14 +296,20 @@ describe('TokenInput Component', function () {
       const tokenInputInstance = wrapper.find(TokenInput).at(0).instance()
       assert.equal(tokenInputInstance.state.decimalValue, 0)
       assert.equal(tokenInputInstance.state.hexValue, undefined)
-      assert.equal(wrapper.find('.currency-display-component').text(), '$0.00USD')
+      assert.equal(
+        wrapper.find('.currency-display-component').text(),
+        '$0.00USD'
+      )
       const input = wrapper.find('input')
       assert.equal(input.props().value, 0)
 
       input.simulate('change', { target: { value: 1 } })
       assert.equal(handleChangeSpy.callCount, 1)
       assert.ok(handleChangeSpy.calledWith('2710'))
-      assert.equal(wrapper.find('.currency-display-component').text(), '$462.12USD')
+      assert.equal(
+        wrapper.find('.currency-display-component').text(),
+        '$462.12USD'
+      )
       assert.equal(tokenInputInstance.state.decimalValue, 1)
       assert.equal(tokenInputInstance.state.hexValue, '2710')
     })

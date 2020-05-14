@@ -7,12 +7,9 @@ export default {
   title: 'Tabs',
 }
 
-function renderTab (id) {
+function renderTab(id) {
   return (
-    <Tab
-      name={text(`Tab ${id} Name`, `Tab ${id}`)}
-      key={id}
-    >
+    <Tab name={text(`Tab ${id} Name`, `Tab ${id}`)} key={id}>
       {text(`Tab ${id} Contents`, `Contents of Tab ${id}`)}
     </Tab>
   )
@@ -23,10 +20,7 @@ export const twoTabs = () => {
     <Tabs
       defaultActiveTabIndex={number('Default Active Tab Index', 0, { min: 0 })}
     >
-      {
-        ['A', 'B']
-          .map(renderTab)
-      }
+      {['A', 'B'].map(renderTab)}
     </Tabs>
   )
 }
@@ -36,10 +30,7 @@ export const manyTabs = () => {
     <Tabs
       defaultActiveTabIndex={number('Default Active Tab Index', 0, { min: 0 })}
     >
-      {
-        ['A', 'B', 'C', 'D', 'E']
-          .map(renderTab)
-      }
+      {['A', 'B', 'C', 'D', 'E'].map(renderTab)}
     </Tabs>
   )
 }
@@ -47,9 +38,7 @@ export const manyTabs = () => {
 export const singleTab = () => {
   return (
     <Tabs>
-      <Tab
-        name={text('Name', 'Single A')}
-      >
+      <Tab name={text('Name', 'Single A')}>
         {text('Contents', 'Contents of tab')}
       </Tab>
     </Tabs>

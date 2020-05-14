@@ -16,9 +16,10 @@ const namedOptions = unnamedOptions.map((option, index) => {
 })
 
 const namedOptionsWithVeryLongNames = unnamedOptions.map((option, index) => {
-  return Object.assign({}, option, { name: `Option ${index} with a very${', very'.repeat(index)} long name` })
+  return Object.assign({}, option, {
+    name: `Option ${index} with a very${', very'.repeat(index)} long name`,
+  })
 })
-
 
 export const simple = () => (
   <Dropdown
@@ -27,13 +28,11 @@ export const simple = () => (
     onChange={action('Selection changed')}
     options={namedOptions}
     required={boolean('Required', false)}
-    selectedOption={
-      select(
-        'Selected Option',
-        namedOptions.map((option) => option.value),
-        namedOptions[0].value
-      )
-    }
+    selectedOption={select(
+      'Selected Option',
+      namedOptions.map((option) => option.value),
+      namedOptions[0].value
+    )}
   />
 )
 
@@ -44,13 +43,11 @@ export const optionsWithoutNames = () => (
     onChange={action('Selection changed')}
     options={unnamedOptions}
     required={boolean('Required', false)}
-    selectedOption={
-      select(
-        'Selected Option',
-        unnamedOptions.map((option) => option.value),
-        unnamedOptions[0].value
-      )
-    }
+    selectedOption={select(
+      'Selected Option',
+      unnamedOptions.map((option) => option.value),
+      unnamedOptions[0].value
+    )}
   />
 )
 
@@ -61,13 +58,11 @@ export const optionsWithLongNames = () => (
     onChange={action('Selection changed')}
     options={namedOptionsWithVeryLongNames}
     required={boolean('Required', false)}
-    selectedOption={
-      select(
-        'Selected Option',
-        namedOptionsWithVeryLongNames.map((option) => option.value),
-        namedOptionsWithVeryLongNames[0].value
-      )
-    }
+    selectedOption={select(
+      'Selected Option',
+      namedOptionsWithVeryLongNames.map((option) => option.value),
+      namedOptionsWithVeryLongNames[0].value
+    )}
   />
 )
 
@@ -78,13 +73,11 @@ export const optionsWithLongNamesAndShortWidth = () => (
     onChange={action('Selection changed')}
     options={namedOptionsWithVeryLongNames}
     required={boolean('Required', false)}
-    selectedOption={
-      select(
-        'Selected Option',
-        namedOptionsWithVeryLongNames.map((option) => option.value),
-        namedOptionsWithVeryLongNames[0].value
-      )
-    }
+    selectedOption={select(
+      'Selected Option',
+      namedOptionsWithVeryLongNames.map((option) => option.value),
+      namedOptionsWithVeryLongNames[0].value
+    )}
     style={{ width: '200px' }}
   />
 )

@@ -11,14 +11,12 @@ class LoadingScreen extends Component {
     loadingMessage: PropTypes.string,
   }
 
-  renderMessage () {
+  renderMessage() {
     const { loadingMessage } = this.props
-    return loadingMessage
-      ? <span>{loadingMessage}</span>
-      : null
+    return loadingMessage ? <span>{loadingMessage}</span> : null
   }
 
-  render () {
+  render() {
     return (
       <div className="loading-overlay">
         <div className="loading-overlay__container">

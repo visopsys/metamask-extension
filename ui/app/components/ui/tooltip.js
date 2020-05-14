@@ -38,7 +38,10 @@ class ReactTooltip extends Component {
     this.container.appendChild(this.tooltipEl)
     this.resetTooltip()
 
-    this.componentEl.addEventListener(this.props.fixed ? 'mouseenter' : 'mousemove', this.handleMouseMove)
+    this.componentEl.addEventListener(
+      this.props.fixed ? 'mouseenter' : 'mousemove',
+      this.handleMouseMove
+    )
     this.componentEl.addEventListener('mouseleave', this.handleMouseOut)
   }
 
@@ -47,9 +50,11 @@ class ReactTooltip extends Component {
     this.tooltipEl.childNodes[1].textContent = this.props.title
   }
 
-
   componentWillUnmount = () => {
-    this.componentEl.removeEventListener(this.props.fixed ? 'mouseenter' : 'mousemove', this.handleMouseMove)
+    this.componentEl.removeEventListener(
+      this.props.fixed ? 'mouseenter' : 'mousemove',
+      this.handleMouseMove
+    )
     this.componentEl.removeEventListener('mouseleave', this.handleMouseOut)
     this.container.removeChild(this.tooltipEl)
   }
@@ -115,13 +120,17 @@ class ReactTooltip extends Component {
           cOffsetY = 0
           break
       }
-      pointX = componentOffsetX + cOffsetX + (window.scrollX || window.pageXOffset)
-      pointY = componentOffsetY + cOffsetY + (window.scrollY || window.pageYOffset)
+      pointX =
+        componentOffsetX + cOffsetX + (window.scrollX || window.pageXOffset)
+      pointY =
+        componentOffsetY + cOffsetY + (window.scrollY || window.pageYOffset)
     } else {
       const clientX = e.clientX
       const clientY = e.clientY
-      pointX = clientX - containerOffsetX + (window.scrollX || window.pageXOffset)
-      pointY = clientY - containerOffsetY + (window.scrollY || window.pageYOffset)
+      pointX =
+        clientX - containerOffsetX + (window.scrollX || window.pageXOffset)
+      pointY =
+        clientY - containerOffsetY + (window.scrollY || window.pageYOffset)
     }
     return {
       x: pointX,
@@ -162,12 +171,12 @@ class ReactTooltip extends Component {
     }
   }
 
-  render () {
+  render() {
     return this.props.children
   }
 }
 
-function Tooltip ({ position, title, children }) {
+function Tooltip({ position, title, children }) {
   return (
     <ReactTooltip position={position} title={title} fixed>
       {children}
