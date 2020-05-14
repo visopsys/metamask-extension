@@ -9,7 +9,9 @@ import {
 } from '../../../send.constants'
 
 const stubs = {
-  isValidAddress: sinon.stub().callsFake((to) => Boolean(to.match(/^[0xabcdef123456798]+$/))),
+  isValidAddress: sinon
+    .stub()
+    .callsFake((to) => Boolean(to.match(/^[0xabcdef123456798]+$/))),
 }
 
 const toRowUtils = proxyquire('../add-recipient.js', {
@@ -17,13 +19,9 @@ const toRowUtils = proxyquire('../add-recipient.js', {
     isValidAddress: stubs.isValidAddress,
   },
 })
-const {
-  getToErrorObject,
-  getToWarningObject,
-} = toRowUtils
+const { getToErrorObject, getToWarningObject } = toRowUtils
 
 describe('add-recipient utils', function () {
-
   describe('getToErrorObject()', function () {
     it('should return a required error if to is falsy', function () {
       assert.deepEqual(getToErrorObject(null), {
@@ -50,52 +48,97 @@ describe('add-recipient utils', function () {
     })
 
     it('should return null if to is truthy but part of state tokens', function () {
-      assert.deepEqual(getToErrorObject('0xabc123', false, [{ 'address': '0xabc123' }], { 'address': '0xabc123' }), {
-        to: null,
-      })
+      assert.deepEqual(
+        getToErrorObject('0xabc123', false, [{ address: '0xabc123' }], {
+          address: '0xabc123',
+        }),
+        {
+          to: null,
+        }
+      )
     })
 
     it('should null if to is truthy part of tokens but selectedToken falsy', function () {
-      assert.deepEqual(getToErrorObject('0xabc123', false, [{ 'address': '0xabc123' }]), {
-        to: null,
-      })
+      assert.deepEqual(
+        getToErrorObject('0xabc123', false, [{ address: '0xabc123' }]),
+        {
+          to: null,
+        }
+      )
     })
 
     it('should return null if to is truthy but part of contract metadata', function () {
-      assert.deepEqual(getToErrorObject('0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', false, [{ 'address': '0xabc123' }], { 'address': '0xabc123' }), {
-        to: null,
-      })
+      assert.deepEqual(
+        getToErrorObject(
+          '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
+          false,
+          [{ address: '0xabc123' }],
+          { address: '0xabc123' }
+        ),
+        {
+          to: null,
+        }
+      )
     })
     it('should null if to is truthy part of contract metadata but selectedToken falsy', function () {
-      assert.deepEqual(getToErrorObject('0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', false, [{ 'address': '0xabc123' }], { 'address': '0xabc123' }), {
-        to: null,
-      })
+      assert.deepEqual(
+        getToErrorObject(
+          '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
+          false,
+          [{ address: '0xabc123' }],
+          { address: '0xabc123' }
+        ),
+        {
+          to: null,
+        }
+      )
     })
   })
 
   describe('getToWarningObject()', function () {
     it('should return a known address recipient if to is truthy but part of state tokens', function () {
-      assert.deepEqual(getToWarningObject('0xabc123', [{ 'address': '0xabc123' }], { 'address': '0xabc123' }), {
-        to: KNOWN_RECIPIENT_ADDRESS_ERROR,
-      })
+      assert.deepEqual(
+        getToWarningObject('0xabc123', [{ address: '0xabc123' }], {
+          address: '0xabc123',
+        }),
+        {
+          to: KNOWN_RECIPIENT_ADDRESS_ERROR,
+        }
+      )
     })
 
     it('should null if to is truthy part of tokens but selectedToken falsy', function () {
-      assert.deepEqual(getToWarningObject('0xabc123', [{ 'address': '0xabc123' }]), {
-        to: null,
-      })
+      assert.deepEqual(
+        getToWarningObject('0xabc123', [{ address: '0xabc123' }]),
+        {
+          to: null,
+        }
+      )
     })
 
     it('should return a known address recipient if to is truthy but part of contract metadata', function () {
-      assert.deepEqual(getToWarningObject('0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', [{ 'address': '0xabc123' }], { 'address': '0xabc123' }), {
-        to: KNOWN_RECIPIENT_ADDRESS_ERROR,
-      })
+      assert.deepEqual(
+        getToWarningObject(
+          '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
+          [{ address: '0xabc123' }],
+          { address: '0xabc123' }
+        ),
+        {
+          to: KNOWN_RECIPIENT_ADDRESS_ERROR,
+        }
+      )
     })
     it('should null if to is truthy part of contract metadata but selectedToken falsy', function () {
-      assert.deepEqual(getToWarningObject('0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', [{ 'address': '0xabc123' }], { 'address': '0xabc123' }), {
-        to: KNOWN_RECIPIENT_ADDRESS_ERROR,
-      })
+      assert.deepEqual(
+        getToWarningObject(
+          '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
+          [{ address: '0xabc123' }],
+          { address: '0xabc123' }
+        ),
+        {
+          to: KNOWN_RECIPIENT_ADDRESS_ERROR,
+        }
+      )
     })
   })
-
 })

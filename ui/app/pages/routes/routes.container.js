@@ -16,7 +16,7 @@ import {
   setMouseUserState,
 } from '../../store/actions'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   const { appState } = state
   const {
     sidebar,
@@ -47,14 +47,18 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     lockMetaMask: () => dispatch(lockMetamask(false)),
     hideSidebar: () => dispatch(hideSidebar()),
     setCurrentCurrencyToUSD: () => dispatch(setCurrentCurrency('usd')),
-    setMouseUserState: (isMouseUser) => dispatch(setMouseUserState(isMouseUser)),
+    setMouseUserState: (isMouseUser) =>
+      dispatch(setMouseUserState(isMouseUser)),
     setLastActiveTime: () => dispatch(setLastActiveTime()),
   }
 }
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(Routes)
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Routes)

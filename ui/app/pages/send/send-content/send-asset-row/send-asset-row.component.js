@@ -35,73 +35,86 @@ export default class SendAssetRow extends Component {
   closeDropdown = () => this.setState({ isShowingDropdown: false })
 
   selectToken = (address) => {
-    this.setState({
-      isShowingDropdown: false,
-    }, () => {
-      this.context.metricsEvent({
-        eventOpts: {
-          category: 'Transactions',
-          action: 'Send Screen',
-          name: 'User clicks "Assets" dropdown',
-        },
-        customVariables: {
-          assetSelected: address ? 'ERC20' : 'ETH',
-        },
-      })
-      this.props.setSelectedToken(address)
-    })
+    this.setState(
+      {
+        isShowingDropdown: false,
+      },
+      () => {
+        this.context.metricsEvent({
+          eventOpts: {
+            category: 'Transactions',
+            action: 'Send Screen',
+            name: 'User clicks "Assets" dropdown',
+          },
+          customVariables: {
+            assetSelected: address ? 'ERC20' : 'ETH',
+          },
+        })
+        this.props.setSelectedToken(address)
+      }
+    )
   }
 
-  render () {
+  render() {
     const { t } = this.context
 
     return (
       <SendRowWrapper label={`${t('asset')}:`}>
         <div className="send-v2__asset-dropdown">
-          { this.renderSelectedToken() }
-          { this.props.tokens.length > 0 ? this.renderAssetDropdown() : null }
+          {this.renderSelectedToken()}
+          {this.props.tokens.length > 0 ? this.renderAssetDropdown() : null}
         </div>
       </SendRowWrapper>
     )
   }
 
-  renderSelectedToken () {
+  renderSelectedToken() {
     const { selectedTokenAddress } = this.props
-    const token = this.props.tokens.find(({ address }) => address === selectedTokenAddress)
+    const token = this.props.tokens.find(
+      ({ address }) => address === selectedTokenAddress
+    )
     return (
       <div
         className="send-v2__asset-dropdown__input-wrapper"
         onClick={this.openDropdown}
       >
-        { token ? this.renderAsset(token) : this.renderEth() }
+        {token ? this.renderAsset(token) : this.renderEth()}
       </div>
     )
   }
 
-  renderAssetDropdown () {
-    return this.state.isShowingDropdown && (
-      <div>
-        <div
-          className="send-v2__asset-dropdown__close-area"
-          onClick={this.closeDropdown}
-        />
-        <div className="send-v2__asset-dropdown__list">
-          { this.renderEth(true) }
-          { this.props.tokens.map((token) => this.renderAsset(token, true)) }
+  renderAssetDropdown() {
+    return (
+      this.state.isShowingDropdown && (
+        <div>
+          <div
+            className="send-v2__asset-dropdown__close-area"
+            onClick={this.closeDropdown}
+          />
+          <div className="send-v2__asset-dropdown__list">
+            {this.renderEth(true)}
+            {this.props.tokens.map((token) => this.renderAsset(token, true))}
+          </div>
         </div>
-      </div>
+      )
     )
   }
 
-  renderEth (insideDropdown = false) {
+  renderEth(insideDropdown = false) {
     const { t } = this.context
     const { accounts, selectedAddress } = this.props
 
-    const balanceValue = accounts[selectedAddress] ? accounts[selectedAddress].balance : ''
+    const balanceValue = accounts[selectedAddress]
+      ? accounts[selectedAddress].balance
+      : ''
 
     return (
       <div
-        className={ this.props.tokens.length > 0 ? 'send-v2__asset-dropdown__asset' : 'send-v2__asset-dropdown__single-asset' }
+        className={
+          this.props.tokens.length > 0
+            ? 'send-v2__asset-dropdown__asset'
+            : 'send-v2__asset-dropdown__single-asset'
+        }
         onClick={() => this.selectToken()}
       >
         <div className="send-v2__asset-dropdown__asset-icon">
@@ -110,22 +123,23 @@ export default class SendAssetRow extends Component {
         <div className="send-v2__asset-dropdown__asset-data">
           <div className="send-v2__asset-dropdown__symbol">ETH</div>
           <div className="send-v2__asset-dropdown__name">
-            <span className="send-v2__asset-dropdown__name__label">{`${t('balance')}:`}</span>
+            <span className="send-v2__asset-dropdown__name__label">
+              {`${t('balance')}:`}
+            </span>
             <UserPreferencedCurrencyDisplay
               value={balanceValue}
               type={PRIMARY}
             />
           </div>
         </div>
-        { !insideDropdown && this.props.tokens.length > 0 && (
+        {!insideDropdown && this.props.tokens.length > 0 && (
           <i className="fa fa-caret-down fa-lg simple-dropdown__caret" />
         )}
       </div>
     )
   }
 
-
-  renderAsset (token, insideDropdown = false) {
+  renderAsset(token, insideDropdown = false) {
     const { address, symbol } = token
     const { t } = this.context
 
@@ -139,18 +153,15 @@ export default class SendAssetRow extends Component {
           <Identicon address={address} diameter={36} />
         </div>
         <div className="send-v2__asset-dropdown__asset-data">
-          <div className="send-v2__asset-dropdown__symbol">
-            { symbol }
-          </div>
+          <div className="send-v2__asset-dropdown__symbol">{symbol}</div>
           <div className="send-v2__asset-dropdown__name">
-            <span className="send-v2__asset-dropdown__name__label">{`${t('balance')}:`}</span>
-            <TokenBalance
-              token={token}
-              withSymbol
-            />
+            <span className="send-v2__asset-dropdown__name__label">
+              {`${t('balance')}:`}
+            </span>
+            <TokenBalance token={token} withSymbol />
           </div>
         </div>
-        { !insideDropdown && (
+        {!insideDropdown && (
           <i className="fa fa-caret-down fa-lg simple-dropdown__caret" />
         )}
       </div>

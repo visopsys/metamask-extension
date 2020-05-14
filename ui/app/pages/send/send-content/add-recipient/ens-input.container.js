@@ -7,14 +7,12 @@ import {
   getAddressBookEntry,
 } from '../../../../selectors'
 
-export default connect(
-  (state) => {
-    const selectedAddress = getSendTo(state)
-    return {
-      network: getCurrentNetwork(state),
-      selectedAddress,
-      selectedName: getSendToNickname(state),
-      contact: getAddressBookEntry(state, selectedAddress),
-    }
+export default connect((state) => {
+  const selectedAddress = getSendTo(state)
+  return {
+    network: getCurrentNetwork(state),
+    selectedAddress,
+    selectedName: getSendToNickname(state),
+    contact: getAddressBookEntry(state, selectedAddress),
   }
-)(EnsInput)
+})(EnsInput)

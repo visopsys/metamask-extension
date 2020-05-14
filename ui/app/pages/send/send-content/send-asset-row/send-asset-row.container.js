@@ -3,7 +3,7 @@ import SendAssetRow from './send-asset-row.component'
 import { getMetaMaskAccounts } from '../../../../selectors'
 import { setSelectedToken } from '../../../../store/actions'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     tokens: state.metamask.tokens,
     selectedAddress: state.metamask.selectedAddress,
@@ -12,7 +12,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     setSelectedToken: (address) => dispatch(setSelectedToken(address)),
   }

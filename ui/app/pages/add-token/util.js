@@ -1,6 +1,6 @@
 import R from 'ramda'
 
-export function checkExistingAddresses (address, tokenList = []) {
+export function checkExistingAddresses(address, tokenList = []) {
   if (!address) {
     return false
   }

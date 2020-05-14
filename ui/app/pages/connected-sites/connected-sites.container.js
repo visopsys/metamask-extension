@@ -25,9 +25,8 @@ const mapStateToProps = (state) => {
   const permittedAccountsByOrigin = getPermittedAccountsByOrigin(state)
   const selectedAddress = getSelectedAddress(state)
 
-  const currentTabHasNoAccounts = !permittedAccountsByOrigin[
-    originOfCurrentTab
-  ]?.length
+  const currentTabHasNoAccounts = !permittedAccountsByOrigin[originOfCurrentTab]
+    ?.length
 
   let tabToConnect
   if (url && currentTabHasNoAccounts && !openMetaMaskTabs[id]) {
@@ -54,12 +53,17 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(removePermittedAccount(domainKey, address))
     },
     disconnectAllAccounts: (domainKey, domain) => {
-      const permissionMethodNames = domain.permissions.map(({ parentCapability }) => parentCapability)
-      dispatch(removePermissionsFor({
-        [domainKey]: permissionMethodNames,
-      }))
+      const permissionMethodNames = domain.permissions.map(
+        ({ parentCapability }) => parentCapability
+      )
+      dispatch(
+        removePermissionsFor({
+          [domainKey]: permissionMethodNames,
+        })
+      )
     },
-    legacyExposeAccounts: (origin, account) => dispatch(legacyExposeAccounts(origin, [account])),
+    legacyExposeAccounts: (origin, account) =>
+      dispatch(legacyExposeAccounts(origin, [account])),
   }
 }
 
@@ -96,8 +100,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         closePopover()
       }
     },
-    legacyExposeAccount: () => dispatchLegacyExposeAccounts(tabToConnect.origin, selectedAddress),
+    legacyExposeAccount: () =>
+      dispatchLegacyExposeAccounts(tabToConnect.origin, selectedAddress),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ConnectedSites)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
+)(ConnectedSites)

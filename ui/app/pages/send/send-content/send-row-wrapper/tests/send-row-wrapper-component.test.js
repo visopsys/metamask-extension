@@ -10,11 +10,15 @@ describe('SendContent Component', function () {
 
   describe('render', function () {
     beforeEach(function () {
-      wrapper = shallow((
-        <SendRowWrapper errorType="mockErrorType" label="mockLabel" showError={false}>
+      wrapper = shallow(
+        <SendRowWrapper
+          errorType="mockErrorType"
+          label="mockLabel"
+          showError={false}
+        >
           <span>Mock Form Field</span>
         </SendRowWrapper>
-      ))
+      )
     })
 
     it('should render a div with a send-v2__form-row class', function () {
@@ -22,16 +26,34 @@ describe('SendContent Component', function () {
     })
 
     it('should render two children of the root div, with send-v2_form label and field classes', function () {
-      assert.equal(wrapper.find('.send-v2__form-row > .send-v2__form-label').length, 1)
-      assert.equal(wrapper.find('.send-v2__form-row > .send-v2__form-field').length, 1)
+      assert.equal(
+        wrapper.find('.send-v2__form-row > .send-v2__form-label').length,
+        1
+      )
+      assert.equal(
+        wrapper.find('.send-v2__form-row > .send-v2__form-field').length,
+        1
+      )
     })
 
     it('should render the label as a child of the send-v2__form-label', function () {
-      assert.equal(wrapper.find('.send-v2__form-row > .send-v2__form-label').childAt(0).text(), 'mockLabel')
+      assert.equal(
+        wrapper
+          .find('.send-v2__form-row > .send-v2__form-label')
+          .childAt(0)
+          .text(),
+        'mockLabel'
+      )
     })
 
     it('should render its first child as a child of the send-v2__form-field', function () {
-      assert.equal(wrapper.find('.send-v2__form-row > .send-v2__form-field').childAt(0).text(), 'Mock Form Field')
+      assert.equal(
+        wrapper
+          .find('.send-v2__form-row > .send-v2__form-field')
+          .childAt(0)
+          .text(),
+        'Mock Form Field'
+      )
     })
 
     it('should not render a SendRowErrorMessage if showError is false', function () {
@@ -42,16 +64,17 @@ describe('SendContent Component', function () {
       wrapper.setProps({ showError: true })
       assert.equal(wrapper.find(SendRowErrorMessage).length, 1)
 
-      const expectedSendRowErrorMessage = wrapper.find('.send-v2__form-row > .send-v2__form-label').childAt(1)
+      const expectedSendRowErrorMessage = wrapper
+        .find('.send-v2__form-row > .send-v2__form-label')
+        .childAt(1)
       assert(expectedSendRowErrorMessage.is(SendRowErrorMessage))
-      assert.deepEqual(
-        expectedSendRowErrorMessage.props(),
-        { errorType: 'mockErrorType' }
-      )
+      assert.deepEqual(expectedSendRowErrorMessage.props(), {
+        errorType: 'mockErrorType',
+      })
     })
 
     it('should render its second child as a child of the send-v2__form-field, if it has two children', function () {
-      wrapper = shallow((
+      wrapper = shallow(
         <SendRowWrapper
           errorType="mockErrorType"
           label="mockLabel"
@@ -60,12 +83,18 @@ describe('SendContent Component', function () {
           <span>Mock Custom Label Content</span>
           <span>Mock Form Field</span>
         </SendRowWrapper>
-      ))
-      assert.equal(wrapper.find('.send-v2__form-row > .send-v2__form-field').childAt(0).text(), 'Mock Form Field')
+      )
+      assert.equal(
+        wrapper
+          .find('.send-v2__form-row > .send-v2__form-field')
+          .childAt(0)
+          .text(),
+        'Mock Form Field'
+      )
     })
 
     it('should render its first child as the last child of the send-v2__form-label, if it has two children', function () {
-      wrapper = shallow((
+      wrapper = shallow(
         <SendRowWrapper
           errorType="mockErrorType"
           label="mockLabel"
@@ -74,8 +103,14 @@ describe('SendContent Component', function () {
           <span>Mock Custom Label Content</span>
           <span>Mock Form Field</span>
         </SendRowWrapper>
-      ))
-      assert.equal(wrapper.find('.send-v2__form-row > .send-v2__form-label').childAt(1).text(), 'Mock Custom Label Content')
+      )
+      assert.equal(
+        wrapper
+          .find('.send-v2__form-row > .send-v2__form-label')
+          .childAt(1)
+          .text(),
+        'Mock Custom Label Content'
+      )
     })
   })
 })

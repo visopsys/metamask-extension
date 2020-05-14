@@ -22,7 +22,7 @@ export default class ConnectedSites extends Component {
     getOpenMetamaskTabsIds: PropTypes.func.isRequired,
     legacyExposeAccount: PropTypes.func.isRequired,
     permittedAccountsByOrigin: PropTypes.objectOf(
-      PropTypes.arrayOf(PropTypes.string),
+      PropTypes.arrayOf(PropTypes.string)
     ).isRequired,
     tabToConnect: PropTypes.object,
   }
@@ -31,7 +31,7 @@ export default class ConnectedSites extends Component {
     sitePendingDisconnect: null,
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { getOpenMetamaskTabsIds } = this.props
     getOpenMetamaskTabsIds()
   }
@@ -67,7 +67,7 @@ export default class ConnectedSites extends Component {
     this.clearPendingDisconnect()
   }
 
-  renderConnectedSitesList () {
+  renderConnectedSitesList() {
     return (
       <ConnectedSitesList
         connectedDomains={this.props.connectedDomains}
@@ -76,8 +76,7 @@ export default class ConnectedSites extends Component {
     )
   }
 
-  renderConnectedSitesPopover () {
-
+  renderConnectedSitesPopover() {
     const {
       accountLabel,
       closePopover,
@@ -91,22 +90,21 @@ export default class ConnectedSites extends Component {
       <Popover
         className="connected-sites"
         title={t('connectedSites')}
-        subtitle={connectedDomains.length
-          ? t('connectedSitesDescription', [accountLabel])
-          : t('connectedSitesEmptyDescription', [accountLabel])
+        subtitle={
+          connectedDomains.length
+            ? t('connectedSitesDescription', [accountLabel])
+            : t('connectedSitesEmptyDescription', [accountLabel])
         }
         onClose={closePopover}
         footer={
-          tabToConnect
-            ? (
-              <a
-                className="connected-sites__text-button"
-                onClick={legacyExposeAccount}
-              >
-                {t('connectManually')}
-              </a>
-            )
-            : null
+          tabToConnect ? (
+            <a
+              className="connected-sites__text-button"
+              onClick={legacyExposeAccount}
+            >
+              {t('connectManually')}
+            </a>
+          ) : null
         }
         footerClassName="connected-sites__add-site-manually"
       >
@@ -115,11 +113,12 @@ export default class ConnectedSites extends Component {
     )
   }
 
-  renderDisconnectPopover () {
-
+  renderDisconnectPopover() {
     const { closePopover, permittedAccountsByOrigin } = this.props
     const { t } = this.context
-    const { sitePendingDisconnect: { domainKey, domainName } } = this.state
+    const {
+      sitePendingDisconnect: { domainKey, domainName },
+    } = this.state
 
     const numPermittedAccounts = permittedAccountsByOrigin[domainKey].length
 
@@ -129,46 +128,37 @@ export default class ConnectedSites extends Component {
         title={t('disconnectPrompt', [domainName])}
         subtitle={t('disconnectAllAccountsConfirmationDescription')}
         onClose={closePopover}
-        footer={(
+        footer={
           <>
             <div className="connected-sites__footer-row">
               <Button type="secondary" onClick={this.clearPendingDisconnect}>
-                { t('cancel') }
+                {t('cancel')}
               </Button>
-              <Button
-                type="primary"
-                onClick={this.disconnectAccount}
-              >
-                { t('disconnect') }
+              <Button type="primary" onClick={this.disconnectAccount}>
+                {t('disconnect')}
               </Button>
             </div>
-              {
-                numPermittedAccounts > 1
-                  ? (
-                    <div className="connected-sites__footer-row">
-                      <a
-                        className="connected-sites__text-button"
-                        onClick={this.disconnectAllAccounts}
-                      >
-                        {t('disconnectAllAccounts')}
-                      </a>
-                    </div>
-                  )
-                  : null
-              }
+            {numPermittedAccounts > 1 ? (
+              <div className="connected-sites__footer-row">
+                <a
+                  className="connected-sites__text-button"
+                  onClick={this.disconnectAllAccounts}
+                >
+                  {t('disconnectAllAccounts')}
+                </a>
+              </div>
+            ) : null}
           </>
-        )}
+        }
         footerClassName="connected-sites__confirmation"
       />
     )
   }
 
-  render () {
+  render() {
     const { sitePendingDisconnect } = this.state
-    return (
-      sitePendingDisconnect
-        ? this.renderDisconnectPopover()
-        : this.renderConnectedSitesPopover()
-    )
+    return sitePendingDisconnect
+      ? this.renderDisconnectPopover()
+      : this.renderConnectedSitesPopover()
   }
 }

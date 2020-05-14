@@ -49,26 +49,27 @@ export default class ImportWithSeedPhrase extends PureComponent {
     return words.join(' ')
   }
 
-  UNSAFE_componentWillMount () {
-    this._onBeforeUnload = () => this.context.metricsEvent({
-      eventOpts: {
-        category: 'Onboarding',
-        action: 'Import Seed Phrase',
-        name: 'Close window on import screen',
-      },
-      customVariables: {
-        errorLabel: 'Seed Phrase Error',
-        errorMessage: this.state.seedPhraseError,
-      },
-    })
+  UNSAFE_componentWillMount() {
+    this._onBeforeUnload = () =>
+      this.context.metricsEvent({
+        eventOpts: {
+          category: 'Onboarding',
+          action: 'Import Seed Phrase',
+          name: 'Close window on import screen',
+        },
+        customVariables: {
+          errorLabel: 'Seed Phrase Error',
+          errorMessage: this.state.seedPhraseError,
+        },
+      })
     window.addEventListener('beforeunload', this._onBeforeUnload)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('beforeunload', this._onBeforeUnload)
   }
 
-  handleSeedPhraseChange (seedPhrase) {
+  handleSeedPhraseChange(seedPhrase) {
     let seedPhraseError = ''
 
     if (seedPhrase) {
@@ -84,7 +85,7 @@ export default class ImportWithSeedPhrase extends PureComponent {
     this.setState({ seedPhrase, seedPhraseError })
   }
 
-  handlePasswordChange (password) {
+  handlePasswordChange(password) {
     const { t } = this.context
 
     this.setState((state) => {
@@ -108,7 +109,7 @@ export default class ImportWithSeedPhrase extends PureComponent {
     })
   }
 
-  handleConfirmPasswordChange (confirmPassword) {
+  handleConfirmPasswordChange(confirmPassword) {
     const { t } = this.context
 
     this.setState((state) => {
@@ -134,7 +135,12 @@ export default class ImportWithSeedPhrase extends PureComponent {
     }
 
     const { password, seedPhrase } = this.state
-    const { history, onSubmit, setSeedPhraseBackedUp, initializeThreeBox } = this.props
+    const {
+      history,
+      onSubmit,
+      setSeedPhraseBackedUp,
+      initializeThreeBox,
+    } = this.props
 
     try {
       await onSubmit(password, this.parseSeedPhrase(seedPhrase))
@@ -155,7 +161,7 @@ export default class ImportWithSeedPhrase extends PureComponent {
     }
   }
 
-  isValid () {
+  isValid() {
     const {
       seedPhrase,
       password,
@@ -165,7 +171,12 @@ export default class ImportWithSeedPhrase extends PureComponent {
       seedPhraseError,
     } = this.state
 
-    if (!password || !confirmPassword || !seedPhrase || password !== confirmPassword) {
+    if (
+      !password ||
+      !confirmPassword ||
+      !seedPhrase ||
+      password !== confirmPassword
+    ) {
       return false
     }
 
@@ -195,15 +206,17 @@ export default class ImportWithSeedPhrase extends PureComponent {
     }))
   }
 
-  render () {
+  render() {
     const { t } = this.context
-    const { seedPhraseError, passwordError, confirmPasswordError, termsChecked } = this.state
+    const {
+      seedPhraseError,
+      passwordError,
+      confirmPasswordError,
+      termsChecked,
+    } = this.state
 
     return (
-      <form
-        className="first-time-flow__form"
-        onSubmit={this.handleImport}
-      >
+      <form className="first-time-flow__form" onSubmit={this.handleImport}>
         <div className="first-time-flow__create-back">
           <a
             onClick={(e) => {
@@ -227,13 +240,11 @@ export default class ImportWithSeedPhrase extends PureComponent {
           </a>
         </div>
         <div className="first-time-flow__header">
-          { t('importAccountSeedPhrase') }
+          {t('importAccountSeedPhrase')}
         </div>
-        <div className="first-time-flow__text-block">
-          { t('secretPhrase') }
-        </div>
+        <div className="first-time-flow__text-block">{t('secretPhrase')}</div>
         <div className="first-time-flow__textarea-wrapper">
-          <label>{ t('walletSeed') }</label>
+          <label>{t('walletSeed')}</label>
           <textarea
             className="first-time-flow__textarea"
             onChange={(e) => this.handleSeedPhraseChange(e.target.value)}
@@ -241,13 +252,7 @@ export default class ImportWithSeedPhrase extends PureComponent {
             placeholder={t('seedPhrasePlaceholder')}
           />
         </div>
-        {
-          seedPhraseError && (
-            <span className="error">
-              { seedPhraseError }
-            </span>
-          )
-        }
+        {seedPhraseError && <span className="error">{seedPhraseError}</span>}
         <TextField
           id="password"
           label={t('newPassword')}
@@ -266,13 +271,18 @@ export default class ImportWithSeedPhrase extends PureComponent {
           type="password"
           className="first-time-flow__input"
           value={this.state.confirmPassword}
-          onChange={(event) => this.handleConfirmPasswordChange(event.target.value)}
+          onChange={(event) =>
+            this.handleConfirmPasswordChange(event.target.value)
+          }
           error={confirmPasswordError}
           autoComplete="confirm-password"
           margin="normal"
           largeLabel
         />
-        <div className="first-time-flow__checkbox-container" onClick={this.toggleTermsCheck}>
+        <div
+          className="first-time-flow__checkbox-container"
+          onClick={this.toggleTermsCheck}
+        >
           <div
             className="first-time-flow__checkbox"
             tabIndex="0"
@@ -290,9 +300,7 @@ export default class ImportWithSeedPhrase extends PureComponent {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="first-time-flow__link-text">
-                { t('terms') }
-              </span>
+              <span className="first-time-flow__link-text">{t('terms')}</span>
             </a>
           </span>
         </div>
@@ -302,7 +310,7 @@ export default class ImportWithSeedPhrase extends PureComponent {
           className="first-time-flow__button"
           disabled={!this.isValid() || !termsChecked}
         >
-          { t('import') }
+          {t('import')}
         </Button>
       </form>
     )

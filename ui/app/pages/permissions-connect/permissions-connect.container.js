@@ -11,7 +11,13 @@ import {
 } from '../../selectors'
 
 import { formatDate } from '../../helpers/utils/util'
-import { approvePermissionsRequest, rejectPermissionsRequest, showModal, getCurrentWindowTab, getRequestAccountTabIds } from '../../store/actions'
+import {
+  approvePermissionsRequest,
+  rejectPermissionsRequest,
+  showModal,
+  getCurrentWindowTab,
+  getRequestAccountTabIds,
+} from '../../store/actions'
 import {
   CONNECT_ROUTE,
   CONNECT_CONFIRM_PERMISSIONS_ROUTE,
@@ -19,13 +25,17 @@ import {
 
 const mapStateToProps = (state, ownProps) => {
   const {
-    match: { params: { id: permissionsRequestId } },
+    match: {
+      params: { id: permissionsRequestId },
+    },
     location: { pathname },
   } = ownProps
   const permissionsRequests = getPermissionsRequests(state)
 
-  const permissionsRequest = permissionsRequests
-    .find((permissionsRequest) => permissionsRequest.metadata.id === permissionsRequestId)
+  const permissionsRequest = permissionsRequests.find(
+    (permissionsRequest) =>
+      permissionsRequest.metadata.id === permissionsRequestId
+  )
 
   const { metadata = {} } = permissionsRequest || {}
   const { origin } = metadata
@@ -37,7 +47,10 @@ const mapStateToProps = (state, ownProps) => {
   const addressLastConnectedMap = lastConnectedInfo[origin] || {}
 
   Object.keys(addressLastConnectedMap).forEach((key) => {
-    addressLastConnectedMap[key] = formatDate(addressLastConnectedMap[key], 'yyyy-MM-dd')
+    addressLastConnectedMap[key] = formatDate(
+      addressLastConnectedMap[key],
+      'yyyy-MM-dd'
+    )
   })
 
   const connectPath = `${CONNECT_ROUTE}/${permissionsRequestId}`
@@ -52,7 +65,11 @@ const mapStateToProps = (state, ownProps) => {
     throw new Error('Incorrect path for permissions-connect component')
   }
 
-  const targetDomainMetadata = getTargetDomainMetadata(state, permissionsRequest, origin)
+  const targetDomainMetadata = getTargetDomainMetadata(
+    state,
+    permissionsRequest,
+    origin
+  )
 
   return {
     permissionsRequest,
@@ -72,21 +89,28 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    approvePermissionsRequest: (request, accounts) => dispatch(approvePermissionsRequest(request, accounts)),
-    rejectPermissionsRequest: (requestId) => dispatch(rejectPermissionsRequest(requestId)),
+    approvePermissionsRequest: (request, accounts) =>
+      dispatch(approvePermissionsRequest(request, accounts)),
+    rejectPermissionsRequest: (requestId) =>
+      dispatch(rejectPermissionsRequest(requestId)),
     showNewAccountModal: ({ onCreateNewAccount, newAccountNumber }) => {
-      return dispatch(showModal({
-        name: 'NEW_ACCOUNT',
-        onCreateNewAccount,
-        newAccountNumber,
-      }))
+      return dispatch(
+        showModal({
+          name: 'NEW_ACCOUNT',
+          onCreateNewAccount,
+          newAccountNumber,
+        })
+      )
     },
     getRequestAccountTabIds: () => dispatch(getRequestAccountTabIds()),
     getCurrentWindowTab: () => dispatch(getCurrentWindowTab()),
   }
 }
 
-const PermissionApprovalContainer = connect(mapStateToProps, mapDispatchToProps)(PermissionApproval)
+const PermissionApprovalContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PermissionApproval)
 
 PermissionApprovalContainer.propTypes = {
   history: PropTypes.object.isRequired,

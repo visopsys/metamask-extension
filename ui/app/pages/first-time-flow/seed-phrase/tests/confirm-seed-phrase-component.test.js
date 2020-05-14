@@ -4,16 +4,13 @@ import { shallow } from 'enzyme'
 import sinon from 'sinon'
 import ConfirmSeedPhrase from '../confirm-seed-phrase/confirm-seed-phrase.component'
 
-function shallowRender (props = {}, context = {}) {
-  return shallow(
-    <ConfirmSeedPhrase {...props} />,
-    {
-      context: {
-        t: (str) => str + '_t',
-        ...context,
-      },
-    }
-  )
+function shallowRender(props = {}, context = {}) {
+  return shallow(<ConfirmSeedPhrase {...props} />, {
+    context: {
+      t: (str) => str + '_t',
+      ...context,
+    },
+  })
 }
 
 describe('ConfirmSeedPhrase Component', function () {
@@ -52,7 +49,7 @@ describe('ConfirmSeedPhrase Component', function () {
     assert.deepEqual(
       root.state().selectedSeedIndices,
       [0, 1, 2],
-      'should add seed phrase to selected on click',
+      'should add seed phrase to selected on click'
     )
 
     // Click on a selected seed to remove
@@ -63,7 +60,7 @@ describe('ConfirmSeedPhrase Component', function () {
     assert.deepEqual(
       root.state().selectedSeedIndices,
       [0, 2],
-      'should remove seed phrase from selected when click again',
+      'should remove seed phrase from selected when click again'
     )
   })
 
@@ -93,7 +90,9 @@ describe('ConfirmSeedPhrase Component', function () {
 
     root.update()
 
-    const pendingSeeds = root.find('.confirm-seed-phrase__selected-seed-words__pending-seed')
+    const pendingSeeds = root.find(
+      '.confirm-seed-phrase__selected-seed-words__pending-seed'
+    )
 
     assert.equal(pendingSeeds.at(0).props().seedIndex, 2)
     assert.equal(pendingSeeds.at(1).props().seedIndex, 0)
@@ -132,7 +131,20 @@ describe('ConfirmSeedPhrase Component', function () {
   })
 
   it('should submit correctly', async function () {
-    const originalSeed = ['鼠', '牛', '虎', '兔', '龍', '蛇', '馬', '羊', '猴', '雞', '狗', '豬']
+    const originalSeed = [
+      '鼠',
+      '牛',
+      '虎',
+      '兔',
+      '龍',
+      '蛇',
+      '馬',
+      '羊',
+      '猴',
+      '雞',
+      '狗',
+      '豬',
+    ]
     const metricsEventSpy = sinon.spy()
     const pushSpy = sinon.spy()
     const initialize3BoxSpy = sinon.spy()
@@ -151,7 +163,6 @@ describe('ConfirmSeedPhrase Component', function () {
     const sorted = root.state().sortedSeedWords
     const seeds = root.find('.confirm-seed-phrase__seed-word--sorted')
 
-
     originalSeed.forEach((seed) => {
       const seedIndex = sorted.findIndex((s) => s === seed)
       seeds.at(seedIndex).simulate('click')
@@ -161,7 +172,7 @@ describe('ConfirmSeedPhrase Component', function () {
 
     root.find('.first-time-flow__button').simulate('click')
 
-    await (new Promise((resolve) => setTimeout(resolve, 100)))
+    await new Promise((resolve) => setTimeout(resolve, 100))
 
     assert.deepEqual(metricsEventSpy.args[0][0], {
       eventOpts: {

@@ -5,13 +5,13 @@ import { getTitleKey } from '../../../selectors'
 
 export default connect(mapStateToProps, mapDispatchToProps)(SendHeader)
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     titleKey: getTitleKey(state),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     clearSend: () => dispatch(clearSend()),
   }

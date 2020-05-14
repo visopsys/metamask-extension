@@ -51,7 +51,7 @@ export default class Home extends PureComponent {
     connectedStatusPopoverHasBeenShown: PropTypes.bool,
   }
 
-  UNSAFE_componentWillMount () {
+  UNSAFE_componentWillMount() {
     const {
       history,
       unconfirmedTransactionsCount = 0,
@@ -67,7 +67,7 @@ export default class Home extends PureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const {
       history,
       isNotification,
@@ -85,7 +85,7 @@ export default class Home extends PureComponent {
     }
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     const {
       isNotification,
       setupThreeBox,
@@ -104,7 +104,7 @@ export default class Home extends PureComponent {
     }
   }
 
-  renderNotifications () {
+  renderNotifications() {
     const { t } = this.context
     const {
       history,
@@ -120,47 +120,42 @@ export default class Home extends PureComponent {
 
     return (
       <MultipleNotifications>
-        {
-          shouldShowSeedPhraseReminder
-            ? (
-              <HomeNotification
-                descriptionText={t('backupApprovalNotice')}
-                acceptText={t('backupNow')}
-                onAccept={() => {
-                  if (isPopup) {
-                    global.platform.openExtensionInBrowser(INITIALIZE_BACKUP_SEED_PHRASE_ROUTE)
-                  } else {
-                    history.push(INITIALIZE_BACKUP_SEED_PHRASE_ROUTE)
-                  }
-                }}
-                infoText={t('backupApprovalInfo')}
-                key="home-backupApprovalNotice"
-              />
-            )
-            : null
-        }
-        {
-          threeBoxLastUpdated && showRestorePrompt
-            ? (
-              <HomeNotification
-                descriptionText={t('restoreWalletPreferences', [ formatDate(threeBoxLastUpdated, 'M/d/y') ])}
-                acceptText={t('restore')}
-                ignoreText={t('noThanks')}
-                infoText={t('dataBackupFoundInfo')}
-                onAccept={() => {
-                  restoreFromThreeBox(selectedAddress)
-                    .then(() => {
-                      turnThreeBoxSyncingOn()
-                    })
-                }}
-                onIgnore={() => {
-                  setShowRestorePromptToFalse()
-                }}
-                key="home-privacyModeDefault"
-              />
-            )
-            : null
-        }
+        {shouldShowSeedPhraseReminder ? (
+          <HomeNotification
+            descriptionText={t('backupApprovalNotice')}
+            acceptText={t('backupNow')}
+            onAccept={() => {
+              if (isPopup) {
+                global.platform.openExtensionInBrowser(
+                  INITIALIZE_BACKUP_SEED_PHRASE_ROUTE
+                )
+              } else {
+                history.push(INITIALIZE_BACKUP_SEED_PHRASE_ROUTE)
+              }
+            }}
+            infoText={t('backupApprovalInfo')}
+            key="home-backupApprovalNotice"
+          />
+        ) : null}
+        {threeBoxLastUpdated && showRestorePrompt ? (
+          <HomeNotification
+            descriptionText={t('restoreWalletPreferences', [
+              formatDate(threeBoxLastUpdated, 'M/d/y'),
+            ])}
+            acceptText={t('restore')}
+            ignoreText={t('noThanks')}
+            infoText={t('dataBackupFoundInfo')}
+            onAccept={() => {
+              restoreFromThreeBox(selectedAddress).then(() => {
+                turnThreeBoxSyncingOn()
+              })
+            }}
+            onIgnore={() => {
+              setShowRestorePromptToFalse()
+            }}
+            key="home-privacyModeDefault"
+          />
+        ) : null}
       </MultipleNotifications>
     )
   }
@@ -169,7 +164,7 @@ export default class Home extends PureComponent {
     const { t } = this.context
     return (
       <Popover
-        title={ t('whatsThis') }
+        title={t('whatsThis')}
         onClose={setConnectedStatusPopoverHasBeenShown}
         className="home__connected-status-popover"
         showArrow
@@ -183,24 +178,24 @@ export default class Home extends PureComponent {
             </div>
           )
         }}
-        footer={(
+        footer={
           <Button
             type="primary"
             onClick={setConnectedStatusPopoverHasBeenShown}
           >
-            { t('dismiss') }
+            {t('dismiss')}
           </Button>
-        )}
+        }
       >
         <main className="home__connect-status-text">
-          <div>{ t('metaMaskConnectStatusParagraphOne') }</div>
-          <div>{ t('metaMaskConnectStatusParagraphTwo') }</div>
+          <div>{t('metaMaskConnectStatusParagraphOne')}</div>
+          <div>{t('metaMaskConnectStatusParagraphTwo')}</div>
         </main>
       </Popover>
     )
   }
 
-  render () {
+  render() {
     const {
       forgottenPassword,
       history,
@@ -220,44 +215,48 @@ export default class Home extends PureComponent {
       <div className="main-container">
         <Route path={CONNECTED_ROUTE} component={ConnectedSites} />
         <div className="home__container">
-          { isPopup && !connectedStatusPopoverHasBeenShown ? this.renderPopover() : null }
-          <Media
-            query="(min-width: 576px)"
-          >
-            {
-              (isWideViewport) => (
-                isWideViewport
-                  ? (
-                    <>
-                      <WalletView />
-                      <div className="home__main-view">
-                        <div className="home__balance-wrapper">
-                          <TransactionViewBalance />
-                        </div>
-                        <TransactionList isWideViewport />
-                      </div>
-                    </>
-                  )
-                  : (
-                    <div className="home__main-view">
-                      <MenuBar />
-                      <div className="home__balance-wrapper">
-                        <TransactionViewBalance />
-                      </div>
-                      <Tabs>
-                        <Tab className="home__tab" data-testid="home__asset-tab" name="Assets">
-                          <AssetList />
-                        </Tab>
-                        <Tab className="home__tab" data-testid="home__history-tab" name="History">
-                          <TransactionList />
-                        </Tab>
-                      </Tabs>
+          {isPopup && !connectedStatusPopoverHasBeenShown
+            ? this.renderPopover()
+            : null}
+          <Media query="(min-width: 576px)">
+            {(isWideViewport) =>
+              isWideViewport ? (
+                <>
+                  <WalletView />
+                  <div className="home__main-view">
+                    <div className="home__balance-wrapper">
+                      <TransactionViewBalance />
                     </div>
-                  )
+                    <TransactionList isWideViewport />
+                  </div>
+                </>
+              ) : (
+                <div className="home__main-view">
+                  <MenuBar />
+                  <div className="home__balance-wrapper">
+                    <TransactionViewBalance />
+                  </div>
+                  <Tabs>
+                    <Tab
+                      className="home__tab"
+                      data-testid="home__asset-tab"
+                      name="Assets"
+                    >
+                      <AssetList />
+                    </Tab>
+                    <Tab
+                      className="home__tab"
+                      data-testid="home__history-tab"
+                      name="History"
+                    >
+                      <TransactionList />
+                    </Tab>
+                  </Tabs>
+                </div>
               )
             }
           </Media>
-          { this.renderNotifications() }
+          {this.renderNotifications()}
         </div>
       </div>
     )

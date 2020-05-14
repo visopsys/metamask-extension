@@ -20,7 +20,7 @@ export default class SendHexDataRow extends Component {
     updateGas({ data })
   }
 
-  render () {
+  render() {
     const { inError } = this.props
     const { t } = this.context
 

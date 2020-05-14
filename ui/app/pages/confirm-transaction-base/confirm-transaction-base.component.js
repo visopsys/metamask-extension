@@ -3,15 +3,23 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../../app/scripts/lib/enums'
 import { getEnvironmentType } from '../../../../app/scripts/lib/util'
-import ConfirmPageContainer, { ConfirmDetailRow } from '../../components/app/confirm-page-container'
+import ConfirmPageContainer, {
+  ConfirmDetailRow,
+} from '../../components/app/confirm-page-container'
 import { isBalanceSufficient } from '../send/send.utils'
-import { DEFAULT_ROUTE, CONFIRM_TRANSACTION_ROUTE } from '../../helpers/constants/routes'
+import {
+  DEFAULT_ROUTE,
+  CONFIRM_TRANSACTION_ROUTE,
+} from '../../helpers/constants/routes'
 import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
   TRANSACTION_ERROR_KEY,
   GAS_LIMIT_TOO_LOW_ERROR_KEY,
 } from '../../helpers/constants/error-keys'
-import { CONFIRMED_STATUS, DROPPED_STATUS } from '../../helpers/constants/transactions'
+import {
+  CONFIRMED_STATUS,
+  DROPPED_STATUS,
+} from '../../helpers/constants/transactions'
 import UserPreferencedCurrencyDisplay from '../../components/app/user-preferenced-currency-display'
 import { PRIMARY, SECONDARY } from '../../helpers/constants/common'
 import { hexToDecimal } from '../../helpers/utils/conversions.util'
@@ -68,7 +76,10 @@ export default class ConfirmTransactionBase extends Component {
     detailsComponent: PropTypes.node,
     errorKey: PropTypes.string,
     errorMessage: PropTypes.string,
-    primaryTotalTextOverride: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    primaryTotalTextOverride: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.node,
+    ]),
     secondaryTotalTextOverride: PropTypes.string,
     hideData: PropTypes.bool,
     hideDetails: PropTypes.bool,
@@ -104,7 +115,7 @@ export default class ConfirmTransactionBase extends Component {
     submitWarning: '',
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     const {
       transactionStatus,
       showTransactionConfirmedModal,
@@ -122,11 +133,18 @@ export default class ConfirmTransactionBase extends Component {
       transactionStatus: prevTxStatus,
     } = prevProps
     const statusUpdated = transactionStatus !== prevTxStatus
-    const txDroppedOrConfirmed = transactionStatus === DROPPED_STATUS || transactionStatus === CONFIRMED_STATUS
+    const txDroppedOrConfirmed =
+      transactionStatus === DROPPED_STATUS ||
+      transactionStatus === CONFIRMED_STATUS
 
-    if (nextNonce !== prevNextNonce || customNonceValue !== prevCustomNonceValue) {
+    if (
+      nextNonce !== prevNextNonce ||
+      customNonceValue !== prevCustomNonceValue
+    ) {
       if (customNonceValue > nextNonce) {
-        this.setState({ submitWarning: this.context.t('nextNonceWarning', [nextNonce]) })
+        this.setState({
+          submitWarning: this.context.t('nextNonceWarning', [nextNonce]),
+        })
       } else {
         this.setState({ submitWarning: '' })
       }
@@ -146,26 +164,23 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  getErrorKey () {
+  getErrorKey() {
     const {
       balance,
       conversionRate,
       hexTransactionFee,
-      txData: {
-        simulationFails,
-        txParams: {
-          value: amount,
-        } = {},
-      } = {},
+      txData: { simulationFails, txParams: { value: amount } = {} } = {},
       customGas,
     } = this.props
 
-    const insufficientBalance = balance && !isBalanceSufficient({
-      amount,
-      gasTotal: hexTransactionFee || '0x0',
-      balance,
-      conversionRate,
-    })
+    const insufficientBalance =
+      balance &&
+      !isBalanceSufficient({
+        amount,
+        gasTotal: hexTransactionFee || '0x0',
+        balance,
+        conversionRate,
+      })
 
     if (insufficientBalance) {
       return {
@@ -184,7 +199,9 @@ export default class ConfirmTransactionBase extends Component {
     if (simulationFails) {
       return {
         valid: true,
-        errorKey: simulationFails.errorKey ? simulationFails.errorKey : TRANSACTION_ERROR_KEY,
+        errorKey: simulationFails.errorKey
+          ? simulationFails.errorKey
+          : TRANSACTION_ERROR_KEY,
       }
     }
 
@@ -193,8 +210,14 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  handleEditGas () {
-    const { onEditGas, showCustomizeGasModal, actionKey, txData: { origin }, methodData = {} } = this.props
+  handleEditGas() {
+    const {
+      onEditGas,
+      showCustomizeGasModal,
+      actionKey,
+      txData: { origin },
+      methodData = {},
+    } = this.props
 
     this.context.metricsEvent({
       eventOpts: {
@@ -204,7 +227,8 @@ export default class ConfirmTransactionBase extends Component {
       },
       customVariables: {
         recipientKnown: null,
-        functionType: actionKey || getMethodName(methodData.name) || 'contractInteraction',
+        functionType:
+          actionKey || getMethodName(methodData.name) || 'contractInteraction',
         origin,
       },
     })
@@ -216,7 +240,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  renderDetails () {
+  renderDetails() {
     const {
       detailsComponent,
       primaryTotalTextOverride,
@@ -250,29 +274,42 @@ export default class ConfirmTransactionBase extends Component {
               headerText="Edit"
               headerTextClassName="confirm-detail-row__header-text--edit"
               onHeaderClick={() => this.handleEditGas()}
-              secondaryText={hideFiatConversion ? this.context.t('noConversionRateAvailable') : ''}
+              secondaryText={
+                hideFiatConversion
+                  ? this.context.t('noConversionRateAvailable')
+                  : ''
+              }
             />
-            {advancedInlineGasShown
-              ? (
-                <AdvancedGasInputs
-                  updateCustomGasPrice={(newGasPrice) => updateGasAndCalculate({ ...customGas, gasPrice: newGasPrice })}
-                  updateCustomGasLimit={(newGasLimit) => updateGasAndCalculate({ ...customGas, gasLimit: newGasLimit })}
-                  customGasPrice={customGas.gasPrice}
-                  customGasLimit={customGas.gasLimit}
-                  insufficientBalance={insufficientBalance}
-                  customPriceIsSafe
-                  isSpeedUp={false}
-                />
-              )
-              : null
-            }
+            {advancedInlineGasShown ? (
+              <AdvancedGasInputs
+                updateCustomGasPrice={(newGasPrice) =>
+                  updateGasAndCalculate({ ...customGas, gasPrice: newGasPrice })
+                }
+                updateCustomGasLimit={(newGasLimit) =>
+                  updateGasAndCalculate({ ...customGas, gasLimit: newGasLimit })
+                }
+                customGasPrice={customGas.gasPrice}
+                customGasLimit={customGas.gasLimit}
+                insufficientBalance={insufficientBalance}
+                customPriceIsSafe
+                isSpeedUp={false}
+              />
+            ) : null}
           </div>
-          <div className={useNonceField ? 'confirm-page-container-content__gas-fee' : null}>
+          <div
+            className={
+              useNonceField ? 'confirm-page-container-content__gas-fee' : null
+            }
+          >
             <ConfirmDetailRow
               label="Total"
               value={hexTransactionTotal}
               primaryText={primaryTotalTextOverride}
-              secondaryText={hideFiatConversion ? this.context.t('noConversionRateAvailable') : secondaryTotalTextOverride}
+              secondaryText={
+                hideFiatConversion
+                  ? this.context.t('noConversionRateAvailable')
+                  : secondaryTotalTextOverride
+              }
               headerText="Amount + Gas Fee"
               headerTextClassName="confirm-detail-row__header-text--total"
               primaryValueTextColor="#2f9ae0"
@@ -282,13 +319,13 @@ export default class ConfirmTransactionBase extends Component {
             <div>
               <div className="confirm-detail-row">
                 <div className="confirm-detail-row__label">
-                  { this.context.t('nonceFieldHeading') }
+                  {this.context.t('nonceFieldHeading')}
                 </div>
                 <div className="custom-nonce-input">
                   <TextField
                     type="number"
                     min="0"
-                    placeholder={ nextNonce ? nextNonce.toString() : null }
+                    placeholder={nextNonce ? nextNonce.toString() : null}
                     onChange={({ target: { value } }) => {
                       if (!value.length || Number(value) < 0) {
                         updateCustomNonce('')
@@ -299,7 +336,7 @@ export default class ConfirmTransactionBase extends Component {
                     }}
                     fullWidth
                     margin="dense"
-                    value={ customNonceValue || '' }
+                    value={customNonceValue || ''}
                   />
                 </div>
               </div>
@@ -310,17 +347,11 @@ export default class ConfirmTransactionBase extends Component {
     )
   }
 
-  renderData (functionType) {
+  renderData(functionType) {
     const { t } = this.context
     const {
-      txData: {
-        txParams: {
-          data,
-        } = {},
-      } = {},
-      methodData: {
-        params,
-      } = {},
+      txData: { txParams: { data } = {} } = {},
+      methodData: { params } = {},
       hideData,
       dataComponent,
     } = this.props
@@ -329,38 +360,44 @@ export default class ConfirmTransactionBase extends Component {
       return null
     }
 
-    return dataComponent || (
-      <div className="confirm-page-container-content__data">
-        <div className="confirm-page-container-content__data-box-label">
-          {`${t('functionType')}:`}
-          <span className="confirm-page-container-content__function-type">
-            { functionType }
-          </span>
-        </div>
-        {
-          params && (
+    return (
+      dataComponent || (
+        <div className="confirm-page-container-content__data">
+          <div className="confirm-page-container-content__data-box-label">
+            {`${t('functionType')}:`}
+            <span className="confirm-page-container-content__function-type">
+              {functionType}
+            </span>
+          </div>
+          {params && (
             <div className="confirm-page-container-content__data-box">
               <div className="confirm-page-container-content__data-field-label">
-                { `${t('parameters')}:` }
+                {`${t('parameters')}:`}
               </div>
               <div>
-                <pre>{ JSON.stringify(params, null, 2) }</pre>
+                <pre>{JSON.stringify(params, null, 2)}</pre>
               </div>
             </div>
-          )
-        }
-        <div className="confirm-page-container-content__data-box-label">
-          {`${t('hexData')}: ${ethUtil.toBuffer(data).length} bytes`}
+          )}
+          <div className="confirm-page-container-content__data-box-label">
+            {`${t('hexData')}: ${ethUtil.toBuffer(data).length} bytes`}
+          </div>
+          <div className="confirm-page-container-content__data-box">{data}</div>
         </div>
-        <div className="confirm-page-container-content__data-box">
-          { data }
-        </div>
-      </div>
+      )
     )
   }
 
-  handleEdit () {
-    const { txData, tokenData, tokenProps, onEdit, actionKey, txData: { origin }, methodData = {} } = this.props
+  handleEdit() {
+    const {
+      txData,
+      tokenData,
+      tokenProps,
+      onEdit,
+      actionKey,
+      txData: { origin },
+      methodData = {},
+    } = this.props
 
     this.context.metricsEvent({
       eventOpts: {
@@ -370,7 +407,8 @@ export default class ConfirmTransactionBase extends Component {
       },
       customVariables: {
         recipientKnown: null,
-        functionType: actionKey || getMethodName(methodData.name) || 'contractInteraction',
+        functionType:
+          actionKey || getMethodName(methodData.name) || 'contractInteraction',
         origin,
       },
     })
@@ -378,7 +416,7 @@ export default class ConfirmTransactionBase extends Component {
     onEdit({ txData, tokenData, tokenProps })
   }
 
-  handleCancelAll () {
+  handleCancelAll() {
     const {
       cancelAllTransactions,
       clearConfirmTransaction,
@@ -398,7 +436,7 @@ export default class ConfirmTransactionBase extends Component {
     })
   }
 
-  handleCancel () {
+  handleCancel() {
     const { metricsEvent } = this.context
     const {
       onCancel,
@@ -421,7 +459,8 @@ export default class ConfirmTransactionBase extends Component {
       },
       customVariables: {
         recipientKnown: null,
-        functionType: actionKey || getMethodName(methodData.name) || 'contractInteraction',
+        functionType:
+          actionKey || getMethodName(methodData.name) || 'contractInteraction',
         origin,
       },
     })
@@ -429,15 +468,14 @@ export default class ConfirmTransactionBase extends Component {
     if (onCancel) {
       onCancel(txData)
     } else {
-      cancelTransaction(txData)
-        .then(() => {
-          clearConfirmTransaction()
-          history.push(DEFAULT_ROUTE)
-        })
+      cancelTransaction(txData).then(() => {
+        clearConfirmTransaction()
+        history.push(DEFAULT_ROUTE)
+      })
     }
   }
 
-  handleSubmit () {
+  handleSubmit() {
     const { metricsEvent } = this.context
     const {
       txData: { origin },
@@ -458,44 +496,50 @@ export default class ConfirmTransactionBase extends Component {
       return
     }
 
-    this.setState({
-      submitting: true,
-      submitError: null,
-    }, () => {
-      this._removeBeforeUnload()
-      metricsEvent({
-        eventOpts: {
-          category: 'Transactions',
-          action: 'Confirm Screen',
-          name: 'Transaction Completed',
-        },
-        customVariables: {
-          recipientKnown: null,
-          functionType: actionKey || getMethodName(methodData.name) || 'contractInteraction',
-          origin,
-        },
-      })
+    this.setState(
+      {
+        submitting: true,
+        submitError: null,
+      },
+      () => {
+        this._removeBeforeUnload()
+        metricsEvent({
+          eventOpts: {
+            category: 'Transactions',
+            action: 'Confirm Screen',
+            name: 'Transaction Completed',
+          },
+          customVariables: {
+            recipientKnown: null,
+            functionType:
+              actionKey ||
+              getMethodName(methodData.name) ||
+              'contractInteraction',
+            origin,
+          },
+        })
 
-      setMetaMetricsSendCount(metaMetricsSendCount + 1)
-        .then(() => {
+        setMetaMetricsSendCount(metaMetricsSendCount + 1).then(() => {
           if (onSubmit) {
-            Promise.resolve(onSubmit(txData))
-              .then(() => {
-                this.setState({
-                  submitting: false,
-                })
-                updateCustomNonce('')
+            Promise.resolve(onSubmit(txData)).then(() => {
+              this.setState({
+                submitting: false,
               })
+              updateCustomNonce('')
+            })
           } else {
             sendTransaction(txData)
               .then(() => {
                 clearConfirmTransaction()
-                this.setState({
-                  submitting: false,
-                }, () => {
-                  history.push(DEFAULT_ROUTE)
-                  updateCustomNonce('')
-                })
+                this.setState(
+                  {
+                    submitting: false,
+                  },
+                  () => {
+                    history.push(DEFAULT_ROUTE)
+                    updateCustomNonce('')
+                  }
+                )
               })
               .catch((error) => {
                 this.setState({
@@ -506,10 +550,11 @@ export default class ConfirmTransactionBase extends Component {
               })
           }
         })
-    })
+      }
+    )
   }
 
-  renderTitleComponent () {
+  renderTitleComponent() {
     const { title, titleComponent, hexTransactionAmount } = this.props
 
     // Title string passed in by props takes priority
@@ -517,18 +562,20 @@ export default class ConfirmTransactionBase extends Component {
       return null
     }
 
-    return titleComponent || (
-      <UserPreferencedCurrencyDisplay
-        value={hexTransactionAmount}
-        type={PRIMARY}
-        showEthLogo
-        ethLogoHeight="26"
-        hideLabel
-      />
+    return (
+      titleComponent || (
+        <UserPreferencedCurrencyDisplay
+          value={hexTransactionAmount}
+          type={PRIMARY}
+          showEthLogo
+          ethLogoHeight="26"
+          hideLabel
+        />
+      )
     )
   }
 
-  renderSubtitleComponent () {
+  renderSubtitleComponent() {
     const { subtitle, subtitleComponent, hexTransactionAmount } = this.props
 
     // Subtitle string passed in by props takes priority
@@ -536,17 +583,19 @@ export default class ConfirmTransactionBase extends Component {
       return null
     }
 
-    return subtitleComponent || (
-      <UserPreferencedCurrencyDisplay
-        value={hexTransactionAmount}
-        type={SECONDARY}
-        showEthLogo
-        hideLabel
-      />
+    return (
+      subtitleComponent || (
+        <UserPreferencedCurrencyDisplay
+          value={hexTransactionAmount}
+          type={SECONDARY}
+          showEthLogo
+          hideLabel
+        />
+      )
     )
   }
 
-  handleNextTx (txId) {
+  handleNextTx(txId) {
     const { history, clearConfirmTransaction } = this.props
 
     if (txId) {
@@ -555,7 +604,7 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  getNavigateTxData () {
+  getNavigateTxData() {
     const { currentNetworkUnapprovedTxs, txData: { id } = {} } = this.props
     const enumUnapprovedTxs = Object.keys(currentNetworkUnapprovedTxs)
     const currentPosition = enumUnapprovedTxs.indexOf(id ? id.toString() : '')
@@ -595,8 +644,13 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  componentDidMount () {
-    const { toAddress, txData: { origin } = {}, getNextNonce, tryReverseResolveAddress } = this.props
+  componentDidMount() {
+    const {
+      toAddress,
+      txData: { origin } = {},
+      getNextNonce,
+      tryReverseResolveAddress,
+    } = this.props
     const { metricsEvent } = this.context
     metricsEvent({
       eventOpts: {
@@ -619,11 +673,11 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this._removeBeforeUnload()
   }
 
-  render () {
+  render() {
     const { t } = this.context
     const {
       isTxReprice,
@@ -657,7 +711,17 @@ export default class ConfirmTransactionBase extends Component {
 
     const { name } = methodData
     const { valid, errorKey } = this.getErrorKey()
-    const { totalTx, positionOfCurrentTx, nextTxId, prevTxId, showNavigation, firstTx, lastTx, ofText, requestsWaitingText } = this.getNavigateTxData()
+    const {
+      totalTx,
+      positionOfCurrentTx,
+      nextTxId,
+      prevTxId,
+      showNavigation,
+      firstTx,
+      lastTx,
+      ofText,
+      requestsWaitingText,
+    } = this.getNavigateTxData()
 
     let functionType = getMethodName(name)
     if (!functionType) {
@@ -716,7 +780,7 @@ export default class ConfirmTransactionBase extends Component {
   }
 }
 
-export function getMethodName (camelCase) {
+export function getMethodName(camelCase) {
   if (!camelCase || typeof camelCase !== 'string') {
     return ''
   }

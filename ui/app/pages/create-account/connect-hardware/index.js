@@ -18,25 +18,29 @@ class ConnectHardwareForm extends Component {
     device: null,
   }
 
-  UNSAFE_componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { accounts } = nextProps
     const newAccounts = this.state.accounts.map((a) => {
       const normalizedAddress = a.address.toLowerCase()
-      const balanceValue = (accounts[normalizedAddress] && accounts[normalizedAddress].balance) || null
+      const balanceValue =
+        (accounts[normalizedAddress] && accounts[normalizedAddress].balance) ||
+        null
       a.balance = balanceValue ? formatBalance(balanceValue, 6) : '...'
       return a
     })
     this.setState({ accounts: newAccounts })
   }
 
-
-  componentDidMount () {
+  componentDidMount() {
     this.checkIfUnlocked()
   }
 
-  async checkIfUnlocked () {
-    ['trezor', 'ledger'].forEach(async (device) => {
-      const unlocked = await this.props.checkHardwareStatus(device, this.props.defaultHdPaths[device])
+  async checkIfUnlocked() {
+    ;['trezor', 'ledger'].forEach(async (device) => {
+      const unlocked = await this.props.checkHardwareStatus(
+        device,
+        this.props.defaultHdPaths[device]
+      )
       if (unlocked) {
         this.setState({ unlocked: true })
         this.getPage(device, 0, this.props.defaultHdPaths[device])
@@ -54,7 +58,10 @@ class ConnectHardwareForm extends Component {
   }
 
   onPathChange = (path) => {
-    this.props.setHardwareWalletDefaultHdPath({ device: this.state.device, path })
+    this.props.setHardwareWalletDefaultHdPath({
+      device: this.state.device,
+      path,
+    })
     this.getPage(this.state.device, 0, path)
   }
 
@@ -66,7 +73,7 @@ class ConnectHardwareForm extends Component {
     this.setState({ error: this.context.t('ledgerAccountRestriction') })
   }
 
-  showTemporaryAlert () {
+  showTemporaryAlert() {
     this.props.showAlert(this.context.t('hardwareWalletConnected'))
     // Autohide the alert after 5 seconds
     setTimeout((_) => {
@@ -79,7 +86,6 @@ class ConnectHardwareForm extends Component {
       .connectHardware(device, page, hdPath)
       .then((accounts) => {
         if (accounts.length) {
-
           // If we just loaded the accounts for the first time
           // (device previously locked) show the global alert
           if (this.state.accounts.length === 0 && !this.state.unlocked) {
@@ -94,17 +100,25 @@ class ConnectHardwareForm extends Component {
                 newState.selectedAccount = a.index.toString()
               }
             })
-          // If the page doesn't contain the selected account, let's deselect it
-          } else if (!accounts.filter((a) => a.index.toString() === this.state.selectedAccount).length) {
+            // If the page doesn't contain the selected account, let's deselect it
+          } else if (
+            !accounts.filter(
+              (a) => a.index.toString() === this.state.selectedAccount
+            ).length
+          ) {
             newState.selectedAccount = null
           }
-
 
           // Map accounts with balances
           newState.accounts = accounts.map((account) => {
             const normalizedAddress = account.address.toLowerCase()
-            const balanceValue = (this.props.accounts[normalizedAddress] && this.props.accounts[normalizedAddress].balance) || null
-            account.balance = balanceValue ? formatBalance(balanceValue, 6) : '...'
+            const balanceValue =
+              (this.props.accounts[normalizedAddress] &&
+                this.props.accounts[normalizedAddress].balance) ||
+              null
+            account.balance = balanceValue
+              ? formatBalance(balanceValue, 6)
+              : '...'
             return account
           })
 
@@ -115,14 +129,18 @@ class ConnectHardwareForm extends Component {
         const errorMessage = e.message
         if (errorMessage === 'Window blocked') {
           this.setState({ browserSupported: false, error: null })
-        } else if (errorMessage !== 'Window closed' && errorMessage !== 'Popup closed') {
+        } else if (
+          errorMessage !== 'Window closed' &&
+          errorMessage !== 'Popup closed'
+        ) {
           this.setState({ error: errorMessage })
         }
       })
   }
 
   onForgetDevice = (device) => {
-    this.props.forgetDevice(device)
+    this.props
+      .forgetDevice(device)
       .then((_) => {
         this.setState({
           error: null,
@@ -130,18 +148,19 @@ class ConnectHardwareForm extends Component {
           accounts: [],
           unlocked: false,
         })
-      }).catch((e) => {
+      })
+      .catch((e) => {
         this.setState({ error: e.message })
       })
   }
 
   onUnlockAccount = (device) => {
-
     if (this.state.selectedAccount === null) {
       this.setState({ error: this.context.t('accountSelectionRequired') })
     }
 
-    this.props.unlockHardwareWalletAccount(this.state.selectedAccount, device)
+    this.props
+      .unlockHardwareWalletAccount(this.state.selectedAccount, device)
       .then((_) => {
         this.context.metricsEvent({
           eventOpts: {
@@ -151,7 +170,8 @@ class ConnectHardwareForm extends Component {
           },
         })
         this.props.history.push(DEFAULT_ROUTE)
-      }).catch((e) => {
+      })
+      .catch((e) => {
         this.context.metricsEvent({
           eventOpts: {
             category: 'Accounts',
@@ -170,20 +190,22 @@ class ConnectHardwareForm extends Component {
     this.props.history.push(DEFAULT_ROUTE)
   }
 
-  renderError () {
-    return this.state.error
-      ? (
-        <span
-          className="error"
-          style={{ margin: '20px 20px 10px', display: 'block', textAlign: 'center' }}
-        >
-          {this.state.error}
-        </span>
-      )
-      : null
+  renderError() {
+    return this.state.error ? (
+      <span
+        className="error"
+        style={{
+          margin: '20px 20px 10px',
+          display: 'block',
+          textAlign: 'center',
+        }}
+      >
+        {this.state.error}
+      </span>
+    ) : null
   }
 
-  renderContent () {
+  renderContent() {
     if (!this.state.accounts.length) {
       return (
         <ConnectScreen
@@ -211,7 +233,7 @@ class ConnectHardwareForm extends Component {
     )
   }
 
-  render () {
+  render() {
     return (
       <div>
         {this.renderError()}
@@ -268,7 +290,9 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch(actions.forgetDevice(deviceName))
     },
     unlockHardwareWalletAccount: (index, deviceName, hdPath) => {
-      return dispatch(actions.unlockHardwareWalletAccount(index, deviceName, hdPath))
+      return dispatch(
+        actions.unlockHardwareWalletAccount(index, deviceName, hdPath)
+      )
     },
     showAlert: (msg) => dispatch(actions.showAlert(msg)),
     hideAlert: () => dispatch(actions.hideAlert()),
@@ -280,6 +304,4 @@ ConnectHardwareForm.contextTypes = {
   metricsEvent: PropTypes.func,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  ConnectHardwareForm
-)
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectHardwareForm)

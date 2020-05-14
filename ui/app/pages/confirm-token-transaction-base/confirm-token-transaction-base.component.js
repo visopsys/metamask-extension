@@ -32,8 +32,13 @@ export default class ConfirmTokenTransactionBase extends Component {
     tokenAmount: 0,
   }
 
-  getFiatTransactionAmount () {
-    const { tokenAmount, currentCurrency, conversionRate, contractExchangeRate } = this.props
+  getFiatTransactionAmount() {
+    const {
+      tokenAmount,
+      currentCurrency,
+      conversionRate,
+      contractExchangeRate,
+    } = this.props
 
     return convertTokenToFiat({
       value: tokenAmount,
@@ -43,49 +48,47 @@ export default class ConfirmTokenTransactionBase extends Component {
     })
   }
 
-  renderSubtitleComponent () {
+  renderSubtitleComponent() {
     const { contractExchangeRate, tokenAmount } = this.props
 
-    const decimalEthValue = (tokenAmount * contractExchangeRate) || 0
+    const decimalEthValue = tokenAmount * contractExchangeRate || 0
     const hexWeiValue = getWeiHexFromDecimalValue({
       value: decimalEthValue,
       fromCurrency: ETH,
       fromDenomination: ETH,
     })
 
-    return typeof contractExchangeRate === 'undefined'
-      ? (
-        <span>
-          { this.context.t('noConversionRateAvailable') }
-        </span>
-      ) : (
-        <UserPreferencedCurrencyDisplay
-          value={hexWeiValue}
-          type={PRIMARY}
-          showEthLogo
-          hideLabel
-        />
-      )
+    return typeof contractExchangeRate === 'undefined' ? (
+      <span>{this.context.t('noConversionRateAvailable')}</span>
+    ) : (
+      <UserPreferencedCurrencyDisplay
+        value={hexWeiValue}
+        type={PRIMARY}
+        showEthLogo
+        hideLabel
+      />
+    )
   }
 
-  renderPrimaryTotalTextOverride () {
+  renderPrimaryTotalTextOverride() {
     const { tokenAmount, tokenSymbol, ethTransactionTotal } = this.props
     const tokensText = `${tokenAmount} ${tokenSymbol}`
 
     return (
       <div>
-        <span>{ `${tokensText} + ` }</span>
-        <img
-          src="/images/eth.svg"
-          height="18"
-        />
-        <span>{ ethTransactionTotal }</span>
+        <span>{`${tokensText} + `}</span>
+        <img src="/images/eth.svg" height="18" />
+        <span>{ethTransactionTotal}</span>
       </div>
     )
   }
 
-  getSecondaryTotalTextOverride () {
-    const { fiatTransactionTotal, currentCurrency, contractExchangeRate } = this.props
+  getSecondaryTotalTextOverride() {
+    const {
+      fiatTransactionTotal,
+      currentCurrency,
+      contractExchangeRate,
+    } = this.props
 
     if (typeof contractExchangeRate === 'undefined') {
       return formatCurrency(fiatTransactionTotal, currentCurrency)
@@ -97,7 +100,7 @@ export default class ConfirmTokenTransactionBase extends Component {
     }
   }
 
-  render () {
+  render() {
     const {
       toAddress,
       tokenAddress,

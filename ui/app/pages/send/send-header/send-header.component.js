@@ -4,7 +4,6 @@ import PageContainerHeader from '../../../components/ui/page-container/page-cont
 import { DEFAULT_ROUTE } from '../../../helpers/constants/routes'
 
 export default class SendHeader extends Component {
-
   static propTypes = {
     clearSend: PropTypes.func,
     history: PropTypes.object,
@@ -15,12 +14,12 @@ export default class SendHeader extends Component {
     t: PropTypes.func,
   }
 
-  onClose () {
+  onClose() {
     this.props.clearSend()
     this.props.history.push(DEFAULT_ROUTE)
   }
 
-  render () {
+  render() {
     return (
       <PageContainerHeader
         className="send__header"
@@ -30,5 +29,4 @@ export default class SendHeader extends Component {
       />
     )
   }
-
 }

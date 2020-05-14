@@ -3,7 +3,11 @@ import { compose } from 'redux'
 import { withRouter } from 'react-router-dom'
 import ConfirmSendToken from './confirm-send-token.component'
 import { clearConfirmTransaction } from '../../ducks/confirm-transaction/confirm-transaction.duck'
-import { setSelectedToken, updateSend, showSendTokenPage } from '../../store/actions'
+import {
+  setSelectedToken,
+  updateSend,
+  showSendTokenPage,
+} from '../../store/actions'
 import { conversionUtil } from '../../helpers/utils/conversion-util'
 import { sendTokenTokenAmountAndToAddressSelector } from '../../selectors'
 
@@ -18,15 +22,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     editTransaction: ({ txData, tokenData, tokenProps }) => {
-
       const {
         id,
-        txParams: {
-          from,
-          to: tokenAddress,
-          gas: gasLimit,
-          gasPrice,
-        } = {},
+        txParams: { from, to: tokenAddress, gas: gasLimit, gasPrice } = {},
       } = txData
 
       const { params = [] } = tokenData
@@ -39,20 +37,22 @@ const mapDispatchToProps = (dispatch) => {
       })
 
       dispatch(setSelectedToken(tokenAddress))
-      dispatch(updateSend({
-        from,
-        gasLimit,
-        gasPrice,
-        gasTotal: null,
-        to,
-        amount: tokenAmountInHex,
-        errors: { to: null, amount: null },
-        editingTransactionId: id && id.toString(),
-        token: {
-          ...tokenProps,
-          address: tokenAddress,
-        },
-      }))
+      dispatch(
+        updateSend({
+          from,
+          gasLimit,
+          gasPrice,
+          gasTotal: null,
+          to,
+          amount: tokenAmountInHex,
+          errors: { to: null, amount: null },
+          editingTransactionId: id && id.toString(),
+          token: {
+            ...tokenProps,
+            address: tokenAddress,
+          },
+        })
+      )
       dispatch(clearConfirmTransaction())
       dispatch(showSendTokenPage())
     },

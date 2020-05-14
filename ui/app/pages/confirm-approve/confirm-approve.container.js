@@ -7,9 +7,7 @@ import {
   transactionFeeSelector,
 } from '../../selectors'
 import { showModal } from '../../store/actions'
-import {
-  getTokenData,
-} from '../../helpers/utils/transactions.util'
+import { getTokenData } from '../../helpers/utils/transactions.util'
 import withTokenTracker from '../../helpers/higher-order-components/with-token-tracker'
 import {
   calcTokenAmount,
@@ -19,7 +17,9 @@ import {
 import ConfirmApprove from './confirm-approve.component'
 
 const mapStateToProps = (state, ownProps) => {
-  const { match: { params = {} } } = ownProps
+  const {
+    match: { params = {} },
+  } = ownProps
   const { id: paramsTransactionId } = params
   const {
     confirmTransaction,
@@ -33,26 +33,31 @@ const mapStateToProps = (state, ownProps) => {
   } = state
 
   const {
-    txData: { id: transactionId, txParams: { to: tokenAddress, data } = {} } = {},
+    txData: {
+      id: transactionId,
+      txParams: { to: tokenAddress, data } = {},
+    } = {},
   } = confirmTransaction
 
-  const transaction = (
-    currentNetworkTxList.find(({ id }) => id === (Number(paramsTransactionId) ||
-    transactionId)) || {}
-  )
+  const transaction =
+    currentNetworkTxList.find(
+      ({ id }) => id === (Number(paramsTransactionId) || transactionId)
+    ) || {}
 
-  const {
-    ethTransactionTotal,
-    fiatTransactionTotal,
-  } = transactionFeeSelector(state, transaction)
+  const { ethTransactionTotal, fiatTransactionTotal } = transactionFeeSelector(
+    state,
+    transaction
+  )
   const tokens = tokenSelector(state)
-  const currentToken = tokens && tokens.find(({ address }) => tokenAddress === address)
+  const currentToken =
+    tokens && tokens.find(({ address }) => tokenAddress === address)
   const { decimals, symbol: tokenSymbol } = currentToken || {}
 
   const tokenData = getTokenData(data)
   const tokenValue = tokenData && getTokenValue(tokenData.params)
   const toAddress = tokenData && getTokenToAddress(tokenData.params)
-  const tokenAmount = tokenData && calcTokenAmount(tokenValue, decimals).toString(10)
+  const tokenAmount =
+    tokenData && calcTokenAmount(tokenValue, decimals).toString(10)
   const contractExchangeRate = contractExchangeRateSelector(state)
 
   const { origin } = transaction
@@ -83,7 +88,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    showCustomizeGasModal: (txData) => dispatch(showModal({ name: 'CUSTOMIZE_GAS', txData })),
+    showCustomizeGasModal: (txData) =>
+      dispatch(showModal({ name: 'CUSTOMIZE_GAS', txData })),
     showEditApprovalPermissionModal: ({
       customTokenAmount,
       decimals,
@@ -92,22 +98,24 @@ const mapDispatchToProps = (dispatch) => {
       tokenAmount,
       tokenBalance,
       tokenSymbol,
-    }) => dispatch(showModal({
-      name: 'EDIT_APPROVAL_PERMISSION',
-      customTokenAmount,
-      decimals,
-      origin,
-      setCustomAmount,
-      tokenAmount,
-      tokenBalance,
-      tokenSymbol,
-    })),
+    }) =>
+      dispatch(
+        showModal({
+          name: 'EDIT_APPROVAL_PERMISSION',
+          customTokenAmount,
+          decimals,
+          origin,
+          setCustomAmount,
+          tokenAmount,
+          tokenBalance,
+          tokenSymbol,
+        })
+      ),
   }
 }
 
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-  withTokenTracker,
+  withTokenTracker
 )(ConfirmApprove)
-

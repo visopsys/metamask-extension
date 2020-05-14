@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import {
   unconfirmedTransactionsCountSelector,
-
   getCurrentEthBalance,
   getFirstPermissionRequest,
   getTotalUnapprovedCount,
@@ -44,15 +43,18 @@ const mapStateToProps = (state) => {
   const isNotification = envType === ENVIRONMENT_TYPE_NOTIFICATION
 
   const firstPermissionsRequest = getFirstPermissionRequest(state)
-  const firstPermissionsRequestId = (firstPermissionsRequest && firstPermissionsRequest.metadata)
-    ? firstPermissionsRequest.metadata.id
-    : null
+  const firstPermissionsRequestId =
+    firstPermissionsRequest && firstPermissionsRequest.metadata
+      ? firstPermissionsRequest.metadata.id
+      : null
 
   return {
     forgottenPassword,
     suggestedTokens,
     unconfirmedTransactionsCount: unconfirmedTransactionsCountSelector(state),
-    shouldShowSeedPhraseReminder: !seedPhraseBackedUp && (parseInt(accountBalance, 16) > 0 || tokens.length > 0),
+    shouldShowSeedPhraseReminder:
+      !seedPhraseBackedUp &&
+      (parseInt(accountBalance, 16) > 0 || tokens.length > 0),
     isPopup,
     isNotification,
     threeBoxSynced,
@@ -68,19 +70,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   turnThreeBoxSyncingOn: () => dispatch(turnThreeBoxSyncingOn()),
   setupThreeBox: () => {
-    dispatch(getThreeBoxLastUpdated())
-      .then((lastUpdated) => {
-        if (lastUpdated) {
-          dispatch(setThreeBoxLastUpdated(lastUpdated))
-        } else {
-          dispatch(setShowRestorePromptToFalse())
-          dispatch(turnThreeBoxSyncingOn())
-        }
-      })
+    dispatch(getThreeBoxLastUpdated()).then((lastUpdated) => {
+      if (lastUpdated) {
+        dispatch(setThreeBoxLastUpdated(lastUpdated))
+      } else {
+        dispatch(setShowRestorePromptToFalse())
+        dispatch(turnThreeBoxSyncingOn())
+      }
+    })
   },
   restoreFromThreeBox: (address) => dispatch(restoreFromThreeBox(address)),
   setShowRestorePromptToFalse: () => dispatch(setShowRestorePromptToFalse()),
-  setConnectedStatusPopoverHasBeenShown: () => dispatch(setConnectedStatusPopoverHasBeenShown()),
+  setConnectedStatusPopoverHasBeenShown: () =>
+    dispatch(setConnectedStatusPopoverHasBeenShown()),
 })
 
 export default compose(

@@ -47,7 +47,9 @@ const mapStateToProps = (state, ownProps) => {
   const isMyAccountsPage = pathname.match('my-accounts')
   const isAddContactPage = Boolean(pathname.match(CONTACT_ADD_ROUTE))
   const isEditContactPage = Boolean(pathname.match(CONTACT_EDIT_ROUTE))
-  const isEditMyAccountsContactPage = Boolean(pathname.match(CONTACT_MY_ACCOUNTS_EDIT_ROUTE))
+  const isEditMyAccountsContactPage = Boolean(
+    pathname.match(CONTACT_MY_ACCOUNTS_EDIT_ROUTE)
+  )
 
   const isPopupView = getEnvironmentType() === ENVIRONMENT_TYPE_POPUP
   const pathnameI18nKey = ROUTES_TO_I18N_KEYS[pathname]
@@ -74,7 +76,10 @@ const mapStateToProps = (state, ownProps) => {
     initialBreadCrumbKey = ROUTES_TO_I18N_KEYS[initialBreadCrumbRoute]
   }
 
-  const addressName = getAddressBookEntryName(state, isValidAddress(pathNameTail) ? pathNameTail : '')
+  const addressName = getAddressBookEntryName(
+    state,
+    isValidAddress(pathNameTail) ? pathNameTail : ''
+  )
 
   return {
     isAddressEntryPage,
@@ -90,7 +95,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps)
-)(Settings)
+export default compose(withRouter, connect(mapStateToProps))(Settings)

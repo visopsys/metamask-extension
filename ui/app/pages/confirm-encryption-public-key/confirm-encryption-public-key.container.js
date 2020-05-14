@@ -16,14 +16,13 @@ import {
 import { clearConfirmTransaction } from '../../ducks/confirm-transaction/confirm-transaction.duck'
 import ConfirmEncryptionPublicKey from './confirm-encryption-public-key.component'
 
-function mapStateToProps (state) {
-  const { confirmTransaction,
+function mapStateToProps(state) {
+  const {
+    confirmTransaction,
     metamask: { domainMetadata = {} },
   } = state
 
-  const {
-    txData = {},
-  } = confirmTransaction
+  const { txData = {} } = confirmTransaction
 
   const { msgParams: from } = txData
 
@@ -39,7 +38,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     goHome: () => dispatch(goHome()),
     clearConfirmTransaction: () => dispatch(clearConfirmTransaction()),

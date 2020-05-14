@@ -27,7 +27,6 @@ export default class MobileSyncPage extends Component {
     requestRevealSeedWords: PropTypes.func.isRequired,
   }
 
-
   state = {
     screen: PASSWORD_PROMPT_SCREEN,
     password: '',
@@ -41,24 +40,25 @@ export default class MobileSyncPage extends Component {
 
   syncing = false
 
-  componentDidMount () {
+  componentDidMount() {
     const passwordBox = document.getElementById('password-box')
     if (passwordBox) {
       passwordBox.focus()
     }
   }
 
-  startIdleTimeout () {
+  startIdleTimeout() {
     this.idleTimeout = setTimeout(() => {
       this.clearTimeouts()
       this.goBack()
     }, IDLE_TIME)
   }
 
-  handleSubmit (event) {
+  handleSubmit(event) {
     event.preventDefault()
     this.setState({ seedWords: null, error: null })
-    this.props.requestRevealSeedWords(this.state.password)
+    this.props
+      .requestRevealSeedWords(this.state.password)
       .then((seedWords) => {
         this.startKeysGeneration()
         this.startIdleTimeout()
@@ -67,7 +67,7 @@ export default class MobileSyncPage extends Component {
       .catch((error) => this.setState({ error: error.message }))
   }
 
-  startKeysGeneration () {
+  startKeysGeneration() {
     this.keysGenerationTimeout && clearTimeout(this.keysGenerationTimeout)
     this.disconnectWebsockets()
     this.generateCipherKeyAndChannelName()
@@ -77,28 +77,30 @@ export default class MobileSyncPage extends Component {
     }, KEYS_GENERATION_TIME)
   }
 
-  goBack () {
+  goBack() {
     const { history } = this.props
     history.push(DEFAULT_ROUTE)
   }
 
-  clearTimeouts () {
+  clearTimeouts() {
     this.keysGenerationTimeout && clearTimeout(this.keysGenerationTimeout)
     this.idleTimeout && clearTimeout(this.idleTimeout)
   }
 
-  generateCipherKeyAndChannelName () {
-    this.cipherKey = `${this.props.selectedAddress.substr(-4)}-${PubNub.generateUUID()}`
+  generateCipherKeyAndChannelName() {
+    this.cipherKey = `${this.props.selectedAddress.substr(
+      -4
+    )}-${PubNub.generateUUID()}`
     this.channelName = `mm-${PubNub.generateUUID()}`
     this.setState({ cipherKey: this.cipherKey, channelName: this.channelName })
   }
 
-  initWithCipherKeyAndChannelName (cipherKey, channelName) {
+  initWithCipherKeyAndChannelName(cipherKey, channelName) {
     this.cipherKey = cipherKey
     this.channelName = channelName
   }
 
-  initWebsockets () {
+  initWebsockets() {
     // Make sure there are no existing listeners
     this.disconnectWebsockets()
 
@@ -137,23 +139,20 @@ export default class MobileSyncPage extends Component {
       channels: [this.channelName],
       withPresence: false,
     })
-
   }
 
-  disconnectWebsockets () {
+  disconnectWebsockets() {
     if (this.pubnub && this.pubnubListener) {
       this.pubnub.removeListener(this.pubnubListener)
     }
   }
 
   // Calculating a PubNub Message Payload Size.
-  calculatePayloadSize (channel, message) {
-    return encodeURIComponent(
-      channel + JSON.stringify(message)
-    ).length + 100
+  calculatePayloadSize(channel, message) {
+    return encodeURIComponent(channel + JSON.stringify(message)).length + 100
   }
 
-  chunkString (str, size) {
+  chunkString(str, size) {
     const numChunks = Math.ceil(str.length / size)
     const chunks = new Array(numChunks)
     for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
@@ -162,7 +161,7 @@ export default class MobileSyncPage extends Component {
     return chunks
   }
 
-  notifyError (errorMsg) {
+  notifyError(errorMsg) {
     return new Promise((resolve, reject) => {
       this.pubnub.publish(
         {
@@ -180,18 +179,24 @@ export default class MobileSyncPage extends Component {
           } else {
             reject(response)
           }
-        })
+        }
+      )
     })
   }
 
-  async startSyncing () {
+  async startSyncing() {
     if (this.syncing) {
       return false
     }
     this.syncing = true
     this.setState({ syncing: true })
 
-    const { accounts, network, preferences, transactions } = await this.props.fetchInfoToSync()
+    const {
+      accounts,
+      network,
+      preferences,
+      transactions,
+    } = await this.props.fetchInfoToSync()
 
     const allDataStr = JSON.stringify({
       accounts,
@@ -218,7 +223,7 @@ export default class MobileSyncPage extends Component {
     }
   }
 
-  sendMessage (data, pkg, count) {
+  sendMessage(data, pkg, count) {
     return new Promise((resolve, reject) => {
       this.pubnub.publish(
         {
@@ -243,13 +248,12 @@ export default class MobileSyncPage extends Component {
     })
   }
 
-
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.clearTimeouts()
     this.disconnectWebsockets()
   }
 
-  renderWarning (text) {
+  renderWarning(text) {
     return (
       <div className="page-container__warning-container">
         <div className="page-container__warning-message">
@@ -259,14 +263,12 @@ export default class MobileSyncPage extends Component {
     )
   }
 
-  renderContent () {
+  renderContent() {
     const { syncing, completed, screen } = this.state
     const { t } = this.context
 
     if (syncing) {
-      return (
-        <LoadingScreen loadingMessage="Sync in progress" />
-      )
+      return <LoadingScreen loadingMessage="Sync in progress" />
     }
 
     if (completed) {
@@ -285,26 +287,24 @@ export default class MobileSyncPage extends Component {
       )
     }
 
-    return screen === PASSWORD_PROMPT_SCREEN
-      ? (
-        <div>
-          {this.renderWarning(this.context.t('mobileSyncText'))}
-          <div className="reveal-seed__content">
-            {this.renderPasswordPromptContent()}
-          </div>
+    return screen === PASSWORD_PROMPT_SCREEN ? (
+      <div>
+        {this.renderWarning(this.context.t('mobileSyncText'))}
+        <div className="reveal-seed__content">
+          {this.renderPasswordPromptContent()}
         </div>
-      )
-      : (
-        <div>
-          {this.renderWarning(this.context.t('syncWithMobileBeCareful'))}
-          <div className="reveal-seed__content">
-            {this.renderRevealSeedContent()}
-          </div>
+      </div>
+    ) : (
+      <div>
+        {this.renderWarning(this.context.t('syncWithMobileBeCareful'))}
+        <div className="reveal-seed__content">
+          {this.renderRevealSeedContent()}
         </div>
-      )
+      </div>
+    )
   }
 
-  renderPasswordPromptContent () {
+  renderPasswordPromptContent() {
     const { t } = this.context
 
     return (
@@ -318,24 +318,26 @@ export default class MobileSyncPage extends Component {
             placeholder={t('password')}
             id="password-box"
             value={this.state.password}
-            onChange={(event) => this.setState({ password: event.target.value })}
+            onChange={(event) =>
+              this.setState({ password: event.target.value })
+            }
             className={classnames('form-control', {
               'form-control--error': this.state.error,
             })}
           />
         </div>
         {this.state.error && (
-          <div className="reveal-seed__error">
-            {this.state.error}
-          </div>
+          <div className="reveal-seed__error">{this.state.error}</div>
         )}
       </form>
     )
   }
 
-  renderRevealSeedContent () {
+  renderRevealSeedContent() {
     const qrImage = qrCode(0, 'M')
-    qrImage.addData(`metamask-sync:${this.state.channelName}|@|${this.state.cipherKey}`)
+    qrImage.addData(
+      `metamask-sync:${this.state.channelName}|@|${this.state.cipherKey}`
+    )
     qrImage.make()
 
     const { t } = this.context
@@ -364,13 +366,13 @@ export default class MobileSyncPage extends Component {
     )
   }
 
-  renderFooter () {
+  renderFooter() {
     return this.state.screen === PASSWORD_PROMPT_SCREEN
       ? this.renderPasswordPromptFooter()
       : this.renderRevealSeedFooter()
   }
 
-  renderPasswordPromptFooter () {
+  renderPasswordPromptFooter() {
     const { t } = this.context
     const { password } = this.state
 
@@ -397,7 +399,7 @@ export default class MobileSyncPage extends Component {
     )
   }
 
-  renderRevealSeedFooter () {
+  renderRevealSeedFooter() {
     const { t } = this.context
 
     return (
@@ -414,7 +416,7 @@ export default class MobileSyncPage extends Component {
     )
   }
 
-  render () {
+  render() {
     const { t } = this.context
     const { screen } = this.state
 
@@ -424,28 +426,18 @@ export default class MobileSyncPage extends Component {
           <div className="page-container__title">
             {t('syncWithMobileTitle')}
           </div>
-          {
-            screen === PASSWORD_PROMPT_SCREEN
-              ? (
-                <div className="page-container__subtitle">
-                  {t('syncWithMobileDesc')}
-                </div>
-              )
-              : null
-          }
-          {
-            screen === PASSWORD_PROMPT_SCREEN
-              ? (
-                <div className="page-container__subtitle">
-                  {t('syncWithMobileDescNewUsers')}
-                </div>
-              )
-              : null
-          }
+          {screen === PASSWORD_PROMPT_SCREEN ? (
+            <div className="page-container__subtitle">
+              {t('syncWithMobileDesc')}
+            </div>
+          ) : null}
+          {screen === PASSWORD_PROMPT_SCREEN ? (
+            <div className="page-container__subtitle">
+              {t('syncWithMobileDescNewUsers')}
+            </div>
+          ) : null}
         </div>
-        <div className="page-container__content">
-          {this.renderContent()}
-        </div>
+        <div className="page-container__content">{this.renderContent()}</div>
         {this.renderFooter()}
       </div>
     )

@@ -8,32 +8,42 @@ import {
 
 import * as actions from '../../../store/actions'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   const ownedAccounts = accountsWithSendEtherInfoSelector(state)
   const to = getSendTo(state)
   return {
-    isOwnedAccount: !!ownedAccounts.find(({ address }) => address.toLowerCase() === to.toLowerCase()),
+    isOwnedAccount: !!ownedAccounts.find(
+      ({ address }) => address.toLowerCase() === to.toLowerCase()
+    ),
     contact: getAddressBookEntry(state, to),
     to,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    showAddToAddressBookModal: (recipient) => dispatch(actions.showModal({
-      name: 'ADD_TO_ADDRESSBOOK',
-      recipient,
-    })),
+    showAddToAddressBookModal: (recipient) =>
+      dispatch(
+        actions.showModal({
+          name: 'ADD_TO_ADDRESSBOOK',
+          recipient,
+        })
+      ),
   }
 }
 
-function mergeProps (stateProps, dispatchProps, ownProps) {
+function mergeProps(stateProps, dispatchProps, ownProps) {
   const { to, ...restStateProps } = stateProps
   return {
     ...ownProps,
     ...restStateProps,
-    showAddToAddressBookModal: () => dispatchProps.showAddToAddressBookModal(to),
+    showAddToAddressBookModal: () =>
+      dispatchProps.showAddToAddressBookModal(to),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SendContent)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
+)(SendContent)
