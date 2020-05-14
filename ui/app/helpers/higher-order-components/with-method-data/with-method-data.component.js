@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { getMethodDataAsync, getFourBytePrefix } from '../../utils/transactions.util'
+import {
+  getMethodDataAsync,
+  getFourBytePrefix,
+} from '../../utils/transactions.util'
 
-export default function withMethodData (WrappedComponent) {
+export default function withMethodData(WrappedComponent) {
   return class MethodDataWrappedComponent extends PureComponent {
     static propTypes = {
       transaction: PropTypes.object,
@@ -21,11 +24,11 @@ export default function withMethodData (WrappedComponent) {
       error: null,
     }
 
-    componentDidMount () {
+    componentDidMount() {
       this.fetchMethodData()
     }
 
-    async fetchMethodData () {
+    async fetchMethodData() {
       const { transaction, knownMethodData, addKnownMethodData } = this.props
       const { txParams: { data = '' } = {} } = transaction
 
@@ -51,12 +54,12 @@ export default function withMethodData (WrappedComponent) {
       }
     }
 
-    render () {
+    render() {
       const { methodData, done, error } = this.state
 
       return (
         <WrappedComponent
-          { ...this.props }
+          {...this.props}
           methodData={{ data: methodData, done, error }}
         />
       )

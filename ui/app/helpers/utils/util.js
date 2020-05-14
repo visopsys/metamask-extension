@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 import punycode from 'punycode'
 
 // formatData :: ( date: <Unix Timestamp> ) -> String
-export function formatDate (date, format = 'M/d/y \'at\' T') {
+export function formatDate(date, format = "M/d/y 'at' T") {
   return DateTime.fromMillis(date).toFormat(format)
 }
 
@@ -26,25 +26,36 @@ for (const currency in valueTable) {
   bnTable[currency] = new ethUtil.BN(valueTable[currency], 10)
 }
 
-export function isEthNetwork (netId) {
-  if (!netId || netId === '1' || netId === '3' || netId === '4' || netId === '42' || netId === '5777') {
+export function isEthNetwork(netId) {
+  if (
+    !netId ||
+    netId === '1' ||
+    netId === '3' ||
+    netId === '4' ||
+    netId === '42' ||
+    netId === '5777'
+  ) {
     return true
   }
 
   return false
 }
 
-export function valuesFor (obj) {
+export function valuesFor(obj) {
   if (!obj) {
     return []
   }
-  return Object.keys(obj)
-    .map(function (key) {
-      return obj[key]
-    })
+  return Object.keys(obj).map(function (key) {
+    return obj[key]
+  })
 }
 
-export function addressSummary (address, firstSegLength = 10, lastSegLength = 4, includeHex = true) {
+export function addressSummary(
+  address,
+  firstSegLength = 10,
+  lastSegLength = 4,
+  includeHex = true
+) {
   if (!address) {
     return ''
   }
@@ -52,19 +63,27 @@ export function addressSummary (address, firstSegLength = 10, lastSegLength = 4,
   if (!includeHex) {
     checked = ethUtil.stripHexPrefix(checked)
   }
-  return checked ? checked.slice(0, firstSegLength) + '...' + checked.slice(checked.length - lastSegLength) : '...'
+  return checked
+    ? checked.slice(0, firstSegLength) +
+        '...' +
+        checked.slice(checked.length - lastSegLength)
+    : '...'
 }
 
-export function isValidAddress (address) {
+export function isValidAddress(address) {
   const prefixed = ethUtil.addHexPrefix(address)
   if (address === '0x0000000000000000000000000000000000000000') {
     return false
   }
-  return (isAllOneCase(prefixed) && ethUtil.isValidAddress(prefixed)) || ethUtil.isValidChecksumAddress(prefixed)
+  return (
+    (isAllOneCase(prefixed) && ethUtil.isValidAddress(prefixed)) ||
+    ethUtil.isValidChecksumAddress(prefixed)
+  )
 }
 
-export function isValidDomainName (address) {
-  const match = punycode.toASCII(address)
+export function isValidDomainName(address) {
+  const match = punycode
+    .toASCII(address)
     .toLowerCase()
     // Checks that the domain consists of at least one valid domain pieces separated by periods, followed by a tld
     // Each piece of domain name has only the characters a-z, 0-9, and a hyphen (but not at the start or end of chunk)
@@ -73,7 +92,7 @@ export function isValidDomainName (address) {
   return match !== null
 }
 
-export function isAllOneCase (address) {
+export function isAllOneCase(address) {
   if (!address) {
     return true
   }
@@ -83,7 +102,7 @@ export function isAllOneCase (address) {
 }
 
 // Takes wei Hex, returns wei BN, even if input is null
-export function numericBalance (balance) {
+export function numericBalance(balance) {
   if (!balance) {
     return new ethUtil.BN(0, 16)
   }
@@ -92,14 +111,17 @@ export function numericBalance (balance) {
 }
 
 // Takes  hex, returns [beforeDecimal, afterDecimal]
-export function parseBalance (balance) {
+export function parseBalance(balance) {
   let afterDecimal
   const wei = numericBalance(balance)
   const weiString = wei.toString()
   const trailingZeros = /0+$/
 
-  const beforeDecimal = weiString.length > 18 ? weiString.slice(0, weiString.length - 18) : '0'
-  afterDecimal = ('000000000000000000' + wei).slice(-18).replace(trailingZeros, '')
+  const beforeDecimal =
+    weiString.length > 18 ? weiString.slice(0, weiString.length - 18) : '0'
+  afterDecimal = ('000000000000000000' + wei)
+    .slice(-18)
+    .replace(trailingZeros, '')
   if (afterDecimal === '') {
     afterDecimal = '0'
   }
@@ -108,7 +130,12 @@ export function parseBalance (balance) {
 
 // Takes wei hex, returns an object with three properties.
 // Its "formatted" property is what we generally use to render values.
-export function formatBalance (balance, decimalsToKeep, needsParse = true, ticker = 'ETH') {
+export function formatBalance(
+  balance,
+  decimalsToKeep,
+  needsParse = true,
+  ticker = 'ETH'
+) {
   const parsed = needsParse ? parseBalance(balance) : balance.split('.')
   const beforeDecimal = parsed[0]
   let afterDecimal = parsed[1]
@@ -127,12 +154,13 @@ export function formatBalance (balance, decimalsToKeep, needsParse = true, ticke
     }
   } else {
     afterDecimal += Array(decimalsToKeep).join('0')
-    formatted = beforeDecimal + '.' + afterDecimal.slice(0, decimalsToKeep) + ` ${ticker}`
+    formatted =
+      beforeDecimal + '.' + afterDecimal.slice(0, decimalsToKeep) + ` ${ticker}`
   }
   return formatted
 }
 
-export function generateBalanceObject (formattedBalance, decimalsToKeep = 1) {
+export function generateBalanceObject(formattedBalance, decimalsToKeep = 1) {
   let balance = formattedBalance.split(' ')[0]
   const label = formattedBalance.split(' ')[1]
   const beforeDecimal = balance.split('.')[0]
@@ -153,7 +181,7 @@ export function generateBalanceObject (formattedBalance, decimalsToKeep = 1) {
   return { balance, label, shortBalance }
 }
 
-export function shortenBalance (balance, decimalsToKeep = 1) {
+export function shortenBalance(balance, decimalsToKeep = 1) {
   let truncatedValue
   const convertedBalance = parseFloat(balance)
   if (convertedBalance > 1000000) {
@@ -180,14 +208,14 @@ export function shortenBalance (balance, decimalsToKeep = 1) {
 
 // Takes a BN and an ethereum currency name,
 // returns a BN in wei
-export function normalizeToWei (amount, currency) {
+export function normalizeToWei(amount, currency) {
   try {
     return amount.mul(bnTable.wei).div(bnTable[currency])
   } catch (e) {}
   return amount
 }
 
-export function normalizeEthStringToWei (str) {
+export function normalizeEthStringToWei(str) {
   const parts = str.split('.')
   let eth = new ethUtil.BN(parts[0], 10).mul(bnTable.wei)
   if (parts[1]) {
@@ -205,26 +233,26 @@ export function normalizeEthStringToWei (str) {
 }
 
 const multiple = new ethUtil.BN('10000', 10)
-export function normalizeNumberToWei (n, currency) {
+export function normalizeNumberToWei(n, currency) {
   const enlarged = n * 10000
   const amount = new ethUtil.BN(String(enlarged), 10)
   return normalizeToWei(amount, currency).div(multiple)
 }
 
-export function isHex (str) {
+export function isHex(str) {
   return Boolean(str.match(/^(0x)?[0-9a-fA-F]+$/))
 }
 
-export function getContractAtAddress (tokenAddress) {
+export function getContractAtAddress(tokenAddress) {
   return global.eth.contract(abi).at(tokenAddress)
 }
 
-export function getRandomFileName () {
+export function getRandomFileName() {
   let fileName = ''
   const charBank = [
     ...'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
   ]
-  const fileNameLength = Math.floor((Math.random() * 7) + 6)
+  const fileNameLength = Math.floor(Math.random() * 7 + 6)
 
   for (let i = 0; i < fileNameLength; i++) {
     fileName += charBank[Math.floor(Math.random() * charBank.length)]
@@ -233,7 +261,7 @@ export function getRandomFileName () {
   return fileName
 }
 
-export function exportAsFile (filename, data, type = 'text/csv') {
+export function exportAsFile(filename, data, type = 'text/csv') {
   filename = filename || getRandomFileName()
   // source: https://stackoverflow.com/a/33542499 by Ludovic Feltz
   const blob = new window.Blob([data], { type })
@@ -250,7 +278,7 @@ export function exportAsFile (filename, data, type = 'text/csv') {
   }
 }
 
-export function getTokenAddressFromTokenObject (token) {
+export function getTokenAddressFromTokenObject(token) {
   return Object.values(token)[0].address.toLowerCase()
 }
 
@@ -261,7 +289,7 @@ export function getTokenAddressFromTokenObject (token) {
  * @returns {string} - checksummed address
  *
  */
-export function checksumAddress (address) {
+export function checksumAddress(address) {
   const checksummed = address ? ethUtil.toChecksumAddress(address) : ''
   return checksummed
 }
@@ -277,7 +305,7 @@ export function checksumAddress (address) {
  * @returns {string} The shortened address, or the original if it was no longer
  * than 10 characters.
  */
-export function shortenAddress (address = '') {
+export function shortenAddress(address = '') {
   if (address.length < 11) {
     return address
   }
@@ -285,19 +313,19 @@ export function shortenAddress (address = '') {
   return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
 
-export function isValidAddressHead (address) {
+export function isValidAddressHead(address) {
   const addressLengthIsLessThanFull = address.length < 42
   const addressIsHex = isHex(address)
 
   return addressLengthIsLessThanFull && addressIsHex
 }
 
-export function getOriginFromUrl (url) {
+export function getOriginFromUrl(url) {
   url = new URL(url)
   const origin = url.hostname
   return origin
 }
 
-export function getAccountByAddress (accounts = [], targetAddress) {
+export function getAccountByAddress(accounts = [], targetAddress) {
   return accounts.find(({ address }) => address === targetAddress)
 }

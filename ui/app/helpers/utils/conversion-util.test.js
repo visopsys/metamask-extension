@@ -1,7 +1,6 @@
 import assert from 'assert'
 import { addCurrencies } from './conversion-util'
 
-
 describe('conversion utils', function () {
   describe('addCurrencies()', function () {
     it('add whole numbers', function () {

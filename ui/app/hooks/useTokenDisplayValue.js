@@ -19,11 +19,13 @@ import { useMemo } from 'react'
  * @param {Token} token
  * @return {string} - The computed displayValue of the provided transactionData and token
  */
-export function useTokenDisplayValue (transactionData, token) {
+export function useTokenDisplayValue(transactionData, token) {
   if (!transactionData || !token) {
     return null
   }
-  const tokenData = useMemo(() => getTokenData(transactionData), [transactionData])
+  const tokenData = useMemo(() => getTokenData(transactionData), [
+    transactionData,
+  ])
   if (!tokenData?.params?.length) {
     return null
   }

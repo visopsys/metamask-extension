@@ -22,7 +22,8 @@ const switchDirection = async (direction) => {
       updatedLink.onload = () => {
         resolve()
       }
-      updatedLink.onerror = () => reject(new Error(`Failed to load '${direction}' stylesheet`))
+      updatedLink.onerror = () =>
+        reject(new Error(`Failed to load '${direction}' stylesheet`))
     })
   }
 }

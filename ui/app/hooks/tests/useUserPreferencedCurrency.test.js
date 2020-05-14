@@ -111,7 +111,7 @@ const tests = [
   },
 ]
 
-function getFakeUseSelector (state) {
+function getFakeUseSelector(state) {
   return (selector) => {
     if (selector === preferencesSelector) {
       return state
@@ -123,20 +123,28 @@ function getFakeUseSelector (state) {
   }
 }
 
-
 describe('useUserPreferencedCurrency', function () {
   tests.forEach(({ params: { type, ...otherParams }, state, result }) => {
     describe(`when showFiat is ${state.showFiat}, useNativeCurrencyAsPrimary is ${state.useNativeCurrencyAsPrimaryCurrency} and type is ${type}`, function () {
       const stub = sinon.stub(reactRedux, 'useSelector')
       stub.callsFake(getFakeUseSelector(state))
 
-      const { result: hookResult } = renderHook(() => useUserPreferencedCurrency(type, otherParams))
+      const { result: hookResult } = renderHook(() =>
+        useUserPreferencedCurrency(type, otherParams)
+      )
       stub.restore()
-      it(`should return currency as ${result.currency || 'not modified by user preferences'}`, function () {
+      it(`should return currency as ${
+        result.currency || 'not modified by user preferences'
+      }`, function () {
         assert.equal(hookResult.current.currency, result.currency)
       })
-      it(`should return decimals as ${result.numberOfDecimals || 'not modified by user preferences'}`, function () {
-        assert.equal(hookResult.current.numberOfDecimals, result.numberOfDecimals)
+      it(`should return decimals as ${
+        result.numberOfDecimals || 'not modified by user preferences'
+      }`, function () {
+        assert.equal(
+          hookResult.current.numberOfDecimals,
+          result.numberOfDecimals
+        )
       })
     })
   })

@@ -29,21 +29,26 @@ import { PRIMARY, SECONDARY, ETH } from '../helpers/constants/common'
  * @param {UseUserPreferencedCurrencyOptions} opts - options to override default values
  * @return {UserPreferredCurrency}
  */
-export function useUserPreferencedCurrency (type, opts = {}) {
+export function useUserPreferencedCurrency(type, opts = {}) {
   const nativeCurrency = useSelector((state) => state.metamask.nativeCurrency)
-  const {
-    useNativeCurrencyAsPrimaryCurrency,
-  } = useSelector(preferencesSelector)
+  const { useNativeCurrencyAsPrimaryCurrency } = useSelector(
+    preferencesSelector
+  )
   const showFiat = useSelector(getShouldShowFiat)
 
   let currency, numberOfDecimals
-  if (!showFiat || (type === PRIMARY && useNativeCurrencyAsPrimaryCurrency) ||
-    (type === SECONDARY && !useNativeCurrencyAsPrimaryCurrency)) {
+  if (
+    !showFiat ||
+    (type === PRIMARY && useNativeCurrencyAsPrimaryCurrency) ||
+    (type === SECONDARY && !useNativeCurrencyAsPrimaryCurrency)
+  ) {
     // Display ETH
     currency = nativeCurrency || ETH
     numberOfDecimals = opts.numberOfDecimals || opts.ethNumberOfDecimals || 6
-  } else if ((type === SECONDARY && useNativeCurrencyAsPrimaryCurrency) ||
-    (type === PRIMARY && !useNativeCurrencyAsPrimaryCurrency)) {
+  } else if (
+    (type === SECONDARY && useNativeCurrencyAsPrimaryCurrency) ||
+    (type === PRIMARY && !useNativeCurrencyAsPrimaryCurrency)
+  ) {
     // Display Fiat
     numberOfDecimals = opts.numberOfDecimals || opts.fiatNumberOfDecimals || 2
   }

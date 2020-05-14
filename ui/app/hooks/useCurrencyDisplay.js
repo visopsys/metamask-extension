@@ -1,6 +1,9 @@
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { formatCurrency, getValueFromWeiHex } from '../helpers/utils/confirm-tx.util'
+import {
+  formatCurrency,
+  getValueFromWeiHex,
+} from '../helpers/utils/confirm-tx.util'
 
 /**
  * Defines the shape of the options parameter for useCurrencyDisplay
@@ -30,7 +33,10 @@ import { formatCurrency, getValueFromWeiHex } from '../helpers/utils/confirm-tx.
  * @param {UseCurrencyOptions} opts    - An object for options to format the inputValue
  * @return {[string, CurrencyDisplayParts]}
  */
-export function useCurrencyDisplay (inputValue, { displayValue, prefix, numberOfDecimals, denomination, currency, ...opts }) {
+export function useCurrencyDisplay(
+  inputValue,
+  { displayValue, prefix, numberOfDecimals, denomination, currency, ...opts }
+) {
   const { currentCurrency, nativeCurrency, conversionRate } = useSelector(
     ({ metamask: { currentCurrency, nativeCurrency, conversionRate } }) => ({
       currentCurrency,
@@ -56,7 +62,15 @@ export function useCurrencyDisplay (inputValue, { displayValue, prefix, numberOf
       }),
       toCurrency
     )
-  }, [inputValue, nativeCurrency, conversionRate, displayValue, numberOfDecimals, denomination, toCurrency])
+  }, [
+    inputValue,
+    nativeCurrency,
+    conversionRate,
+    displayValue,
+    numberOfDecimals,
+    denomination,
+    toCurrency,
+  ])
 
   let suffix
 
@@ -64,6 +78,8 @@ export function useCurrencyDisplay (inputValue, { displayValue, prefix, numberOf
     suffix = opts.suffix || toCurrency.toUpperCase()
   }
 
-
-  return [`${prefix || ''}${value}${suffix ? ' ' + suffix : ''}`, { prefix, value, suffix }]
+  return [
+    `${prefix || ''}${value}${suffix ? ' ' + suffix : ''}`,
+    { prefix, value, suffix },
+  ]
 }

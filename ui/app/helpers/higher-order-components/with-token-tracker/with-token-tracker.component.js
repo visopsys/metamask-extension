@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import TokenTracker from '@metamask/eth-token-tracker'
 
-export default function withTokenTracker (WrappedComponent) {
+export default function withTokenTracker(WrappedComponent) {
   return class TokenTrackerWrappedComponent extends Component {
     static propTypes = {
       userAddress: PropTypes.string.isRequired,
@@ -18,30 +18,39 @@ export default function withTokenTracker (WrappedComponent) {
 
     tracker = null
 
-    componentDidMount () {
+    componentDidMount() {
       this.createFreshTokenTracker()
     }
 
-    componentDidUpdate (prevProps) {
-      const { userAddress: newAddress, token: { address: newTokenAddress } } = this.props
-      const { userAddress: oldAddress, token: { address: oldTokenAddress } } = prevProps
+    componentDidUpdate(prevProps) {
+      const {
+        userAddress: newAddress,
+        token: { address: newTokenAddress },
+      } = this.props
+      const {
+        userAddress: oldAddress,
+        token: { address: oldTokenAddress },
+      } = prevProps
 
-      if ((oldAddress === newAddress) && (oldTokenAddress === newTokenAddress)) {
+      if (oldAddress === newAddress && oldTokenAddress === newTokenAddress) {
         return
       }
 
-      if ((!oldAddress || !newAddress) && (!oldTokenAddress || !newTokenAddress)) {
+      if (
+        (!oldAddress || !newAddress) &&
+        (!oldTokenAddress || !newTokenAddress)
+      ) {
         return
       }
 
       this.createFreshTokenTracker()
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
       this.removeListeners()
     }
 
-    createFreshTokenTracker () {
+    createFreshTokenTracker() {
       this.removeListeners()
 
       if (!global.ethereumProvider) {
@@ -60,7 +69,8 @@ export default function withTokenTracker (WrappedComponent) {
       this.tracker.on('update', this.updateBalance)
       this.tracker.on('error', this.setError)
 
-      this.tracker.updateBalances()
+      this.tracker
+        .updateBalances()
         .then(() => this.updateBalance(this.tracker.serialize()))
         .catch((error) => this.setState({ error: error.message }))
     }
@@ -77,7 +87,7 @@ export default function withTokenTracker (WrappedComponent) {
       this.setState({ string, symbol, error: null, balance })
     }
 
-    removeListeners () {
+    removeListeners() {
       if (this.tracker) {
         this.tracker.stop()
         this.tracker.removeListener('update', this.updateBalance)
@@ -85,11 +95,11 @@ export default function withTokenTracker (WrappedComponent) {
       }
     }
 
-    render () {
+    render() {
       const { balance, string, symbol, error } = this.state
       return (
         <WrappedComponent
-          { ...this.props }
+          {...this.props}
           string={string}
           symbol={symbol}
           tokenTrackerBalance={balance}

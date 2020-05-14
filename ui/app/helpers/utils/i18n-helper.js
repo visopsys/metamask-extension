@@ -22,7 +22,9 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
   if (!localeMessages[key]) {
     if (localeCode === 'en') {
       if (!missingMessageErrors[key]) {
-        missingMessageErrors[key] = new Error(`Unable to find value of key "${key}" for locale "${localeCode}"`)
+        missingMessageErrors[key] = new Error(
+          `Unable to find value of key "${key}" for locale "${localeCode}"`
+        )
         Sentry.captureException(missingMessageErrors[key])
         log.error(missingMessageErrors[key])
         if (process.env.IN_TEST === 'true') {
@@ -34,7 +36,9 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
         warned[localeCode] = {}
       }
       warned[localeCode][key] = true
-      log.warn(`Translator - Unable to find value of key "${key}" for locale "${localeCode}"`)
+      log.warn(
+        `Translator - Unable to find value of key "${key}" for locale "${localeCode}"`
+      )
     }
     return null
   }
@@ -42,8 +46,11 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
   let phrase = entry.message
 
   const hasSubstitutions = Boolean(substitutions && substitutions.length)
-  const hasReactSubstitutions = hasSubstitutions &&
-    substitutions.some((element) => typeof element === 'function' || typeof element === 'object')
+  const hasReactSubstitutions =
+    hasSubstitutions &&
+    substitutions.some(
+      (element) => typeof element === 'function' || typeof element === 'object'
+    )
 
   // perform substitutions
   if (hasSubstitutions) {
@@ -51,7 +58,9 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
     const partsToReplace = phrase.match(/(\$\d)/g)
 
     if (partsToReplace.length > substitutions.length) {
-      throw new Error(`Insufficient number of substitutions for message: '${phrase}'`)
+      throw new Error(
+        `Insufficient number of substitutions for message: '${phrase}'`
+      )
     }
 
     const substitutedParts = parts.map((part) => {
@@ -59,21 +68,24 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
       return subMatch ? substitutions[Number(subMatch[1]) - 1] : part
     })
 
-    phrase = hasReactSubstitutions
-      ? <span> { substitutedParts } </span>
-      : substitutedParts.join('')
+    phrase = hasReactSubstitutions ? (
+      <span> {substitutedParts} </span>
+    ) : (
+      substitutedParts.join('')
+    )
   }
 
   return phrase
 }
 
-export async function fetchLocale (localeCode) {
+export async function fetchLocale(localeCode) {
   try {
-    const response = await window.fetch(`./_locales/${localeCode}/messages.json`)
+    const response = await window.fetch(
+      `./_locales/${localeCode}/messages.json`
+    )
     return await response.json()
   } catch (error) {
     log.error(`failed to fetch ${localeCode} locale because of ${error}`)
     return {}
   }
 }
-

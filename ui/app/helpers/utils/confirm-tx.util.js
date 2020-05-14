@@ -12,30 +12,34 @@ import {
 
 import { unconfirmedTransactionsCountSelector } from '../../selectors'
 
-export function increaseLastGasPrice (lastGasPrice) {
-  return ethUtil.addHexPrefix(multiplyCurrencies(lastGasPrice || '0x0', 1.1, {
-    multiplicandBase: 16,
-    multiplierBase: 10,
-    toNumericBase: 'hex',
-  }))
-}
-
-export function hexGreaterThan (a, b) {
-  return conversionGreaterThan(
-    { value: a, fromNumericBase: 'hex' },
-    { value: b, fromNumericBase: 'hex' },
+export function increaseLastGasPrice(lastGasPrice) {
+  return ethUtil.addHexPrefix(
+    multiplyCurrencies(lastGasPrice || '0x0', 1.1, {
+      multiplicandBase: 16,
+      multiplierBase: 10,
+      toNumericBase: 'hex',
+    })
   )
 }
 
-export function getHexGasTotal ({ gasLimit, gasPrice }) {
-  return ethUtil.addHexPrefix(multiplyCurrencies(gasLimit || '0x0', gasPrice || '0x0', {
-    toNumericBase: 'hex',
-    multiplicandBase: 16,
-    multiplierBase: 16,
-  }))
+export function hexGreaterThan(a, b) {
+  return conversionGreaterThan(
+    { value: a, fromNumericBase: 'hex' },
+    { value: b, fromNumericBase: 'hex' }
+  )
 }
 
-export function addEth (...args) {
+export function getHexGasTotal({ gasLimit, gasPrice }) {
+  return ethUtil.addHexPrefix(
+    multiplyCurrencies(gasLimit || '0x0', gasPrice || '0x0', {
+      toNumericBase: 'hex',
+      multiplicandBase: 16,
+      multiplierBase: 16,
+    })
+  )
+}
+
+export function addEth(...args) {
   return args.reduce((acc, base) => {
     return addCurrencies(acc, base, {
       toNumericBase: 'dec',
@@ -44,7 +48,7 @@ export function addEth (...args) {
   })
 }
 
-export function addFiat (...args) {
+export function addFiat(...args) {
   return args.reduce((acc, base) => {
     return addCurrencies(acc, base, {
       toNumericBase: 'dec',
@@ -53,7 +57,7 @@ export function addFiat (...args) {
   })
 }
 
-export function getValueFromWeiHex ({
+export function getValueFromWeiHex({
   value,
   fromCurrency = 'ETH',
   toCurrency,
@@ -73,7 +77,7 @@ export function getValueFromWeiHex ({
   })
 }
 
-export function getTransactionFee ({
+export function getTransactionFee({
   value,
   fromCurrency = 'ETH',
   toCurrency,
@@ -91,15 +95,18 @@ export function getTransactionFee ({
   })
 }
 
-export function formatCurrency (value, currencyCode) {
+export function formatCurrency(value, currencyCode) {
   const upperCaseCurrencyCode = currencyCode.toUpperCase()
 
   return currencies.find((currency) => currency.code === upperCaseCurrencyCode)
-    ? currencyFormatter.format(Number(value), { code: upperCaseCurrencyCode, style: 'currency' })
+    ? currencyFormatter.format(Number(value), {
+        code: upperCaseCurrencyCode,
+        style: 'currency',
+      })
     : value
 }
 
-export function convertTokenToFiat ({
+export function convertTokenToFiat({
   value,
   fromCurrency = 'ETH',
   toCurrency,
@@ -118,14 +125,16 @@ export function convertTokenToFiat ({
   })
 }
 
-export function hasUnconfirmedTransactions (state) {
+export function hasUnconfirmedTransactions(state) {
   return unconfirmedTransactionsCountSelector(state) > 0
 }
 
-export function roundExponential (value) {
+export function roundExponential(value) {
   const PRECISION = 4
   const bigNumberValue = new BigNumber(String(value))
 
   // In JS, numbers with exponentials greater than 20 get displayed as an exponential.
-  return bigNumberValue.e > 20 ? Number(bigNumberValue.toPrecision(PRECISION)) : value
+  return bigNumberValue.e > 20
+    ? Number(bigNumberValue.toPrecision(PRECISION))
+    : value
 }
