@@ -41,6 +41,7 @@ module.exports = {
       { anonymous: 'always', named: 'never' },
     ],
     indent: 'off',
+    'generator-star-spacing': 'off',
     'arrow-parens': 'error',
     'no-tabs': 'error',
     'no-mixed-operators': 'off',

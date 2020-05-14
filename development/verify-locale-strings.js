@@ -253,7 +253,7 @@ async function findJavascriptFiles(rootDir) {
   return javascriptFiles
 }
 
-async function * getFileContents(filenames) {
+async function* getFileContents(filenames) {
   for (const filename of filenames) {
     yield readFile(filename, 'utf8')
   }
