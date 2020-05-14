@@ -3,15 +3,14 @@ import { mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-export function mountWithStore (component, store) {
+export function mountWithStore(component, store) {
   const context = {
     store,
   }
   return mount(component, { context })
 }
 
-export function mountWithRouter (component, store = {}, pathname = '/') {
-
+export function mountWithRouter(component, store = {}, pathname = '/') {
   // Instantiate router context
   const router = {
     history: new MemoryRouter().history,

@@ -119,7 +119,10 @@ describe('EnsController', function () {
       const ens = new EnsController({
         ens: {
           reverse: sinon.stub().withArgs(address).returns('peaksignal.eth'),
-          lookup: sinon.stub().withArgs('peaksignal.eth').returns(ZERO_X_ERROR_ADDRESS),
+          lookup: sinon
+            .stub()
+            .withArgs('peaksignal.eth')
+            .returns(ZERO_X_ERROR_ADDRESS),
         },
         networkStore,
       })

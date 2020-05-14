@@ -1,6 +1,11 @@
 import { strict as assert } from 'assert'
 import { throwIfAccountIsBlacklisted } from '../../../../../app/scripts/controllers/transactions/lib/recipient-blacklist-checker'
-import { ROPSTEN_CODE, RINKEBY_CODE, KOVAN_CODE, GOERLI_CODE } from '../../../../../app/scripts/controllers/network/enums'
+import {
+  ROPSTEN_CODE,
+  RINKEBY_CODE,
+  KOVAN_CODE,
+  GOERLI_CODE,
+} from '../../../../../app/scripts/controllers/network/enums'
 
 describe('Recipient Blacklist Checker', function () {
   describe('#throwIfAccountIsBlacklisted', function () {
@@ -22,31 +27,40 @@ describe('Recipient Blacklist Checker', function () {
       const networks = [ROPSTEN_CODE, RINKEBY_CODE, KOVAN_CODE, GOERLI_CODE]
       for (const networkId of networks) {
         for (const account of publicAccounts) {
-          assert.doesNotThrow(() => throwIfAccountIsBlacklisted(networkId, account))
+          assert.doesNotThrow(() =>
+            throwIfAccountIsBlacklisted(networkId, account)
+          )
         }
       }
     })
 
     it('fails on mainnet', function () {
       for (const account of publicAccounts) {
-        assert.throws(
-          () => throwIfAccountIsBlacklisted(1, account),
-          { message: 'Recipient is a public account' },
-        )
+        assert.throws(() => throwIfAccountIsBlacklisted(1, account), {
+          message: 'Recipient is a public account',
+        })
       }
     })
 
     it('fails for public account - uppercase', function () {
       assert.throws(
-        () => throwIfAccountIsBlacklisted(1, '0X0D1D4E623D10F9FBA5DB95830F7D3839406C6AF2'),
-        { message: 'Recipient is a public account' },
+        () =>
+          throwIfAccountIsBlacklisted(
+            1,
+            '0X0D1D4E623D10F9FBA5DB95830F7D3839406C6AF2'
+          ),
+        { message: 'Recipient is a public account' }
       )
     })
 
     it('fails for public account - lowercase', function () {
       assert.throws(
-        () => throwIfAccountIsBlacklisted(1, '0x0d1d4e623d10f9fba5db95830f7d3839406c6af2'),
-        { message: 'Recipient is a public account' },
+        () =>
+          throwIfAccountIsBlacklisted(
+            1,
+            '0x0d1d4e623d10f9fba5db95830f7d3839406c6af2'
+          ),
+        { message: 'Recipient is a public account' }
       )
     })
   })

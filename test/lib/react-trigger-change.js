@@ -17,7 +17,7 @@
 
 // Constants and functions are declared inside the closure.
 // In this way, reactTriggerChange can be passed directly to executeScript in Selenium.
-module.exports = function reactTriggerChange (node) {
+module.exports = function reactTriggerChange(node) {
   const supportedInputTypes = {
     color: true,
     date: true,
@@ -45,19 +45,21 @@ module.exports = function reactTriggerChange (node) {
 
   // Do not try to delete non-configurable properties.
   // Value and checked properties on DOM elements are non-configurable in PhantomJS.
-  function deletePropertySafe (elem, prop) {
+  function deletePropertySafe(elem, prop) {
     const desc = Object.getOwnPropertyDescriptor(elem, prop)
     if (desc && desc.configurable) {
       delete elem[prop]
     }
   }
 
-  function getCheckedRadio (radio) {
+  function getCheckedRadio(radio) {
     const name = radio.name
     let radios
     let i
     if (name) {
-      radios = document.querySelectorAll('input[type="radio"][name="' + name + '"]')
+      radios = document.querySelectorAll(
+        'input[type="radio"][name="' + name + '"]'
+      )
       for (i = 0; i < radios.length; i += 1) {
         if (radios[i].checked) {
           return radios[i] !== radio ? radios[i] : null
@@ -67,7 +69,7 @@ module.exports = function reactTriggerChange (node) {
     return null
   }
 
-  function preventChecking (e) {
+  function preventChecking(e) {
     e.preventDefault()
     if (!initialChecked) {
       e.target.checked = false
@@ -77,15 +79,16 @@ module.exports = function reactTriggerChange (node) {
     }
   }
 
-  if (nodeName === 'select' ||
-    (nodeName === 'input' && type === 'file')) {
+  if (nodeName === 'select' || (nodeName === 'input' && type === 'file')) {
     // IE9-IE11, non-IE
     // Dispatch change.
     event = document.createEvent('HTMLEvents')
     event.initEvent('change', true, false)
     node.dispatchEvent(event)
-  } else if ((nodeName === 'input' && supportedInputTypes[type]) ||
-    nodeName === 'textarea') {
+  } else if (
+    (nodeName === 'input' && supportedInputTypes[type]) ||
+    nodeName === 'textarea'
+  ) {
     // React 16
     // Cache artificial value property descriptor.
     // Property doesn't exist in React <16, descriptor is undefined.

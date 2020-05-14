@@ -4,13 +4,14 @@ const { promisify } = require('util')
 const defaultOptions = {
   blockTime: 2,
   network_id: 5777,
-  mnemonic: 'phrase upgrade clock rough situate wedding elder clever doctor stamp excess tent',
+  mnemonic:
+    'phrase upgrade clock rough situate wedding elder clever doctor stamp excess tent',
   port: 8545,
   vmErrorsOnRPCResponse: false,
 }
 
 class Ganache {
-  async start (options) {
+  async start(options) {
     options = Object.assign({}, defaultOptions, options)
 
     const port = options.port
@@ -25,7 +26,7 @@ class Ganache {
     }
   }
 
-  async quit () {
+  async quit() {
     if (!this._server) {
       throw new Error('Server not running yet')
     }

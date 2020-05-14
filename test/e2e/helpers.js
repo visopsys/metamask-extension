@@ -7,7 +7,7 @@ const tinyDelayMs = 200
 const regularDelayMs = tinyDelayMs * 2
 const largeDelayMs = regularDelayMs * 2
 
-async function withFixtures (options, callback) {
+async function withFixtures(options, callback) {
   const { fixtures, ganacheOptions, driverOptions } = options
   const fixtureServer = new FixtureServer()
   const ganacheServer = new Ganache()

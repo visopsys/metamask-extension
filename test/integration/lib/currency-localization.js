@@ -1,22 +1,20 @@
 const reactTriggerChange = require('../../lib/react-trigger-change')
-const {
-  timeout,
-  queryAsync,
-  findAsync,
-} = require('../../lib/util')
+const { timeout, queryAsync, findAsync } = require('../../lib/util')
 const fetchMockResponses = require('../../data/fetch-mocks.json')
 
 QUnit.module('currency localization')
 
 QUnit.test('renders localized currency', (assert) => {
   const done = assert.async()
-  runCurrencyLocalizationTest(assert).then(done).catch((err) => {
-    assert.notOk(err, `Error was thrown: ${err.stack}`)
-    done()
-  })
+  runCurrencyLocalizationTest(assert)
+    .then(done)
+    .catch((err) => {
+      assert.notOk(err, `Error was thrown: ${err.stack}`)
+      done()
+    })
 })
 
-async function runCurrencyLocalizationTest (assert) {
+async function runCurrencyLocalizationTest(assert) {
   console.log('*** start runCurrencyLocalizationTest')
   const selectState = await queryAsync($, 'select')
   selectState.val('currency localization')
@@ -24,11 +22,20 @@ async function runCurrencyLocalizationTest (assert) {
   const realFetch = window.fetch.bind(window)
   window.fetch = (...args) => {
     if (args[0] === 'https://ethgasstation.info/json/ethgasAPI.json') {
-      return Promise.resolve({ json: () => Promise.resolve(JSON.parse(fetchMockResponses.ethGasBasic)) })
-    } else if (args[0] === 'https://ethgasstation.info/json/predictTable.json') {
-      return Promise.resolve({ json: () => Promise.resolve(JSON.parse(fetchMockResponses.ethGasPredictTable)) })
+      return Promise.resolve({
+        json: () => Promise.resolve(JSON.parse(fetchMockResponses.ethGasBasic)),
+      })
+    } else if (
+      args[0] === 'https://ethgasstation.info/json/predictTable.json'
+    ) {
+      return Promise.resolve({
+        json: () =>
+          Promise.resolve(JSON.parse(fetchMockResponses.ethGasPredictTable)),
+      })
     } else if (args[0].match(/chromeextensionmm/)) {
-      return Promise.resolve({ json: () => Promise.resolve(JSON.parse(fetchMockResponses.metametrics)) })
+      return Promise.resolve({
+        json: () => Promise.resolve(JSON.parse(fetchMockResponses.metametrics)),
+      })
     }
     return realFetch.fetch(...args)
   }
@@ -37,7 +44,13 @@ async function runCurrencyLocalizationTest (assert) {
   reactTriggerChange(selectState[0])
   await timeout(1000)
   const txView = await queryAsync($, '.home__main-view')
-  const heroBalance = await findAsync($(txView), '.transaction-view-balance__balance')
-  const fiatAmount = await findAsync($(heroBalance), '.transaction-view-balance__secondary-balance')
+  const heroBalance = await findAsync(
+    $(txView),
+    '.transaction-view-balance__balance'
+  )
+  const fiatAmount = await findAsync(
+    $(heroBalance),
+    '.transaction-view-balance__secondary-balance'
+  )
   assert.equal(fiatAmount[0].textContent, '₱102,707.97PHP')
 }
