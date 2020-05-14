@@ -46,12 +46,13 @@ selectedView = queryString.view || 'confirm sig requests'
 const firstState = states[selectedView]
 updateQueryParams(selectedView)
 
-function updateQueryParams (newView) {
+function updateQueryParams(newView) {
   queryString.view = newView
   const params = qs.stringify(queryString)
   const locationPaths = window.location.href.split('#')
   const routerPath = locationPaths[1] || ''
-  const newPath = locationPaths[0] + '#' + routerPath.split('?')[0] + `?${params}`
+  const newPath =
+    locationPaths[0] + '#' + routerPath.split('?')[0] + `?${params}`
 
   if (window.location.href !== newPath) {
     window.location.href = newPath
@@ -63,7 +64,7 @@ function updateQueryParams (newView) {
 //
 
 // some extension platform APIs must be mocked
-function mockPlatformApis () {
+function mockPlatformApis() {
   global.platform.getVersion = () => '0.0.0'
 }
 
@@ -84,7 +85,7 @@ mockPlatformApis()
 //
 
 actions._setBackgroundConnection(controller.getApi())
-function updateState (stateName) {
+function updateState(stateName) {
   selectedView = stateName
   updateQueryParams(stateName)
   const newState = states[selectedView]
@@ -94,25 +95,29 @@ function updateState (stateName) {
   }
 }
 
-function modifyBackgroundConnection (backgroundConnectionModifier) {
-  const modifiedBackgroundConnection = Object.assign({}, controller.getApi(), backgroundConnectionModifier)
+function modifyBackgroundConnection(backgroundConnectionModifier) {
+  const modifiedBackgroundConnection = Object.assign(
+    {},
+    controller.getApi(),
+    backgroundConnectionModifier
+  )
   actions._setBackgroundConnection(modifiedBackgroundConnection)
 }
 
 // parse opts
 const store = createStore(
   (state, action) =>
-    (action.type === 'GLOBAL_FORCE_UPDATE'
+    action.type === 'GLOBAL_FORCE_UPDATE'
       ? action.value
-      : rootReducer(state, action)),
+      : rootReducer(state, action),
   firstState,
-  applyMiddleware(thunkMiddleware),
+  applyMiddleware(thunkMiddleware)
 )
 
 // start app
 startApp()
 
-function startApp () {
+function startApp() {
   const body = document.body
   const container = document.createElement('div')
   container.id = 'test-container'
@@ -151,6 +156,6 @@ function startApp () {
         <Root store={store} />
       </div>
     </div>,
-    container,
+    container
   )
 }

@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 export default class Selector extends Component {
   state = {}
 
-  render () {
+  render() {
     const {
       states,
       selectedKey,
@@ -21,7 +21,8 @@ export default class Selector extends Component {
         value={selected}
         onChange={(event) => {
           const selectedKey = event.target.value
-          const backgroundConnectionModifier = backGroundConnectionModifiers[selectedKey]
+          const backgroundConnectionModifier =
+            backGroundConnectionModifiers[selectedKey]
           modifyBackgroundConnection(backgroundConnectionModifier || {})
           store.dispatch(updateState(selectedKey))
           this.setState({ selected: selectedKey })

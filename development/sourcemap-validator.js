@@ -15,39 +15,59 @@ const fsAsync = pify(fs)
 
 start().catch(console.error)
 
-
-async function start () {
-  const targetFiles = [`inpage.js`, `contentscript.js`, `ui.js`, `background.js`]
+async function start() {
+  const targetFiles = [
+    `inpage.js`,
+    `contentscript.js`,
+    `ui.js`,
+    `background.js`,
+  ]
   for (const buildName of targetFiles) {
     await validateSourcemapForFile({ buildName })
   }
 }
 
-async function validateSourcemapForFile ({ buildName }) {
+async function validateSourcemapForFile({ buildName }) {
   console.log(`build "${buildName}"`)
   const platform = `chrome`
   // load build and sourcemaps
   let rawBuild
   try {
-    const filePath = path.join(__dirname, `/../dist/${platform}/`, `${buildName}`)
+    const filePath = path.join(
+      __dirname,
+      `/../dist/${platform}/`,
+      `${buildName}`
+    )
     rawBuild = await fsAsync.readFile(filePath, 'utf8')
   } catch (err) {}
   if (!rawBuild) {
-    throw new Error(`SourcemapValidator - failed to load source file for "${buildName}"`)
+    throw new Error(
+      `SourcemapValidator - failed to load source file for "${buildName}"`
+    )
   }
   // attempt to load in dist mode
   let rawSourceMap
   try {
-    const filePath = path.join(__dirname, `/../dist/sourcemaps/`, `${buildName}.map`)
+    const filePath = path.join(
+      __dirname,
+      `/../dist/sourcemaps/`,
+      `${buildName}.map`
+    )
     rawSourceMap = await fsAsync.readFile(filePath, 'utf8')
   } catch (err) {}
   // attempt to load in dev mode
   try {
-    const filePath = path.join(__dirname, `/../dist/${platform}/`, `${buildName}.map`)
+    const filePath = path.join(
+      __dirname,
+      `/../dist/${platform}/`,
+      `${buildName}.map`
+    )
     rawSourceMap = await fsAsync.readFile(filePath, 'utf8')
   } catch (err) {}
   if (!rawSourceMap) {
-    throw new Error(`SourcemapValidator - failed to load sourcemaps for "${buildName}"`)
+    throw new Error(
+      `SourcemapValidator - failed to load sourcemaps for "${buildName}"`
+    )
   }
 
   const consumer = await new SourceMapConsumer(rawSourceMap)
@@ -71,7 +91,9 @@ async function validateSourcemapForFile ({ buildName }) {
       const result = consumer.originalPositionFor(position)
       // warn if source content is missing
       if (!result.source) {
-        console.warn(`!! missing source for position: ${JSON.stringify(position)}`)
+        console.warn(
+          `!! missing source for position: ${JSON.stringify(position)}`
+        )
         // const buildLine = buildLines[position.line - 1]
         console.warn(`   origin in build:`)
         console.warn(`   ${buildLines[position.line - 2]}`)
@@ -87,16 +109,20 @@ async function validateSourcemapForFile ({ buildName }) {
       const isMaybeValid = portion.includes(targetString)
       if (!isMaybeValid) {
         console.error('Sourcemap seems invalid:')
-        console.log(`\n========================== ${result.source} ====================================\n`)
+        console.log(
+          `\n========================== ${result.source} ====================================\n`
+        )
         console.log(line)
-        console.log(`\n==============================================================================\n`)
+        console.log(
+          `\n==============================================================================\n`
+        )
       }
     })
   })
   console.log(`  checked ${sampleCount} samples`)
 }
 
-function indicesOf (substring, string) {
+function indicesOf(substring, string) {
   const a = []
   let i = -1
   while ((i = string.indexOf(substring, i + 1)) >= 0) {

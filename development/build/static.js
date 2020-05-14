@@ -7,7 +7,6 @@ const { createTask, composeSeries } = require('./task')
 
 module.exports = createStaticAssetTasks
 
-
 const copyTargets = [
   {
     src: `./app/_locales/`,
@@ -54,22 +53,31 @@ const copyTargetsDev = [
   },
 ]
 
-function createStaticAssetTasks ({ livereload, browserPlatforms }) {
-
-  const prod = createTask('static:prod', composeSeries(...copyTargets.map((target) => {
-    return async function copyStaticAssets () {
-      await performCopy(target)
-    }
-  })))
-  const dev = createTask('static:dev', composeSeries(...copyTargetsDev.map((target) => {
-    return async function copyStaticAssets () {
-      await setupLiveCopy(target)
-    }
-  })))
+function createStaticAssetTasks({ livereload, browserPlatforms }) {
+  const prod = createTask(
+    'static:prod',
+    composeSeries(
+      ...copyTargets.map((target) => {
+        return async function copyStaticAssets() {
+          await performCopy(target)
+        }
+      })
+    )
+  )
+  const dev = createTask(
+    'static:dev',
+    composeSeries(
+      ...copyTargetsDev.map((target) => {
+        return async function copyStaticAssets() {
+          await setupLiveCopy(target)
+        }
+      })
+    )
+  )
 
   return { dev, prod }
 
-  async function setupLiveCopy (target) {
+  async function setupLiveCopy(target) {
     const pattern = target.pattern || '/**/*'
     watch(target.src + pattern, (event) => {
       livereload.changed(event.path)
@@ -78,22 +86,33 @@ function createStaticAssetTasks ({ livereload, browserPlatforms }) {
     await performCopy(target)
   }
 
-  async function performCopy (target) {
-    await Promise.all(browserPlatforms.map(async (platform) => {
-      if (target.pattern) {
-        await copyGlob(target.src, `${target.src}${target.pattern}`, `./dist/${platform}/${target.dest}`)
-      } else {
-        await copyGlob(target.src, `${target.src}`, `./dist/${platform}/${target.dest}`)
-      }
-    }))
+  async function performCopy(target) {
+    await Promise.all(
+      browserPlatforms.map(async (platform) => {
+        if (target.pattern) {
+          await copyGlob(
+            target.src,
+            `${target.src}${target.pattern}`,
+            `./dist/${platform}/${target.dest}`
+          )
+        } else {
+          await copyGlob(
+            target.src,
+            `${target.src}`,
+            `./dist/${platform}/${target.dest}`
+          )
+        }
+      })
+    )
   }
 
-  async function copyGlob (baseDir, srcGlob, dest) {
+  async function copyGlob(baseDir, srcGlob, dest) {
     const sources = await glob(srcGlob, { onlyFiles: false })
-    await Promise.all(sources.map(async (src) => {
-      const relativePath = path.relative(baseDir, src)
-      await fs.copy(src, `${dest}${relativePath}`)
-    }))
+    await Promise.all(
+      sources.map(async (src) => {
+        const relativePath = path.relative(baseDir, src)
+        await fs.copy(src, `${dest}${relativePath}`)
+      })
+    )
   }
-
 }

@@ -13,9 +13,13 @@ const onResponse = (request, response) => {
   if (response.statusCode >= 400) {
     console.log(chalk`{gray '-->'} {red ${response.statusCode}} ${request.url}`)
   } else if (response.statusCode >= 200 && response.statusCode < 300) {
-    console.log(chalk`{gray '-->'} {green ${response.statusCode}} ${request.url}`)
+    console.log(
+      chalk`{gray '-->'} {green ${response.statusCode}} ${request.url}`
+    )
   } else {
-    console.log(chalk`{gray '-->'} {green.dim ${response.statusCode}} ${request.url}`)
+    console.log(
+      chalk`{gray '-->'} {green.dim ${response.statusCode}} ${request.url}`
+    )
   }
 }
 const onRequest = (request, response) => {
@@ -50,7 +54,9 @@ const parsePort = (portString) => {
   if (!Number.isInteger(port)) {
     throw new Error(`Port '${portString}' is invalid; must be an integer`)
   } else if (port < 0 || port > 65535) {
-    throw new Error(`Port '${portString}' is out of range; must be between 0 and 65535 inclusive`)
+    throw new Error(
+      `Port '${portString}' is out of range; must be between 0 and 65535 inclusive`
+    )
   }
   return port
 }
@@ -88,5 +94,4 @@ const main = async () => {
   startServer(options)
 }
 
-main()
-  .catch(console.error)
+main().catch(console.error)
