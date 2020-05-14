@@ -23,11 +23,8 @@ export default class AssetList extends Component {
     unsetSelectedToken: PropTypes.func.isRequired,
   }
 
-  renderWalletBalance () {
-    const {
-      selectedTokenAddress,
-      unsetSelectedToken,
-    } = this.props
+  renderWalletBalance() {
+    const { selectedTokenAddress, unsetSelectedToken } = this.props
 
     return (
       <div
@@ -47,10 +44,8 @@ export default class AssetList extends Component {
     )
   }
 
-  renderAddToken () {
-    const {
-      history,
-    } = this.props
+  renderAddToken() {
+    const { history } = this.props
     const { metricsEvent } = this.context
 
     return (
@@ -69,7 +64,7 @@ export default class AssetList extends Component {
     )
   }
 
-  render () {
+  render() {
     const { setSelectedToken } = this.props
     return (
       <>

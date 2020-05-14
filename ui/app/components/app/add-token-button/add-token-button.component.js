@@ -14,17 +14,16 @@ export default class AddTokenButton extends PureComponent {
     onClick: PropTypes.func,
   }
 
-  render () {
+  render() {
     const { t } = this.context
     const { onClick } = this.props
 
     return (
       <div className="add-token-button">
-        <span className="add-token-button__description">{t('missingYourTokens')}</span>
-        <button
-          className="add-token-button__button"
-          onClick={onClick}
-        >
+        <span className="add-token-button__description">
+          {t('missingYourTokens')}
+        </span>
+        <button className="add-token-button__button" onClick={onClick}>
           {t('addToken')}
         </button>
       </div>

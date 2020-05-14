@@ -7,17 +7,17 @@ import { alertIsOpen as unconnectedAccountAlertIsOpen } from '../../../ducks/ale
 import { alertIsOpen as switchToConnectedAlertIsOpen } from '../../../ducks/alerts/switch-to-connected'
 
 const Alerts = () => {
-  const _unconnectedAccountAlertIsOpen = useSelector(unconnectedAccountAlertIsOpen)
-  const _switchToConnectedAlertIsOpen = useSelector(switchToConnectedAlertIsOpen)
+  const _unconnectedAccountAlertIsOpen = useSelector(
+    unconnectedAccountAlertIsOpen
+  )
+  const _switchToConnectedAlertIsOpen = useSelector(
+    switchToConnectedAlertIsOpen
+  )
 
   if (_unconnectedAccountAlertIsOpen) {
-    return (
-      <UnconnectedAccountAlert />
-    )
+    return <UnconnectedAccountAlert />
   } else if (_switchToConnectedAlertIsOpen) {
-    return (
-      <SwitchToConnectedAlert />
-    )
+    return <SwitchToConnectedAlert />
   }
 
   return null

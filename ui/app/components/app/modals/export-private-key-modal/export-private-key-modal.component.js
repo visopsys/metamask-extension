@@ -38,26 +38,26 @@ export default class ExportPrivateKeyModal extends Component {
     const { exportAccount } = this.props
 
     exportAccount(password, address)
-      .then((privateKey) => this.setState({
-        privateKey,
-        showWarning: false,
-      }))
+      .then((privateKey) =>
+        this.setState({
+          privateKey,
+          showWarning: false,
+        })
+      )
       .catch((e) => log.error(e))
   }
 
-  renderPasswordLabel (privateKey) {
+  renderPasswordLabel(privateKey) {
     return (
       <span className="private-key-password-label">
-        {
-          privateKey
-            ? this.context.t('copyPrivateKey')
-            : this.context.t('typePassword')
-        }
+        {privateKey
+          ? this.context.t('copyPrivateKey')
+          : this.context.t('typePassword')}
       </span>
     )
   }
 
-  renderPasswordInput (privateKey) {
+  renderPasswordInput(privateKey) {
     const plainKey = privateKey && stripHexPrefix(privateKey)
 
     if (!privateKey) {
@@ -81,7 +81,7 @@ export default class ExportPrivateKeyModal extends Component {
     )
   }
 
-  renderButtons (privateKey, address, hideModal) {
+  renderButtons(privateKey, address, hideModal) {
     return (
       <div className="export-private-key-buttons">
         {!privateKey && (
@@ -94,35 +94,33 @@ export default class ExportPrivateKeyModal extends Component {
             {this.context.t('cancel')}
           </Button>
         )}
-        {
-          privateKey
-            ? (
-              <Button
-                onClick={() => hideModal()}
-                type="secondary"
-                large
-                className="export-private-key__button"
-              >
-                {this.context.t('done')}
-              </Button>
-            )
-            : (
-              <Button
-                onClick={() => this.exportAccountAndGetPrivateKey(this.state.password, address)}
-                type="secondary"
-                large
-                className="export-private-key__button"
-                disabled={!this.state.password}
-              >
-                {this.context.t('confirm')}
-              </Button>
-            )
-        }
+        {privateKey ? (
+          <Button
+            onClick={() => hideModal()}
+            type="secondary"
+            large
+            className="export-private-key__button"
+          >
+            {this.context.t('done')}
+          </Button>
+        ) : (
+          <Button
+            onClick={() =>
+              this.exportAccountAndGetPrivateKey(this.state.password, address)
+            }
+            type="secondary"
+            large
+            className="export-private-key__button"
+            disabled={!this.state.password}
+          >
+            {this.context.t('confirm')}
+          </Button>
+        )}
       </div>
     )
   }
 
-  render () {
+  render() {
     const {
       selectedIdentity,
       warning,
@@ -132,10 +130,7 @@ export default class ExportPrivateKeyModal extends Component {
     } = this.props
     const { name, address } = selectedIdentity
 
-    const {
-      privateKey,
-      showWarning,
-    } = this.state
+    const { privateKey, showWarning } = this.state
 
     return (
       <AccountModalContainer
@@ -150,17 +145,19 @@ export default class ExportPrivateKeyModal extends Component {
           value={checksumAddress(address)}
         />
         <div className="account-modal-divider" />
-        <span className="modal-body-title">{this.context.t('showPrivateKeys')}</span>
+        <span className="modal-body-title">
+          {this.context.t('showPrivateKeys')}
+        </span>
         <div className="private-key-password">
           {this.renderPasswordLabel(privateKey)}
           {this.renderPasswordInput(privateKey)}
-          {
-            (showWarning && warning)
-              ? <span className="private-key-password-error">{warning}</span>
-              : null
-          }
+          {showWarning && warning ? (
+            <span className="private-key-password-error">{warning}</span>
+          ) : null}
         </div>
-        <div className="private-key-password-warning">{this.context.t('privateKeyWarning')}</div>
+        <div className="private-key-password-warning">
+          {this.context.t('privateKeyWarning')}
+        </div>
         {this.renderButtons(privateKey, address, hideModal)}
       </AccountModalContainer>
     )

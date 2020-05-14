@@ -22,7 +22,7 @@ class TokenMenuDropdown extends Component {
     this.props.onClose()
   }
 
-  render () {
+  render() {
     const { showHideTokenConfirmationModal } = this.props
 
     return (
@@ -39,7 +39,10 @@ class TokenMenuDropdown extends Component {
         <Item
           onClick={(e) => {
             e.stopPropagation()
-            const url = genAccountLink(this.props.token.address, this.props.network)
+            const url = genAccountLink(
+              this.props.token.address,
+              this.props.network
+            )
             global.platform.openTab({ url })
             this.props.onClose()
           }}
@@ -52,13 +55,13 @@ class TokenMenuDropdown extends Component {
 
 export default connect(mapStateToProps, mapDispatchToProps)(TokenMenuDropdown)
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     network: state.metamask.network,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     showHideTokenConfirmationModal: (token) => {
       dispatch(actions.showModal({ name: 'HIDE_TOKEN_CONFIRMATION', token }))

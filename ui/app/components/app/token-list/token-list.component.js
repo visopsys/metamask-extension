@@ -27,7 +27,7 @@ class TokenList extends Component {
     userAddress: PropTypes.string.isRequired,
   }
 
-  constructor () {
+  constructor() {
     super()
 
     this.state = {
@@ -37,7 +37,7 @@ class TokenList extends Component {
     }
   }
 
-  constructTokenTracker () {
+  constructTokenTracker() {
     const { network, tokens, userAddress } = this.props
     if (!tokens || !tokens.length) {
       this.setState({
@@ -78,7 +78,7 @@ class TokenList extends Component {
     this.tokenTracker.updateBalances()
   }
 
-  stopTokenTracker () {
+  stopTokenTracker() {
     if (this.tokenTracker) {
       this.tokenTracker.stop()
       this.tokenTracker.removeAllListeners('update')
@@ -86,11 +86,11 @@ class TokenList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.constructTokenTracker()
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     const { network, tokens, userAddress } = this.props
     if (
       isEqual(tokens, prevProps.tokens) &&
@@ -103,11 +103,11 @@ class TokenList extends Component {
     this.constructTokenTracker()
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.stopTokenTracker()
   }
 
-  render () {
+  render() {
     const t = this.context
     const { error, tokensLoading, tokensWithBalances } = this.state
     const { assetImages, network, onTokenClick } = this.props

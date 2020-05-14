@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { hideSidebar, showModal } from '../../../store/actions'
 import AccountDetails from './account-details.component'
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     hideSidebar: () => dispatch(hideSidebar()),
     showAccountDetailModal: () => {
@@ -12,7 +12,10 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-const AccountDetailsContainer = connect(null, mapDispatchToProps)(AccountDetails)
+const AccountDetailsContainer = connect(
+  null,
+  mapDispatchToProps
+)(AccountDetails)
 
 AccountDetailsContainer.propTypes = {
   label: PropTypes.string.isRequired,

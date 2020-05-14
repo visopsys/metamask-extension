@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import WalletView from './wallet-view.component'
 import { getSelectedAddress } from '../../../selectors'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     identities: state.metamask.identities,
     keyrings: state.metamask.keyrings,
@@ -12,7 +12,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps)
-)(WalletView)
+export default compose(withRouter, connect(mapStateToProps))(WalletView)

@@ -30,80 +30,82 @@ export default class TransactionViewBalance extends PureComponent {
     showFiat: true,
   }
 
-  renderBalance () {
+  renderBalance() {
     const { selectedToken, balance, balanceIsCached, showFiat } = this.props
 
-    return selectedToken
-      ? (
+    return selectedToken ? (
+      <div className="transaction-view-balance__balance">
+        <TokenBalance
+          token={selectedToken}
+          withSymbol
+          className="transaction-view-balance__primary-balance"
+        />
+      </div>
+    ) : (
+      <Tooltip
+        position="top"
+        title={this.context.t('balanceOutdated')}
+        disabled={!balanceIsCached}
+      >
         <div className="transaction-view-balance__balance">
-          <TokenBalance
-            token={selectedToken}
-            withSymbol
-            className="transaction-view-balance__primary-balance"
-          />
-        </div>
-      ) : (
-        <Tooltip position="top" title={this.context.t('balanceOutdated')} disabled={!balanceIsCached}>
-          <div className="transaction-view-balance__balance">
-            <div className="transaction-view-balance__primary-container">
-              <UserPreferencedCurrencyDisplay
-                className={classnames('transaction-view-balance__primary-balance', {
+          <div className="transaction-view-balance__primary-container">
+            <UserPreferencedCurrencyDisplay
+              className={classnames(
+                'transaction-view-balance__primary-balance',
+                {
                   'transaction-view-balance__cached-balance': balanceIsCached,
-                })}
-                value={balance}
-                type={PRIMARY}
-                ethNumberOfDecimals={4}
-                hideTitle
-              />
-              {
-                balanceIsCached ? <span className="transaction-view-balance__cached-star">*</span> : null
-              }
-            </div>
-            {
-              showFiat && (
-                <UserPreferencedCurrencyDisplay
-                  className={classnames({
-                    'transaction-view-balance__cached-secondary-balance': balanceIsCached,
-                    'transaction-view-balance__secondary-balance': !balanceIsCached,
-                  })}
-                  value={balance}
-                  type={SECONDARY}
-                  ethNumberOfDecimals={4}
-                  hideTitle
-                />
-              )
-            }
+                }
+              )}
+              value={balance}
+              type={PRIMARY}
+              ethNumberOfDecimals={4}
+              hideTitle
+            />
+            {balanceIsCached ? (
+              <span className="transaction-view-balance__cached-star">*</span>
+            ) : null}
           </div>
-        </Tooltip>
-      )
+          {showFiat && (
+            <UserPreferencedCurrencyDisplay
+              className={classnames({
+                'transaction-view-balance__cached-secondary-balance': balanceIsCached,
+                'transaction-view-balance__secondary-balance': !balanceIsCached,
+              })}
+              value={balance}
+              type={SECONDARY}
+              ethNumberOfDecimals={4}
+              hideTitle
+            />
+          )}
+        </div>
+      </Tooltip>
+    )
   }
 
-  renderButtons () {
+  renderButtons() {
     const { t, metricsEvent } = this.context
     const { selectedToken, showDepositModal, history } = this.props
 
     return (
       <div className="transaction-view-balance__buttons">
-        {
-          !selectedToken && (
-            <Button
-              type="secondary"
-              className="transaction-view-balance__button"
-              onClick={() => {
-                metricsEvent({
-                  eventOpts: {
-                    category: 'Navigation',
-                    action: 'Home',
-                    name: 'Clicked Deposit',
-                  },
-                })
-                showDepositModal()
-              }}
-            >
-              { t('deposit') }
-            </Button>
-          )
-        }
+        {!selectedToken && (
+          <Button
+            type="secondary"
+            className="transaction-view-balance__button"
+            onClick={() => {
+              metricsEvent({
+                eventOpts: {
+                  category: 'Navigation',
+                  action: 'Home',
+                  name: 'Clicked Deposit',
+                },
+              })
+              showDepositModal()
+            }}
+          >
+            {t('deposit')}
+          </Button>
+        )}
         <Button
           type="secondary"
           className="transaction-view-balance__button"
@@ -112,20 +114,22 @@ export default class TransactionViewBalance extends PureComponent {
               eventOpts: {
                 category: 'Navigation',
                 action: 'Home',
-                name: selectedToken ? 'Clicked Send: Token' : 'Clicked Send: Eth',
+                name: selectedToken
+                  ? 'Clicked Send: Token'
+                  : 'Clicked Send: Eth',
               },
             })
             history.push(SEND_ROUTE)
           }}
           data-testid="transaction-view-send"
         >
-          { t('send') }
+          {t('send')}
         </Button>
       </div>
     )
   }
 
-  render () {
+  render() {
     const { network, selectedToken, assetImage } = this.props
 
     return (
@@ -137,9 +141,9 @@ export default class TransactionViewBalance extends PureComponent {
             network={network}
             image={assetImage}
           />
-          { this.renderBalance() }
+          {this.renderBalance()}
         </div>
-        { this.renderButtons() }
+        {this.renderButtons()}
       </div>
     )
   }

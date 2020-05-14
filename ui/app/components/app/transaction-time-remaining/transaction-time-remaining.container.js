@@ -15,9 +15,11 @@ const mapStateToProps = (state, ownProps) => {
   const gasPrices = getEstimatedGasPrices(state)
   const estimatedTimes = getEstimatedGasTimes(state)
 
-  const {
-    newTimeEstimate: initialTimeEstimate,
-  } = getRawTimeEstimateData(customGasPrice, gasPrices, estimatedTimes)
+  const { newTimeEstimate: initialTimeEstimate } = getRawTimeEstimateData(
+    customGasPrice,
+    gasPrices,
+    estimatedTimes
+  )
 
   const submittedTime = transaction.submittedTime
 
@@ -29,6 +31,6 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(mapStateToProps)(TransactionTimeRemaining)
 
-function calcCustomGasPrice (customGasPriceInHex) {
+function calcCustomGasPrice(customGasPriceInHex) {
   return Number(hexWEIToDecGWEI(customGasPriceInHex))
 }

@@ -9,44 +9,57 @@ export default class TransactionTimeRemaining extends PureComponent {
     submittedTime: PropTypes.number,
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     const { initialTimeEstimate, submittedTime } = props
     this.state = {
-      timeRemaining: calcTransactionTimeRemaining(initialTimeEstimate, submittedTime),
+      timeRemaining: calcTransactionTimeRemaining(
+        initialTimeEstimate,
+        submittedTime
+      ),
     }
     this.interval = setInterval(
-      () => this.setState({ timeRemaining: calcTransactionTimeRemaining(initialTimeEstimate, submittedTime) }),
+      () =>
+        this.setState({
+          timeRemaining: calcTransactionTimeRemaining(
+            initialTimeEstimate,
+            submittedTime
+          ),
+        }),
       1000
     )
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     const { initialTimeEstimate, submittedTime } = this.props
     if (initialTimeEstimate !== prevProps.initialTimeEstimate) {
       clearInterval(this.interval)
-      const calcedTimeRemaining = calcTransactionTimeRemaining(initialTimeEstimate, submittedTime)
+      const calcedTimeRemaining = calcTransactionTimeRemaining(
+        initialTimeEstimate,
+        submittedTime
+      )
       this.setState({ timeRemaining: calcedTimeRemaining })
       this.interval = setInterval(
-        () => this.setState({ timeRemaining: calcTransactionTimeRemaining(initialTimeEstimate, submittedTime) }),
+        () =>
+          this.setState({
+            timeRemaining: calcTransactionTimeRemaining(
+              initialTimeEstimate,
+              submittedTime
+            ),
+          }),
         1000
       )
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearInterval(this.interval)
   }
 
-  render () {
+  render() {
     const { className } = this.props
     const { timeRemaining } = this.state
 
-    return (
-      <div className={className}>
-        { timeRemaining }
-      </div>
-
-    )
+    return <div className={className}>{timeRemaining}</div>
   }
 }

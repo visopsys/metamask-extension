@@ -14,10 +14,7 @@ import Button from '../../../ui/button'
 import Checkbox from '../../../ui/check-box'
 import Tooltip from '../../../ui/tooltip-v2'
 
-const {
-  ERROR,
-  LOADING,
-} = ALERT_STATE
+const { ERROR, LOADING } = ALERT_STATE
 
 const SwitchToUnconnectedAccountAlert = () => {
   const t = useContext(I18nContext)
@@ -37,35 +34,35 @@ const SwitchToUnconnectedAccountAlert = () => {
       title={t('notConnected')}
       subtitle={t('unconnectedAccountAlertDescription')}
       onClose={onClose}
-      footer={(
+      footer={
         <>
-          {
-            alertState === ERROR
-              ? (
-                <div className="unconnected-account-alert__error">
-                  { t('failureMessage') }
-                </div>
-              )
-              : null
-          }
+          {alertState === ERROR ? (
+            <div className="unconnected-account-alert__error">
+              {t('failureMessage')}
+            </div>
+          ) : null}
           <div className="unconnected-account-alert__footer-buttons">
             <Button
               disabled={alertState === LOADING}
               onClick={onClose}
               type="secondary"
             >
-              { t('dismiss') }
+              {t('dismiss')}
             </Button>
             <Button
-              disabled={alertState === LOADING || alertState === ERROR || dontShowThisAgain }
+              disabled={
+                alertState === LOADING ||
+                alertState === ERROR ||
+                dontShowThisAgain
+              }
               onClick={() => dispatch(connectAccount())}
               type="primary"
             >
-              { t('connect') }
+              {t('connect')}
             </Button>
           </div>
         </>
-      )}
+      }
       footerClassName="unconnected-account-alert__footer"
     >
       <Checkbox
@@ -78,7 +75,7 @@ const SwitchToUnconnectedAccountAlert = () => {
         className="unconnected-account-alert__checkbox-label"
         htmlFor="unconnectedAccount_dontShowThisAgain"
       >
-        { t('dontShowThisAgain') }
+        {t('dontShowThisAgain')}
         <Tooltip
           position="top"
           title={t('unconnectedAccountAlertDisableTooltip')}

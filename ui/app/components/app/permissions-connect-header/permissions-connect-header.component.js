@@ -16,28 +16,24 @@ export default class PermissionsConnectHeader extends Component {
     headerText: '',
   }
 
-  renderHeaderIcon () {
+  renderHeaderIcon() {
     const { icon, iconName } = this.props
 
     return (
       <div className="permissions-connect-header__icon">
-        <IconWithFallBack icon={ icon } name={ iconName } />
-        <div className="permissions-connect-header__text">{iconName }</div>
+        <IconWithFallBack icon={icon} name={iconName} />
+        <div className="permissions-connect-header__text">{iconName}</div>
       </div>
     )
   }
 
-  render () {
+  render() {
     const { headerTitle, headerText } = this.props
     return (
       <div className="permissions-connect-header">
-        { this.renderHeaderIcon() }
-        <div className="permissions-connect-header__title">
-          { headerTitle }
-        </div>
-        <div className="permissions-connect-header__subtitle">
-          { headerText }
-        </div>
+        {this.renderHeaderIcon()}
+        <div className="permissions-connect-header__title">{headerTitle}</div>
+        <div className="permissions-connect-header__subtitle">{headerText}</div>
       </div>
     )
   }

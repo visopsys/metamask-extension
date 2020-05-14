@@ -8,17 +8,14 @@ export default class SignatureRequestHeader extends PureComponent {
     fromAccount: PropTypes.object,
   }
 
-  render () {
+  render() {
     const { fromAccount } = this.props
 
     return (
       <div className="signature-request-header">
         <div className="signature-request-header--account">
           {fromAccount && (
-            <AccountListItem
-              displayBalance={false}
-              account={fromAccount}
-            />
+            <AccountListItem displayBalance={false} account={fromAccount} />
           )}
         </div>
         <div className="signature-request-header--network">

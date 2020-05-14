@@ -26,7 +26,7 @@ export default class AccountDetailsDropdown extends Component {
     this.props.onClose()
   }
 
-  render () {
+  render() {
     const {
       selectedIdentity,
       network,
@@ -63,9 +63,9 @@ export default class AccountDetailsDropdown extends Component {
             this.props.onClose()
           }}
           text={this.context.t('expandView')}
-          icon={(
+          icon={
             <img alt="" src="images/expand.svg" style={{ height: '15px' }} />
-          )}
+          }
         />
         <Item
           onClick={(e) => {
@@ -81,9 +81,7 @@ export default class AccountDetailsDropdown extends Component {
             this.props.onClose()
           }}
           text={this.context.t('accountDetails')}
-          icon={(
-            <img src="images/info.svg" style={{ height: '15px' }} alt="" />
-          )}
+          icon={<img src="images/info.svg" style={{ height: '15px' }} alt="" />}
         />
         <Item
           onClick={(e) => {
@@ -108,9 +106,13 @@ export default class AccountDetailsDropdown extends Component {
               ? rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)/)[1]
               : null
           }
-          icon={(
-            <img src="images/open-etherscan.svg" style={{ height: '15px' }} alt="" />
-          )}
+          icon={
+            <img
+              src="images/open-etherscan.svg"
+              style={{ height: '15px' }}
+              alt=""
+            />
+          }
         />
         <Item
           onClick={(e) => {
@@ -126,25 +128,27 @@ export default class AccountDetailsDropdown extends Component {
             this.props.onClose()
           }}
           text={this.context.t('connectedSites')}
-          icon={(
-            <img src="images/connect-white.svg" style={{ height: '15px' }} alt="" />
-          )}
+          icon={
+            <img
+              src="images/connect-white.svg"
+              style={{ height: '15px' }}
+              alt=""
+            />
+          }
         />
-        {
-          isRemovable
-            ? (
-              <Item
-                onClick={(e) => {
-                  e.stopPropagation()
-                  showRemoveAccountConfirmationModal(selectedIdentity)
-                  this.props.onClose()
-                }}
-                text={this.context.t('removeAccount')}
-                icon={<img src="images/hide.svg" style={{ height: '15px' }} alt="" />}
-              />
-            )
-            : null
-        }
+        {isRemovable ? (
+          <Item
+            onClick={(e) => {
+              e.stopPropagation()
+              showRemoveAccountConfirmationModal(selectedIdentity)
+              this.props.onClose()
+            }}
+            text={this.context.t('removeAccount')}
+            icon={
+              <img src="images/hide.svg" style={{ height: '15px' }} alt="" />
+            }
+          />
+        ) : null}
       </Menu>
     )
   }

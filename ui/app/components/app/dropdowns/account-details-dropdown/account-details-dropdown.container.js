@@ -9,7 +9,7 @@ import {
 } from '../../../../selectors'
 import genAccountLink from '../../../../../lib/account-link'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     selectedIdentity: getSelectedIdentity(state),
     network: state.metamask.network,
@@ -18,18 +18,25 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     showAccountDetailModal: () => {
       dispatch(actions.showModal({ name: 'ACCOUNT_DETAILS' }))
     },
     viewOnEtherscan: (address, network, rpcPrefs) => {
-      global.platform.openTab({ url: genAccountLink(address, network, rpcPrefs) })
+      global.platform.openTab({
+        url: genAccountLink(address, network, rpcPrefs),
+      })
     },
     showRemoveAccountConfirmationModal: (identity) => {
-      return dispatch(actions.showModal({ name: 'CONFIRM_REMOVE_ACCOUNT', identity }))
+      return dispatch(
+        actions.showModal({ name: 'CONFIRM_REMOVE_ACCOUNT', identity })
+      )
     },
   }
 }
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(AccountDetailsDropdown)
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(AccountDetailsDropdown)

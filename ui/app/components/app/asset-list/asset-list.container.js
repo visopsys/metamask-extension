@@ -4,15 +4,16 @@ import { compose } from 'redux'
 import AssetList from './asset-list.component'
 import { setSelectedToken } from '../../../store/actions'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     selectedTokenAddress: state.metamask.selectedTokenAddress,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    setSelectedToken: (tokenAddress) => dispatch(setSelectedToken(tokenAddress)),
+    setSelectedToken: (tokenAddress) =>
+      dispatch(setSelectedToken(tokenAddress)),
     unsetSelectedToken: () => dispatch(setSelectedToken()),
   }
 }

@@ -20,7 +20,7 @@ describe('Token Cell', function () {
       contractExchangeRates: {
         '0xAnotherToken': 0.015,
       },
-      conversionRate: 7.00,
+      conversionRate: 7.0,
     },
   }
 
@@ -60,5 +60,4 @@ describe('Token Cell', function () {
   it('renders converted fiat amount', function () {
     assert.equal(wrapper.find('.token-cell__fiat-amount').text(), '0.52 USD')
   })
-
 })

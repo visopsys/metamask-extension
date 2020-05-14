@@ -6,9 +6,7 @@ import { getAddressBook } from '../../../selectors'
 
 const mapStateToProps = (state, ownProps) => {
   const { metamask } = state
-  const {
-    ensResolutionsByAddress,
-  } = metamask
+  const { ensResolutionsByAddress } = metamask
   const { recipientAddress, senderAddress } = ownProps
   const address = checksumAddress(recipientAddress)
   const recipientEns = ensResolutionsByAddress[address] || ''
@@ -36,4 +34,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TransactionListItemDetails)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TransactionListItemDetails)

@@ -2,7 +2,10 @@ import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import Identicon from '../../ui/identicon'
-import { conversionUtil, multiplyCurrencies } from '../../../helpers/utils/conversion-util'
+import {
+  conversionUtil,
+  multiplyCurrencies,
+} from '../../../helpers/utils/conversion-util'
 import TokenMenuDropdown from '../dropdowns/token-menu-dropdown.js'
 import Tooltip from '../../ui/tooltip-v2'
 import { I18nContext } from '../../../contexts/i18n'
@@ -32,7 +35,7 @@ export default class TokenCell extends Component {
     tokenMenuOpen: false,
   }
 
-  render () {
+  render() {
     const t = this.context
     const { tokenMenuOpen } = this.state
     const {
@@ -64,12 +67,14 @@ export default class TokenCell extends Component {
         numberOfDecimals: 2,
         conversionRate: currentTokenToFiatRate,
       })
-      formattedFiat = currentTokenInFiat.toString() === '0'
-        ? ''
-        : `${currentTokenInFiat} ${currentCurrency.toUpperCase()}`
+      formattedFiat =
+        currentTokenInFiat.toString() === '0'
+          ? ''
+          : `${currentTokenInFiat} ${currentCurrency.toUpperCase()}`
     }
 
-    const showFiat = Boolean(currentTokenInFiat) && currentCurrency.toUpperCase() !== symbol
+    const showFiat =
+      Boolean(currentTokenInFiat) && currentCurrency.toUpperCase() !== symbol
 
     return (
       <div
@@ -90,35 +95,37 @@ export default class TokenCell extends Component {
             <div className="token-cell__token-balance">{string || 0}</div>
             <div className="token-cell__token-symbol">{symbol}</div>
             {showFiat && (
-              <div className="token-cell__fiat-amount">
-                {formattedFiat}
-              </div>
+              <div className="token-cell__fiat-amount">{formattedFiat}</div>
             )}
           </div>
         </div>
-        {
-          outdatedBalance && (
-            <Tooltip
-              interactive
-              position="bottom"
-              html={(
-                <div className="token-cell__outdated-tooltip">
-                  { t('troubleTokenBalances') }
-                  <a
-                    href={`https://ethplorer.io/address/${userAddress}`}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                    style={{ color: '#F7861C' }}
-                  >
-                    { t('here') }
-                  </a>
-                </div>
-              )}
-            >
-              <i className={classnames(['fa', 'fa-exclamation-circle', 'token-cell__outdated-icon'])} />
-            </Tooltip>
-          )
-        }
+        {outdatedBalance && (
+          <Tooltip
+            interactive
+            position="bottom"
+            html={
+              <div className="token-cell__outdated-tooltip">
+                {t('troubleTokenBalances')}
+                <a
+                  href={`https://ethplorer.io/address/${userAddress}`}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  style={{ color: '#F7861C' }}
+                >
+                  {t('here')}
+                </a>
+              </div>
+            }
+          >
+            <i
+              className={classnames([
+                'fa',
+                'fa-exclamation-circle',
+                'token-cell__outdated-icon',
+              ])}
+            />
+          </Tooltip>
+        )}
 
         <div>
           <i

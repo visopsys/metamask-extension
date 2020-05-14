@@ -15,17 +15,15 @@ export default class MenuBar extends PureComponent {
 
   state = { accountDetailsMenuOpen: false }
 
-  render () {
+  render() {
     const { t } = this.context
     const { accountDetailsMenuOpen } = this.state
 
     return (
       <div className="menu-bar">
-        {
-          getEnvironmentType() === ENVIRONMENT_TYPE_POPUP
-            ? <ConnectedStatusIndicator />
-            : null
-        }
+        {getEnvironmentType() === ENVIRONMENT_TYPE_POPUP ? (
+          <ConnectedStatusIndicator />
+        ) : null}
 
         <SelectedAccount />
 
@@ -45,17 +43,14 @@ export default class MenuBar extends PureComponent {
                 accountDetailsMenuOpen: !prevState.accountDetailsMenuOpen,
               }))
             }}
-          >
-          </button>
+          />
         </Tooltip>
 
-        {
-          accountDetailsMenuOpen && (
-            <AccountDetailsDropdown
-              onClose={() => this.setState({ accountDetailsMenuOpen: false })}
-            />
-          )
-        }
+        {accountDetailsMenuOpen && (
+          <AccountDetailsDropdown
+            onClose={() => this.setState({ accountDetailsMenuOpen: false })}
+          />
+        )}
       </div>
     )
   }

@@ -16,17 +16,16 @@ import Dropdown from '../../../ui/dropdown'
 import Checkbox from '../../../ui/check-box'
 import Tooltip from '../../../ui/tooltip-v2'
 
-const {
-  ERROR,
-  LOADING,
-} = ALERT_STATE
+const { ERROR, LOADING } = ALERT_STATE
 
 const SwitchToUnconnectedAccountAlert = () => {
   const t = useContext(I18nContext)
   const dispatch = useDispatch()
   const alertState = useSelector(getAlertState)
   const connectedAccounts = useSelector(getPermittedIdentitiesForCurrentTab)
-  const [accountToSwitchTo, setAccountToSwitchTo] = useState(connectedAccounts[0].address)
+  const [accountToSwitchTo, setAccountToSwitchTo] = useState(
+    connectedAccounts[0].address
+  )
   const [dontShowThisAgain, setDontShowThisAgain] = useState(false)
 
   const onClose = async () => {
@@ -42,57 +41,55 @@ const SwitchToUnconnectedAccountAlert = () => {
   return (
     <Popover
       contentClassName="switch-to-connected-alert__content"
-      footer={(
+      footer={
         <>
-          {
-            alertState === ERROR
-              ? (
-                <div className="switch-to-connected-alert__error">
-                  { t('failureMessage') }
-                </div>
-              )
-              : null
-          }
+          {alertState === ERROR ? (
+            <div className="switch-to-connected-alert__error">
+              {t('failureMessage')}
+            </div>
+          ) : null}
           <div className="switch-to-connected-alert__footer-buttons">
             <Button
               disabled={alertState === LOADING}
               onClick={onClose}
               type="secondary"
             >
-              { t('dismiss') }
+              {t('dismiss')}
             </Button>
             <Button
-              disabled={alertState === LOADING || alertState === ERROR || dontShowThisAgain}
+              disabled={
+                alertState === LOADING ||
+                alertState === ERROR ||
+                dontShowThisAgain
+              }
               onClick={() => dispatch(switchToAccount(accountToSwitchTo))}
               type="primary"
             >
-              { t('switchAccounts') }
+              {t('switchAccounts')}
             </Button>
           </div>
         </>
-      )}
+      }
       footerClassName="switch-to-connected-alert__footer"
       onClose={onClose}
       subtitle={
         connectedAccounts.length > 1
           ? t('switchToConnectedAlertMultipleAccountsDescription')
-          : t('switchToConnectedAlertSingleAccountDescription', [connectedAccounts[0].name])
+          : t('switchToConnectedAlertSingleAccountDescription', [
+              connectedAccounts[0].name,
+            ])
       }
       title={t('notConnected')}
     >
-      {
-        connectedAccounts.length > 1
-          ? (
-            <Dropdown
-              className="switch-to-connected-alert__dropdown"
-              title="Switch to account"
-              onChange={(address) => setAccountToSwitchTo(address)}
-              options={options}
-              selectedOption={accountToSwitchTo}
-            />
-          )
-          : null
-      }
+      {connectedAccounts.length > 1 ? (
+        <Dropdown
+          className="switch-to-connected-alert__dropdown"
+          title="Switch to account"
+          onChange={(address) => setAccountToSwitchTo(address)}
+          options={options}
+          selectedOption={accountToSwitchTo}
+        />
+      ) : null}
       <div className="switch-to-connected-alert__checkbox-wrapper">
         <Checkbox
           id="switchToConnected_dontShowThisAgain"
@@ -104,7 +101,7 @@ const SwitchToUnconnectedAccountAlert = () => {
           className="switch-to-connected-alert__checkbox-label"
           htmlFor="switchToConnected_dontShowThisAgain"
         >
-          { t('dontShowThisAgain') }
+          {t('dontShowThisAgain')}
           <Tooltip
             position="top"
             title={t('unconnectedAccountAlertDisableTooltip')}

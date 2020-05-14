@@ -9,11 +9,15 @@ import {
   nonceSortedCompletedTransactionsSelector,
   nonceSortedPendingTransactionsSelector,
 } from '../../../selectors'
-import { fetchBasicGasAndTimeEstimates, fetchGasEstimates } from '../../../ducks/gas/gas.duck'
+import {
+  fetchBasicGasAndTimeEstimates,
+  fetchGasEstimates,
+} from '../../../ducks/gas/gas.duck'
 
 const mapStateToProps = (state) => {
   const pendingTransactions = nonceSortedPendingTransactionsSelector(state)
-  const firstPendingTransactionId = pendingTransactions[0] && pendingTransactions[0].primaryTransaction.id
+  const firstPendingTransactionId =
+    pendingTransactions[0] && pendingTransactions[0].primaryTransaction.id
   return {
     completedTransactions: nonceSortedCompletedTransactionsSelector(state),
     pendingTransactions,
@@ -28,11 +32,15 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchGasEstimates: (blockTime) => dispatch(fetchGasEstimates(blockTime)),
-    fetchBasicGasAndTimeEstimates: () => dispatch(fetchBasicGasAndTimeEstimates()),
+    fetchBasicGasAndTimeEstimates: () =>
+      dispatch(fetchBasicGasAndTimeEstimates()),
   }
 }
 
-const TransactionListContainer = connect(mapStateToProps, mapDispatchToProps)(TransactionList)
+const TransactionListContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TransactionList)
 
 TransactionListContainer.propTypes = {
   isWideViewport: PropTypes.bool,

@@ -12,14 +12,15 @@ import {
   getSelectedAddress,
 } from '../../../selectors'
 
-
 const mapStateToProps = (state) => {
   const selectedAddress = getSelectedAddress(state)
   const addressConnectedDomainMap = getAddressConnectedDomainMap(state)
   const originOfCurrentTab = getOriginOfCurrentTab(state)
 
   const selectedAddressDomainMap = addressConnectedDomainMap[selectedAddress]
-  const currentTabIsConnectedToSelectedAddress = Boolean(selectedAddressDomainMap && selectedAddressDomainMap[originOfCurrentTab])
+  const currentTabIsConnectedToSelectedAddress = Boolean(
+    selectedAddressDomainMap && selectedAddressDomainMap[originOfCurrentTab]
+  )
 
   let status
   if (currentTabIsConnectedToSelectedAddress) {

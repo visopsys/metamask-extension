@@ -6,11 +6,11 @@ import classnames from 'classnames'
  * Menu component
  * @returns {Component|null}
  */
-export function Menu (props) {
+export function Menu(props) {
   const { className, children, isShowing } = props
-  return isShowing
-    ? <div className={classnames('menu', className)}>{children}</div>
-    : null
+  return isShowing ? (
+    <div className={classnames('menu', className)}>{children}</div>
+  ) : null
 }
 
 Menu.defaultProps = {
@@ -25,31 +25,23 @@ Menu.propTypes = {
   isShowing: PropTypes.bool,
 }
 
-export function Item (props) {
-  const {
-    icon,
-    children,
-    text,
-    subText,
-    className,
-    onClick,
-  } = props
+export function Item(props) {
+  const { icon, children, text, subText, className, onClick } = props
 
   const itemClassName = classnames('menu__item', className, {
     'menu__item--clickable': Boolean(onClick),
   })
-  return children
-    ? <div className={itemClassName} onClick={onClick}>{children}</div>
-    : (
-      <div
-        className={itemClassName}
-        onClick={onClick}
-      >
-        {icon ? <div className="menu__item__icon">{icon}</div> : null}
-        {text ? <div className="menu__item__text">{text}</div> : null}
-        {subText ? <div className="menu__item__subtext">{subText}</div> : null}
-      </div>
-    )
+  return children ? (
+    <div className={itemClassName} onClick={onClick}>
+      {children}
+    </div>
+  ) : (
+    <div className={itemClassName} onClick={onClick}>
+      {icon ? <div className="menu__item__icon">{icon}</div> : null}
+      {text ? <div className="menu__item__text">{text}</div> : null}
+      {subText ? <div className="menu__item__subtext">{subText}</div> : null}
+    </div>
+  )
 }
 
 Item.defaultProps = {
@@ -70,11 +62,11 @@ Item.propTypes = {
   onClick: PropTypes.func,
 }
 
-export function Divider () {
+export function Divider() {
   return <div className="menu__divider" />
 }
 
-export function CloseArea ({ onClick }) {
+export function CloseArea({ onClick }) {
   return <div className="menu__close-area" onClick={onClick} />
 }
 

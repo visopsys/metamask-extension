@@ -16,7 +16,7 @@ export default class AccountPanel extends Component {
     isFauceting: false,
   }
 
-  render () {
+  render() {
     const { identity, account, isFauceting } = this.props
 
     const panelState = {
@@ -35,12 +35,17 @@ export default class AccountPanel extends Component {
     return (
       <div
         className="identity-panel flex-row flex-space-between"
-        style={{ flex: '1 0 auto', cursor: panelState.onClick ? 'pointer' : undefined }}
+        style={{
+          flex: '1 0 auto',
+          cursor: panelState.onClick ? 'pointer' : undefined,
+        }}
         onClick={panelState.onClick}
       >
         <div className="identicon-wrapper flex-column select-none">
           <Identicon address={panelState.identiconKey} />
-          <span className="font-small">{panelState.identiconLabel.substring(0, 7) + '...'}</span>
+          <span className="font-small">
+            {panelState.identiconLabel.substring(0, 7) + '...'}
+          </span>
         </div>
         <div className="identity-data flex-column flex-justify-center flex-grow select-none">
           {panelState.attributes.map((attr, index) => (
@@ -55,7 +60,7 @@ export default class AccountPanel extends Component {
   }
 }
 
-function balanceOrFaucetingIndication (account) {
+function balanceOrFaucetingIndication(account) {
   return {
     key: 'BALANCE',
     value: formatBalance(account.balance),

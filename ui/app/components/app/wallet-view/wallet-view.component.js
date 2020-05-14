@@ -30,7 +30,7 @@ export default class WalletView extends Component {
     history.push(CONNECTED_ROUTE)
   }
 
-  render () {
+  render() {
     const {
       identities,
       keyrings,
@@ -58,7 +58,13 @@ export default class WalletView extends Component {
     }
 
     return (
-      <div className={classnames('wallet-view', 'flex-column', responsiveDisplayClassname)}>
+      <div
+        className={classnames(
+          'wallet-view',
+          'flex-column',
+          responsiveDisplayClassname
+        )}
+      >
         <AccountDetails
           label={label}
           checksummedAddress={checksummedAddress}

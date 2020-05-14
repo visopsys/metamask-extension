@@ -15,7 +15,7 @@ class SimpleDropdown extends Component {
     isOpen: false,
   }
 
-  getDisplayValue () {
+  getDisplayValue() {
     const { selectedOption, options } = this.props
     const matchesOption = (option) => option.value === selectedOption
     const matchingOption = R.find(matchesOption)(options)
@@ -24,17 +24,17 @@ class SimpleDropdown extends Component {
       : selectedOption
   }
 
-  handleClose () {
+  handleClose() {
     this.setState({ isOpen: false })
   }
 
-  toggleOpen () {
+  toggleOpen() {
     this.setState((prevState) => ({
       isOpen: !prevState.isOpen,
     }))
   }
 
-  renderOptions () {
+  renderOptions() {
     const { options, onSelect, selectedOption } = this.props
 
     return (
@@ -50,7 +50,8 @@ class SimpleDropdown extends Component {
           {options.map((option) => (
             <div
               className={classnames('simple-dropdown__option', {
-                'simple-dropdown__option--selected': option.value === selectedOption,
+                'simple-dropdown__option--selected':
+                  option.value === selectedOption,
               })}
               key={option.value}
               onClick={(event) => {
@@ -70,13 +71,15 @@ class SimpleDropdown extends Component {
     )
   }
 
-  render () {
+  render() {
     const { placeholder } = this.props
     const { isOpen } = this.state
 
     return (
       <div className="simple-dropdown" onClick={() => this.toggleOpen()}>
-        <div className="simple-dropdown__selected">{this.getDisplayValue() || placeholder || 'Select'}</div>
+        <div className="simple-dropdown__selected">
+          {this.getDisplayValue() || placeholder || 'Select'}
+        </div>
         <i className="fa fa-caret-down fa-lg simple-dropdown__caret" />
         {isOpen && this.renderOptions()}
       </div>

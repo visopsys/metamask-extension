@@ -8,7 +8,7 @@ class NotificationModal extends Component {
     t: PropTypes.func.isRequired,
   }
 
-  render () {
+  render() {
     const {
       header,
       message,
@@ -85,4 +85,3 @@ NotificationModal.contextTypes = {
 }
 
 export default connect(null, mapDispatchToProps)(NotificationModal)
-

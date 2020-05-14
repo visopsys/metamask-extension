@@ -18,9 +18,7 @@ const initState = {
     keyrings: [
       {
         type: 'HD Key Tree',
-        accounts: [
-          '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
-        ],
+        accounts: ['0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc'],
       },
     ],
     frequentRpcListDetail: [],
@@ -38,7 +36,10 @@ describe('MenuBar', function () {
     )
     const accountOptions = wrapper.find('.menu-bar__account-options')
     accountOptions.simulate('click')
-    assert.equal(wrapper.find('MenuBar').instance().state.accountDetailsMenuOpen, true)
+    assert.equal(
+      wrapper.find('MenuBar').instance().state.accountDetailsMenuOpen,
+      true
+    )
   })
 
   it('sets accountDetailsMenuOpen to false when closed', function () {
@@ -48,12 +49,18 @@ describe('MenuBar', function () {
         <MenuBar />
       </Provider>
     )
-    wrapper.find('MenuBar').instance().setState({ accountDetailsMenuOpen: true })
+    wrapper
+      .find('MenuBar')
+      .instance()
+      .setState({ accountDetailsMenuOpen: true })
     wrapper.update()
 
     const accountDetailsMenu = wrapper.find('AccountDetailsDropdown')
     accountDetailsMenu.prop('onClose')()
 
-    assert.equal(wrapper.find('MenuBar').instance().state.accountDetailsMenuOpen, false)
+    assert.equal(
+      wrapper.find('MenuBar').instance().state.accountDetailsMenuOpen,
+      false
+    )
   })
 })

@@ -73,7 +73,7 @@ export default class SignatureRequestOriginal extends Component {
         <div className="request-signature__header-background" />
 
         <div className="request-signature__header__text">
-          { this.context.t('sigRequest') }
+          {this.context.t('sigRequest')}
         </div>
 
         <div className="request-signature__header__tip-container">
@@ -89,14 +89,11 @@ export default class SignatureRequestOriginal extends Component {
     return (
       <div className="request-signature__account">
         <div className="request-signature__account-text">
-          { `${this.context.t('account')}:` }
+          {`${this.context.t('account')}:`}
         </div>
 
         <div className="request-signature__account-item">
-          <AccountListItem
-            account={fromAccount}
-            displayBalance={false}
-          />
+          <AccountListItem account={fromAccount} displayBalance={false} />
         </div>
       </div>
     )
@@ -104,7 +101,9 @@ export default class SignatureRequestOriginal extends Component {
 
   renderBalance = () => {
     const { conversionRate } = this.props
-    const { fromAccount: { balance } } = this.state
+    const {
+      fromAccount: { balance },
+    } = this.state
 
     const balanceInEther = conversionUtil(balance, {
       fromNumericBase: 'hex',
@@ -117,10 +116,10 @@ export default class SignatureRequestOriginal extends Component {
     return (
       <div className="request-signature__balance">
         <div className="request-signature__balance-text">
-          { `${this.context.t('balance')}:` }
+          {`${this.context.t('balance')}:`}
         </div>
         <div className="request-signature__balance-value">
-          { `${balanceInEther} ETH` }
+          {`${balanceInEther} ETH`}
         </div>
       </div>
     )
@@ -131,10 +130,7 @@ export default class SignatureRequestOriginal extends Component {
 
     return (
       <div className="request-signature__request-icon">
-        <Identicon
-          diameter={40}
-          address={requesterAddress}
-        />
+        <Identicon diameter={40} address={requesterAddress} />
       </div>
     )
   }
@@ -142,9 +138,9 @@ export default class SignatureRequestOriginal extends Component {
   renderAccountInfo = () => {
     return (
       <div className="request-signature__account-info">
-        { this.renderAccount() }
-        { this.renderRequestIcon() }
-        { this.renderBalance() }
+        {this.renderAccount()}
+        {this.renderRequestIcon()}
+        {this.renderBalance()}
       </div>
     )
   }
@@ -153,7 +149,7 @@ export default class SignatureRequestOriginal extends Component {
     return (
       <div className="request-signature__request-info">
         <div className="request-signature__headline">
-          { this.context.t('yourSigRequested') }
+          {this.context.t('yourSigRequested')}
         </div>
       </div>
     )
@@ -173,30 +169,22 @@ export default class SignatureRequestOriginal extends Component {
     const { domain, message } = JSON.parse(data)
     return (
       <div className="request-signature__typed-container">
-        {
-          domain
-            ? (
-              <div>
-                <h1>
-                  Domain
-                </h1>
-                <ObjectInspector data={domain} expandLevel={1} name="domain" />
-              </div>
-            )
-            : ''
-        }
-        {
-          message
-            ? (
-              <div>
-                <h1>
-                  Message
-                </h1>
-                <ObjectInspector data={message} expandLevel={1} name="message" />
-              </div>
-            )
-            : ''
-        }
+        {domain ? (
+          <div>
+            <h1>Domain</h1>
+            <ObjectInspector data={domain} expandLevel={1} name="domain" />
+          </div>
+        ) : (
+          ''
+        )}
+        {message ? (
+          <div>
+            <h1>Message</h1>
+            <ObjectInspector data={message} expandLevel={1} name="message" />
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     )
   }
@@ -206,10 +194,15 @@ export default class SignatureRequestOriginal extends Component {
     let notice = `${this.context.t('youSign')}:`
 
     const { txData } = this.props
-    const { type, msgParams: { data } } = txData
+    const {
+      type,
+      msgParams: { data },
+    } = txData
 
     if (type === 'personal_sign') {
-      rows = [{ name: this.context.t('message'), value: this.msgHexToText(data) }]
+      rows = [
+        { name: this.context.t('message'), value: this.msgHexToText(data) },
+      ]
     } else if (type === 'eth_signTypedData') {
       rows = data
     } else if (type === 'eth_sign') {
@@ -219,49 +212,43 @@ export default class SignatureRequestOriginal extends Component {
 
     return (
       <div className="request-signature__body">
-        { this.renderAccountInfo() }
-        { this.renderRequestInfo() }
+        {this.renderAccountInfo()}
+        {this.renderRequestInfo()}
         <div
           className={classnames('request-signature__notice', {
             'request-signature__warning': type === 'eth_sign',
           })}
         >
-          { notice }
-          {
-            type === 'eth_sign'
-              ? (
-                <span
-                  className="request-signature__help-link"
-                  onClick={() => {
-                    global.platform.openTab({
-                      url: 'https://metamask.zendesk.com/hc/en-us/articles/360015488751',
-                    })
-                  }}
-                >
-                  { this.context.t('learnMore') }
-                </span>
-              )
-              : null
-          }
+          {notice}
+          {type === 'eth_sign' ? (
+            <span
+              className="request-signature__help-link"
+              onClick={() => {
+                global.platform.openTab({
+                  url:
+                    'https://metamask.zendesk.com/hc/en-us/articles/360015488751',
+                })
+              }}
+            >
+              {this.context.t('learnMore')}
+            </span>
+          ) : null}
         </div>
         <div className="request-signature__rows">
-          {
-            rows.map(({ name, value }, index) => {
-              if (typeof value === 'boolean') {
-                value = value.toString()
-              }
-              return (
-                <div className="request-signature__row" key={`request-signature-row-${index}`}>
-                  <div className="request-signature__row-title">
-                    { `${name}:` }
-                  </div>
-                  <div className="request-signature__row-value">
-                    { value }
-                  </div>
-                </div>
-              )
-            })
-          }
+          {rows.map(({ name, value }, index) => {
+            if (typeof value === 'boolean') {
+              value = value.toString()
+            }
+            return (
+              <div
+                className="request-signature__row"
+                key={`request-signature-row-${index}`}
+              >
+                <div className="request-signature__row-title">{`${name}:`}</div>
+                <div className="request-signature__row-value">{value}</div>
+              </div>
+            )
+          })}
         </div>
       </div>
     )
@@ -290,7 +277,7 @@ export default class SignatureRequestOriginal extends Component {
             this.props.history.push(DEFAULT_ROUTE)
           }}
         >
-          { this.context.t('cancel') }
+          {this.context.t('cancel')}
         </Button>
         <Button
           type="secondary"
@@ -310,7 +297,7 @@ export default class SignatureRequestOriginal extends Component {
             this.props.history.push(DEFAULT_ROUTE)
           }}
         >
-          { this.context.t('sign') }
+          {this.context.t('sign')}
         </Button>
       </div>
     )
@@ -319,9 +306,9 @@ export default class SignatureRequestOriginal extends Component {
   render = () => {
     return (
       <div className="request-signature__container">
-        { this.renderHeader() }
-        { this.renderBody() }
-        { this.renderFooter() }
+        {this.renderHeader()}
+        {this.renderBody()}
+        {this.renderFooter()}
       </div>
     )
   }
