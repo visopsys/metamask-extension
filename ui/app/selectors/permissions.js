@@ -1,8 +1,6 @@
 import { forOwn } from 'lodash'
 import { getMetaMaskIdentities, getOriginOfCurrentTab } from './selectors'
-import {
-  CAVEAT_NAMES,
-} from '../../../app/scripts/controllers/permissions/enums'
+import { CAVEAT_NAMES } from '../../../app/scripts/controllers/permissions/enums'
 
 // selectors
 
@@ -12,7 +10,7 @@ import {
  * @param {Object} state - The current state.
  * @returns {Object} The permissions domains object.
  */
-export function getPermissionDomains (state) {
+export function getPermissionDomains(state) {
   return state.metamask.domains || {}
 }
 
@@ -22,7 +20,7 @@ export function getPermissionDomains (state) {
  * @param {Object} state - The current state.
  * @returns {Object} The permission domains metadata object.
  */
-export function getPermissionDomainsMetadata (state) {
+export function getPermissionDomainsMetadata(state) {
   return state.metamask.domainMetadata || {}
 }
 
@@ -34,11 +32,9 @@ export function getPermissionDomainsMetadata (state) {
  * @param {string} origin - The origin/domain to get the permitted accounts for.
  * @returns {Array<string>} An empty array or an array of accounts.
  */
-export function getPermittedAccounts (state, origin) {
+export function getPermittedAccounts(state, origin) {
   return getAccountsFromPermission(
-    getAccountsPermissionFromDomain(
-      domainSelector(state, origin)
-    )
+    getAccountsPermissionFromDomain(domainSelector(state, origin))
   )
 }
 
@@ -49,11 +45,8 @@ export function getPermittedAccounts (state, origin) {
  * @param {Object} state - The current state.
  * @returns {Array<string>} An empty array or an array of accounts.
  */
-export function getPermittedAccountsForCurrentTab (state) {
-  return getPermittedAccounts(
-    state,
-    getOriginOfCurrentTab(state)
-  )
+export function getPermittedAccountsForCurrentTab(state) {
+  return getPermittedAccounts(state, getOriginOfCurrentTab(state))
 }
 
 /**
@@ -62,7 +55,7 @@ export function getPermittedAccountsForCurrentTab (state) {
  * @param {Object} state - The current state.
  * @returns {Object} Permitted accounts by origin.
  */
-export function getPermittedAccountsByOrigin (state) {
+export function getPermittedAccountsByOrigin(state) {
   const domains = getPermissionDomains(state)
   return Object.keys(domains).reduce((acc, domainKey) => {
     const accounts = getAccountsFromPermission(
@@ -85,10 +78,8 @@ export function getPermittedAccountsByOrigin (state) {
  * @param {Object} state - The current state.
  * @returns {Array<Object>} An array of connected domain objects.
  */
-export function getConnectedDomainsForSelectedAddress (state) {
-  const {
-    selectedAddress,
-  } = state.metamask
+export function getConnectedDomainsForSelectedAddress(state) {
+  const { selectedAddress } = state.metamask
   const domains = getPermissionDomains(state)
   const domainMetadata = getPermissionDomainsMetadata(state)
 
@@ -100,11 +91,7 @@ export function getConnectedDomainsForSelectedAddress (state) {
       return
     }
 
-    const {
-      extensionId,
-      name,
-      icon,
-    } = domainMetadata[domainKey] || {}
+    const { extensionId, name, icon } = domainMetadata[domainKey] || {}
 
     connectedDomains.push({
       extensionId,
@@ -117,7 +104,7 @@ export function getConnectedDomainsForSelectedAddress (state) {
   return connectedDomains
 }
 
-export function getPermittedIdentitiesForCurrentTab (state) {
+export function getPermittedIdentitiesForCurrentTab(state) {
   const permittedAccounts = getPermittedAccountsForCurrentTab(state)
   const identities = getMetaMaskIdentities(state)
   return permittedAccounts.map((address) => identities[address])
@@ -133,21 +120,22 @@ export function getPermittedIdentitiesForCurrentTab (state) {
  * @returns {Object} A mapping of addresses to a mapping of origins to
  * connected domain info.
  */
-export function getAddressConnectedDomainMap (state) {
+export function getAddressConnectedDomainMap(state) {
   const domainMetadata = getPermissionDomainsMetadata(state)
   const accountsMap = getPermittedAccountsByOrigin(state)
   const addressConnectedIconMap = {}
 
   Object.keys(accountsMap).forEach((domainKey) => {
-
     const { icon, name } = domainMetadata[domainKey] || {}
 
     accountsMap[domainKey].forEach((address) => {
-
       const nameToRender = name || domainKey
 
       addressConnectedIconMap[address] = addressConnectedIconMap[address]
-        ? { ...addressConnectedIconMap[address], [domainKey]: { icon, name: nameToRender } }
+        ? {
+            ...addressConnectedIconMap[address],
+            [domainKey]: { icon, name: nameToRender },
+          }
         : { [domainKey]: { icon, name: nameToRender } }
     })
   })
@@ -157,32 +145,26 @@ export function getAddressConnectedDomainMap (state) {
 
 // selector helpers
 
-function getAccountsFromDomain (domain) {
-  return getAccountsFromPermission(
-    getAccountsPermissionFromDomain(domain)
-  )
+function getAccountsFromDomain(domain) {
+  return getAccountsFromPermission(getAccountsPermissionFromDomain(domain))
 }
 
-function getAccountsPermissionFromDomain (domain = {}) {
-  return (
-    Array.isArray(domain.permissions)
-      ? domain.permissions.find(
+function getAccountsPermissionFromDomain(domain = {}) {
+  return Array.isArray(domain.permissions)
+    ? domain.permissions.find(
         (perm) => perm.parentCapability === 'eth_accounts'
       )
-      : {}
-  )
+    : {}
 }
 
-function getAccountsFromPermission (accountsPermission) {
+function getAccountsFromPermission(accountsPermission) {
   const accountsCaveat = getAccountsCaveatFromPermission(accountsPermission)
-  return (
-    accountsCaveat && Array.isArray(accountsCaveat.value)
-      ? accountsCaveat.value
-      : []
-  )
+  return accountsCaveat && Array.isArray(accountsCaveat.value)
+    ? accountsCaveat.value
+    : []
 }
 
-function getAccountsCaveatFromPermission (accountsPermission = {}) {
+function getAccountsCaveatFromPermission(accountsPermission = {}) {
   return (
     Array.isArray(accountsPermission.caveats) &&
     accountsPermission.caveats.find(
@@ -191,6 +173,6 @@ function getAccountsCaveatFromPermission (accountsPermission = {}) {
   )
 }
 
-function domainSelector (state, origin) {
+function domainSelector(state, origin) {
   return origin && state.metamask.domains?.[origin]
 }

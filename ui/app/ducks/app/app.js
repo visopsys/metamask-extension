@@ -3,55 +3,58 @@ import * as actionConstants from '../../store/actionConstants'
 // actionConstants
 const SET_THREEBOX_LAST_UPDATED = 'metamask/app/SET_THREEBOX_LAST_UPDATED'
 
-export default function reduceApp (state = {}, action) {
+export default function reduceApp(state = {}, action) {
   // default state
-  const appState = Object.assign({
-    shouldClose: false,
-    menuOpen: false,
-    modal: {
-      open: false,
-      modalState: {
-        name: null,
+  const appState = Object.assign(
+    {
+      shouldClose: false,
+      menuOpen: false,
+      modal: {
+        open: false,
+        modalState: {
+          name: null,
+          props: {},
+        },
+        previousModalState: {
+          name: null,
+        },
+      },
+      sidebar: {
+        isOpen: false,
+        transitionName: '',
+        type: '',
         props: {},
       },
-      previousModalState: {
-        name: null,
+      alertOpen: false,
+      alertMessage: null,
+      qrCodeData: null,
+      networkDropdownOpen: false,
+      accountDetail: {
+        subview: 'transactions',
       },
+      // Used to display loading indicator
+      isLoading: false,
+      // Used to display error text
+      warning: null,
+      buyView: {},
+      isMouseUser: false,
+      gasIsLoading: false,
+      defaultHdPaths: {
+        trezor: `m/44'/60'/0'/0`,
+        ledger: `m/44'/60'/0'/0/0`,
+      },
+      lastSelectedProvider: null,
+      networksTabSelectedRpcUrl: '',
+      networksTabIsInAddMode: false,
+      loadingMethodData: false,
+      show3BoxModalAfterImport: false,
+      threeBoxLastUpdated: null,
+      requestAccountTabs: {},
+      openMetaMaskTabs: {},
+      currentWindowTab: {},
     },
-    sidebar: {
-      isOpen: false,
-      transitionName: '',
-      type: '',
-      props: {},
-    },
-    alertOpen: false,
-    alertMessage: null,
-    qrCodeData: null,
-    networkDropdownOpen: false,
-    accountDetail: {
-      subview: 'transactions',
-    },
-    // Used to display loading indicator
-    isLoading: false,
-    // Used to display error text
-    warning: null,
-    buyView: {},
-    isMouseUser: false,
-    gasIsLoading: false,
-    defaultHdPaths: {
-      trezor: `m/44'/60'/0'/0`,
-      ledger: `m/44'/60'/0'/0/0`,
-    },
-    lastSelectedProvider: null,
-    networksTabSelectedRpcUrl: '',
-    networksTabIsInAddMode: false,
-    loadingMethodData: false,
-    show3BoxModalAfterImport: false,
-    threeBoxLastUpdated: null,
-    requestAccountTabs: {},
-    openMetaMaskTabs: {},
-    currentWindowTab: {},
-  }, state)
+    state
+  )
 
   switch (action.type) {
     // dropdown methods
@@ -108,7 +111,6 @@ export default function reduceApp (state = {}, action) {
         qrCodeData: action.value,
       }
 
-
     // modal methods:
     case actionConstants.MODAL_OPEN:
       const { name, ...modalProps } = action.payload
@@ -132,7 +134,7 @@ export default function reduceApp (state = {}, action) {
           appState.modal,
           { open: false },
           { modalState: { name: null, props: {} } },
-          { previousModalState: appState.modal.modalState },
+          { previousModalState: appState.modal.modalState }
         ),
       }
 
@@ -154,7 +156,7 @@ export default function reduceApp (state = {}, action) {
         warning: null,
       }
 
-      // accounts
+    // accounts
 
     case actionConstants.GO_HOME:
       return {
@@ -170,7 +172,9 @@ export default function reduceApp (state = {}, action) {
     case actionConstants.SHOW_ACCOUNT_DETAIL:
       return {
         ...appState,
-        forgottenPassword: appState.forgottenPassword ? !appState.forgottenPassword : null,
+        forgottenPassword: appState.forgottenPassword
+          ? !appState.forgottenPassword
+          : null,
         accountDetail: {
           subview: 'transactions',
           accountExport: 'none',
@@ -359,7 +363,7 @@ export default function reduceApp (state = {}, action) {
 }
 
 // Action Creators
-export function setThreeBoxLastUpdated (lastUpdated) {
+export function setThreeBoxLastUpdated(lastUpdated) {
   return {
     type: SET_THREEBOX_LAST_UPDATED,
     value: lastUpdated,

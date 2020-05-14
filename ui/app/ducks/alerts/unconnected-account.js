@@ -4,10 +4,7 @@ import { captureException } from '@sentry/browser'
 import { ALERT_TYPES } from '../../../../app/scripts/controllers/alert'
 import * as actionConstants from '../../store/actionConstants'
 import { addPermittedAccount, setAlertEnabledness } from '../../store/actions'
-import {
-  getOriginOfCurrentTab,
-  getSelectedAddress,
-} from '../../selectors'
+import { getOriginOfCurrentTab, getSelectedAddress } from '../../selectors'
 
 // Constants
 

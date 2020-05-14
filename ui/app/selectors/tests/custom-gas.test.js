@@ -14,7 +14,6 @@ const {
 } = proxyquire('../custom-gas', {})
 
 describe('custom-gas selectors', function () {
-
   describe('getCustomGasPrice()', function () {
     it('should return gas.customData.price', function () {
       const mockState = { gas: { customData: { price: 'mockPrice' } } }
@@ -45,29 +44,42 @@ describe('custom-gas selectors', function () {
 
   describe('getPriceAndTimeEstimates', function () {
     it('should return price and time estimates', function () {
-      const mockState = { gas: { priceAndTimeEstimates: 'mockPriceAndTimeEstimates' } }
-      assert.equal(getPriceAndTimeEstimates(mockState), 'mockPriceAndTimeEstimates')
+      const mockState = {
+        gas: { priceAndTimeEstimates: 'mockPriceAndTimeEstimates' },
+      }
+      assert.equal(
+        getPriceAndTimeEstimates(mockState),
+        'mockPriceAndTimeEstimates'
+      )
     })
   })
 
   describe('getEstimatedGasPrices', function () {
     it('should return price and time estimates', function () {
-      const mockState = { gas: { priceAndTimeEstimates: [
-        { gasprice: 12, somethingElse: 20 },
-        { gasprice: 22, expectedTime: 30 },
-        { gasprice: 32, somethingElse: 40 },
-      ] } }
+      const mockState = {
+        gas: {
+          priceAndTimeEstimates: [
+            { gasprice: 12, somethingElse: 20 },
+            { gasprice: 22, expectedTime: 30 },
+            { gasprice: 32, somethingElse: 40 },
+          ],
+        },
+      }
       assert.deepEqual(getEstimatedGasPrices(mockState), [12, 22, 32])
     })
   })
 
   describe('getEstimatedGasTimes', function () {
     it('should return price and time estimates', function () {
-      const mockState = { gas: { priceAndTimeEstimates: [
-        { somethingElse: 12, expectedTime: 20 },
-        { gasPrice: 22, expectedTime: 30 },
-        { somethingElse: 32, expectedTime: 40 },
-      ] } }
+      const mockState = {
+        gas: {
+          priceAndTimeEstimates: [
+            { somethingElse: 12, expectedTime: 20 },
+            { gasPrice: 22, expectedTime: 30 },
+            { somethingElse: 32, expectedTime: 40 },
+          ],
+        },
+      }
       assert.deepEqual(getEstimatedGasTimes(mockState), [20, 30, 40])
     })
   })
@@ -345,7 +357,6 @@ describe('custom-gas selectors', function () {
         )
       })
     })
-
   })
 
   describe('getRenderableEstimateDataForSmallButtonsFromGWEI()', function () {
@@ -609,7 +620,5 @@ describe('custom-gas selectors', function () {
         )
       })
     })
-
   })
-
 })

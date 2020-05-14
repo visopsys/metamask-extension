@@ -1,58 +1,60 @@
 import * as actionConstants from '../../store/actionConstants'
 import { ALERT_TYPES } from '../../../../app/scripts/controllers/alert'
 
-export default function reduceMetamask (state = {}, action) {
-  const metamaskState = Object.assign({
-    isInitialized: false,
-    isUnlocked: false,
-    isAccountMenuOpen: false,
-    rpcTarget: 'https://rawtestrpc.metamask.io/',
-    identities: {},
-    unapprovedTxs: {},
-    frequentRpcList: [],
-    addressBook: [],
-    selectedTokenAddress: null,
-    contractExchangeRates: {},
-    tokens: [],
-    pendingTokens: {},
-    customNonceValue: '',
-    send: {
-      gasLimit: null,
-      gasPrice: null,
-      gasTotal: null,
-      tokenBalance: '0x0',
-      from: '',
-      to: '',
-      amount: '0',
-      memo: '',
-      errors: {},
-      maxModeOn: false,
-      editingTransactionId: null,
-      toNickname: '',
-      ensResolution: null,
-      ensResolutionError: '',
+export default function reduceMetamask(state = {}, action) {
+  const metamaskState = Object.assign(
+    {
+      isInitialized: false,
+      isUnlocked: false,
+      isAccountMenuOpen: false,
+      rpcTarget: 'https://rawtestrpc.metamask.io/',
+      identities: {},
+      unapprovedTxs: {},
+      frequentRpcList: [],
+      addressBook: [],
+      selectedTokenAddress: null,
+      contractExchangeRates: {},
+      tokens: [],
+      pendingTokens: {},
+      customNonceValue: '',
+      send: {
+        gasLimit: null,
+        gasPrice: null,
+        gasTotal: null,
+        tokenBalance: '0x0',
+        from: '',
+        to: '',
+        amount: '0',
+        memo: '',
+        errors: {},
+        maxModeOn: false,
+        editingTransactionId: null,
+        toNickname: '',
+        ensResolution: null,
+        ensResolutionError: '',
+      },
+      coinOptions: {},
+      useBlockie: false,
+      featureFlags: {},
+      networkEndpointType: undefined,
+      welcomeScreenSeen: false,
+      currentLocale: '',
+      preferences: {
+        autoLockTimeLimit: undefined,
+        showFiatInTestnets: false,
+        useNativeCurrencyAsPrimaryCurrency: true,
+      },
+      firstTimeFlowType: null,
+      completedOnboarding: false,
+      knownMethodData: {},
+      participateInMetaMetrics: null,
+      metaMetricsSendCount: 0,
+      nextNonce: null,
     },
-    coinOptions: {},
-    useBlockie: false,
-    featureFlags: {},
-    networkEndpointType: undefined,
-    welcomeScreenSeen: false,
-    currentLocale: '',
-    preferences: {
-      autoLockTimeLimit: undefined,
-      showFiatInTestnets: false,
-      useNativeCurrencyAsPrimaryCurrency: true,
-    },
-    firstTimeFlowType: null,
-    completedOnboarding: false,
-    knownMethodData: {},
-    participateInMetaMetrics: null,
-    metaMetricsSendCount: 0,
-    nextNonce: null,
-  }, state)
+    state
+  )
 
   switch (action.type) {
-
     case actionConstants.UPDATE_METAMASK_STATE:
       return { ...metamaskState, ...action.value }
 
@@ -96,7 +98,8 @@ export default function reduceMetamask (state = {}, action) {
 
       if (metamaskState.send.editingTransactionId && !action.value) {
         delete newSend.token
-        const unapprovedTx = newState.unapprovedTxs[newSend.editingTransactionId] || {}
+        const unapprovedTx =
+          newState.unapprovedTxs[newSend.editingTransactionId] || {}
         const txParams = unapprovedTx.txParams || {}
         newState.unapprovedTxs = {
           ...newState.unapprovedTxs,
@@ -118,7 +121,9 @@ export default function reduceMetamask (state = {}, action) {
       const account = action.value.account
       const name = action.value.label
       const id = {}
-      id[account] = Object.assign({}, metamaskState.identities[account], { name })
+      id[account] = Object.assign({}, metamaskState.identities[account], {
+        name,
+      })
       const identities = Object.assign({}, metamaskState.identities, id)
       return Object.assign(metamaskState, { identities })
 
@@ -372,8 +377,11 @@ export const getCurrentLocale = (state) => state.metamask.currentLocale
 
 export const getAlertEnabledness = (state) => state.metamask.alertEnabledness
 
-export const getSwitchToConnectedAlertEnabledness = (state) => getAlertEnabledness(state)[ALERT_TYPES.switchToConnected]
+export const getSwitchToConnectedAlertEnabledness = (state) =>
+  getAlertEnabledness(state)[ALERT_TYPES.switchToConnected]
 
-export const getUnconnectedAccountAlertEnabledness = (state) => getAlertEnabledness(state)[ALERT_TYPES.unconnectedAccount]
+export const getUnconnectedAccountAlertEnabledness = (state) =>
+  getAlertEnabledness(state)[ALERT_TYPES.unconnectedAccount]
 
-export const getSwitchToConnectedAlertShown = (state) => state.metamask.switchToConnectedAlertShown
+export const getSwitchToConnectedAlertShown = (state) =>
+  state.metamask.switchToConnectedAlertShown
