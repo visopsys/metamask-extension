@@ -12,7 +12,10 @@ import { ALERT_TYPES } from '../app/scripts/controllers/alert'
 import { ENVIRONMENT_TYPE_POPUP } from '../app/scripts/lib/enums'
 import { fetchLocale } from './app/helpers/utils/i18n-helper'
 import switchDirection from './app/helpers/utils/switch-direction'
-import { getPermittedAccountsForCurrentTab, getSelectedAddress } from './app/selectors'
+import {
+  getPermittedAccountsForCurrentTab,
+  getSelectedAddress,
+} from './app/selectors'
 import { ALERT_STATE } from './app/ducks/alerts/switch-to-connected'
 import {
   getSwitchToConnectedAlertEnabledness,
@@ -21,7 +24,7 @@ import {
 
 log.setLevel(global.METAMASK_DEBUG ? 'debug' : 'warn')
 
-export default function launchMetamaskUi (opts, cb) {
+export default function launchMetamaskUi(opts, cb) {
   const { backgroundConnection } = opts
   actions._setBackgroundConnection(backgroundConnection)
   // check if we are unlocked first
@@ -29,15 +32,14 @@ export default function launchMetamaskUi (opts, cb) {
     if (err) {
       return cb(err)
     }
-    startApp(metamaskState, backgroundConnection, opts)
-      .then((store) => {
-        setupDebuggingHelpers(store)
-        cb(null, store)
-      })
+    startApp(metamaskState, backgroundConnection, opts).then((store) => {
+      setupDebuggingHelpers(store)
+      cb(null, store)
+    })
   })
 }
 
-async function startApp (metamaskState, backgroundConnection, opts) {
+async function startApp(metamaskState, backgroundConnection, opts) {
   // parse opts
   if (!metamaskState.featureFlags) {
     metamaskState.featureFlags = {}
@@ -69,10 +71,16 @@ async function startApp (metamaskState, backgroundConnection, opts) {
 
   if (getEnvironmentType() === ENVIRONMENT_TYPE_POPUP) {
     const origin = draftInitialState.activeTab.origin
-    const permittedAccountsForCurrentTab = getPermittedAccountsForCurrentTab(draftInitialState)
+    const permittedAccountsForCurrentTab = getPermittedAccountsForCurrentTab(
+      draftInitialState
+    )
     const selectedAddress = getSelectedAddress(draftInitialState)
-    const switchToConnectedAlertShown = getSwitchToConnectedAlertShown(draftInitialState)
-    const switchToConnectedAlertIsEnabled = getSwitchToConnectedAlertEnabledness(draftInitialState)
+    const switchToConnectedAlertShown = getSwitchToConnectedAlertShown(
+      draftInitialState
+    )
+    const switchToConnectedAlertIsEnabled = getSwitchToConnectedAlertEnabledness(
+      draftInitialState
+    )
 
     if (
       origin &&
@@ -81,7 +89,9 @@ async function startApp (metamaskState, backgroundConnection, opts) {
       permittedAccountsForCurrentTab.length > 0 &&
       !permittedAccountsForCurrentTab.includes(selectedAddress)
     ) {
-      draftInitialState[ALERT_TYPES.switchToConnected] = { state: ALERT_STATE.OPEN }
+      draftInitialState[ALERT_TYPES.switchToConnected] = {
+        state: ALERT_STATE.OPEN,
+      }
       actions.setSwitchToConnectedAlertShown(origin)
     }
   }
@@ -100,9 +110,11 @@ async function startApp (metamaskState, backgroundConnection, opts) {
   )
   const numberOfUnapprivedTx = unapprovedTxsAll.length
   if (numberOfUnapprivedTx > 0) {
-    store.dispatch(actions.showConfTxPage({
-      id: unapprovedTxsAll[0].id,
-    }))
+    store.dispatch(
+      actions.showConfTxPage({
+        id: unapprovedTxsAll[0].id,
+      })
+    )
   }
 
   backgroundConnection.on('update', function (metamaskState) {
@@ -123,17 +135,12 @@ async function startApp (metamaskState, backgroundConnection, opts) {
   }
 
   // start app
-  render(
-    <Root
-      store={store}
-    />,
-    opts.container,
-  )
+  render(<Root store={store} />, opts.container)
 
   return store
 }
 
-function setupDebuggingHelpers (store) {
+function setupDebuggingHelpers(store) {
   window.getCleanAppState = function () {
     const state = clone(store.getState())
     state.version = global.platform.getVersion()
